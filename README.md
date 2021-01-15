@@ -1,10 +1,10 @@
-# Developer Challenge
+# Developer Challenge for Backend and Protocol Engineers
 
-Build a DApp on Kaleido.
+Build a DApp on Kaleido, dockerize and deploy to a kubernetes environment.
 
 Fork this repo, choose a use case you think would be interesting to build as a decentralized application (DApp), then get creative and have fun.
 
-... and please **ask questions** - we don't want you to be stuck, an appreciate collaboration through the project.
+... and please **ask questions** - we don't want you to be stuck, and appreciate collaboration through the project.
 
 ## What is a DApp?
 
@@ -20,16 +20,19 @@ Fork this repo, choose a use case you think would be interesting to build as a d
 We would like your project to demonstrate your concept end-to-end, but it doesn't need to be a complete application.
 
 It must:
-- Have a Web based user experience, built in React
-- Have a backend-for-the-frontend (BFF), written in Node.js
-- Have on-chain Smart Contract logic, written in Solidity
+- Have a REST API to exercise the implemented functions
+- Have a backend microservice implementing the REST API, written in Node.js
+- The backend microservice is deployed in a kubernetes environment (minikube or a cloud service)
+- API endpoints must be secured with TLS
+  - optionally secure them with mutual TLS
+- Have on-chain Smart Contract logic, written in Solidity, to be called by the backend microservice
 - Use a Kaleido blockchain 
 - Contain a README that gives a quick overview of the use case, and tells us how to run it
 
 How much time you spend on each tier is down to you - depending on your interests and the skills you want to show.
 
 > We've given you a basic, but functional, starting point for each layer of the stack.
-> ... and yes, we know the UI is a bit naff ;-)
+> the UI layer is included but is optional for this challenge. The playback is totally acceptable if driven by command line `curl` or Postman
 
 ## Some ideas
 
@@ -48,11 +51,9 @@ It's your choice whether you focus more on how things work under the covers, or 
 ## Want more dev stack?
 
 Here are some dev technologies (not in the starter repo) that we love at Kaleido:
-- Material UI (or insert your favorite component library here) - at Kaleido we love re-use
-- Redux for front-end state
-- GraphQL (Apollo) for front-end/back-end comms
 - WebSockets (Socket.io) for live updating and notifications
 - MongoDB NoSQL database for configuration and local state
+- Postgres database for configuration and local state
 
 Remember we'd like a thin thread through your DApp, so choose technologies you think you can be productive in.
 
@@ -100,7 +101,6 @@ npm i
 npm start
 ```
 
-   
 ## Blockchain accelerators
 
 Some full-stack blockchain services available out-of-the-box with Kaleido that you might find helpful in getting your use case built quickly:
@@ -114,15 +114,4 @@ Some full-stack blockchain services available out-of-the-box with Kaleido that y
   - Create tokens according to the ERC20/ERC721 standard via a factory UI/API, without needing to learn the code.
 - [Ethereum Dev Tooling](https://docs.kaleido.io/developers/smart-contracts/)
   - Great tools to help you develop your smart contract logic
-
-## Want to know our style?
-
-If you want to be inspired by the Kaleido brand...
-
-
-### Styles
-
-![Product Colors](StyleGuide/Colors.png?raw=true 'Product Colors')
-
-![Text Styles](StyleGuide/TextStyles.png?raw=true 'Text Styles')
 
