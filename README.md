@@ -20,12 +20,12 @@ Fork this repo, choose a use case you think would be interesting to build as a d
 We would like your project to demonstrate your concept end-to-end, but it doesn't need to be a complete application.
 
 It must:
-- Have a REST API to exercise the implemented functions
-- Have a backend microservice implementing the REST API, written in Golang
-- The backend microservice for the API implementation is deployed in a kubernetes environment (minikube or a cloud service)
-- API endpoints must be secured with TLS
+- Have a backend microservice implementing a REST API, written in Golang
+- Deployed in a kubernetes environment (minikube or a cloud service)
+- API endpoints must be secured with TLS using k8s ingress configurations
   - optionally secure them with mutual TLS
 - Have on-chain Smart Contract logic, written in Solidity, to be called by the backend microservice
+  - don't feel bad using a hello-world level smart contract, Solidity skills is not the focus of this challenge
 - Use a Kaleido blockchain environment that is either:
   - manually configured using [console.kaleido.io](https://console.kaleido.io) or,
   - provisioned using an automation tool like [Terraform with Kaleido's plugin](https://github.com/kaleido-io/terraform-provider-kaleido)
@@ -35,12 +35,6 @@ How much time you spend on each tier is down to you - depending on your interest
 
 > We've given you a basic, but functional, starting point for each layer of the stack.
 > the UI layer is included but is optional for this challenge. The playback is totally acceptable if driven by command line `curl` or Postman
-
-## Solidity Development Environment
-You might not have come across this language for developing smart contracts on Ethereum. A typical dev environment for Solidity:
-- [Truffle](https://www.trufflesuite.com/truffle): unit test your Solidity code with javascript
-- [Ganache](https://www.trufflesuite.com/ganache): local Ethereum node as macox App with easy to use UI
-- [kaleido-go](https://github.com/kaleido-io/kaleido-go) is a useful tool to help test a smart contract against a Kaleido environment
 
 ## Some ideas
 
@@ -55,6 +49,12 @@ It's your choice whether you focus more on how things work under the covers, or 
 - A funky avatar generator, where each avatar is backed by a unique token
 - A conference ticketing system with camera & QR code integration
 - A digital collectable swag bag, earned by posting to social media
+
+## Solidity Development Environment
+You might not have come across this language for developing smart contracts on Ethereum. A typical dev environment for Solidity:
+- [Truffle](https://www.trufflesuite.com/truffle): unit test your Solidity code with javascript
+- [Ganache](https://www.trufflesuite.com/ganache): local Ethereum node as macox App with easy to use UI
+- [kaleido-go](https://github.com/kaleido-io/kaleido-go) is a useful tool to help test a smart contract against a Kaleido environment
 
 ## Want more dev stack?
 
