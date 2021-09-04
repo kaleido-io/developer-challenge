@@ -1274,6 +1274,16 @@
   dependencies:
     "@hapi/hoek" "^8.3.0"
 
+"@headlessui/react@^1.4.1":
+  "integrity" "sha512-gL6Ns5xQM57cZBzX6IVv6L7nsam8rDEpRhs5fg28SN64ikfmuuMgunc+Rw5C1cMScnvFM+cz32ueVrlSFEVlSg=="
+  "resolved" "https://registry.npmjs.org/@headlessui/react/-/react-1.4.1.tgz"
+  "version" "1.4.1"
+
+"@heroicons/react@^1.0.4":
+  "integrity" "sha512-3kOrTmo8+Z8o6AL0rzN82MOf8J5CuxhRLFhpI8mrn+3OqekA6d5eb1GYO3EYYo1Vn6mYQSMNTzCWbEwUInb0cQ=="
+  "resolved" "https://registry.npmjs.org/@heroicons/react/-/react-1.0.4.tgz"
+  "version" "1.0.4"
+
 "@humanwhocodes/config-array@^0.5.0":
   "integrity" "sha512-FagtKFz74XrTl7y6HCzQpwDfXP0yhxe9lHLD1UZxjvZIcbyRz8zTFF/yYNfSfzU414eDwZ1SrO0Qvtyf+wFMQg=="
   "resolved" "https://registry.npmjs.org/@humanwhocodes/config-array/-/config-array-0.5.0.tgz"
@@ -1688,6 +1698,13 @@
     "@svgr/plugin-svgo" "^5.5.0"
     "loader-utils" "^2.0.0"
 
+"@tailwindcss/forms@^0.3.3":
+  "integrity" "sha512-U8Fi/gq4mSuaLyLtFISwuDYzPB73YzgozjxOIHsK6NXgg/IWD1FLaHbFlWmurAMyy98O+ao74ksdQefsquBV1Q=="
+  "resolved" "https://registry.npmjs.org/@tailwindcss/forms/-/forms-0.3.3.tgz"
+  "version" "0.3.3"
+  dependencies:
+    "mini-svg-data-uri" "^1.2.3"
+
 "@tootallnate/once@1":
   "integrity" "sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw=="
   "resolved" "https://registry.npmjs.org/@tootallnate/once/-/once-1.1.2.tgz"
@@ -1926,7 +1943,7 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@typescript-eslint/eslint-plugin@^4.0.0", "@typescript-eslint/eslint-plugin@^4.5.0", "@typescript-eslint/eslint-plugin@>= 4":
+"@typescript-eslint/eslint-plugin@^4.0.0", "@typescript-eslint/eslint-plugin@^4.30.0", "@typescript-eslint/eslint-plugin@^4.5.0", "@typescript-eslint/eslint-plugin@>= 4":
   "integrity" "sha512-NgAnqk55RQ/SD+tZFD9aPwNSeHmDHHe5rtUyhIq0ZeCWZEvo4DK9rYz7v9HDuQZFvn320Ot+AikaCKMFKLlD0g=="
   "resolved" "https://registry.npmjs.org/@typescript-eslint/eslint-plugin/-/eslint-plugin-4.30.0.tgz"
   "version" "4.30.0"
@@ -1962,7 +1979,7 @@
     "eslint-scope" "^5.1.1"
     "eslint-utils" "^3.0.0"
 
-"@typescript-eslint/parser@^4.0.0", "@typescript-eslint/parser@^4.5.0":
+"@typescript-eslint/parser@^4.0.0", "@typescript-eslint/parser@^4.30.0", "@typescript-eslint/parser@^4.5.0":
   "integrity" "sha512-HJ0XuluSZSxeboLU7Q2VQ6eLlCwXPBOGnA7CqgBnz2Db3JRQYyBDJgQnop6TZ+rsbSx5gEdWhw4rE4mDa1FnZg=="
   "resolved" "https://registry.npmjs.org/@typescript-eslint/parser/-/parser-4.30.0.tgz"
   "version" "4.30.0"
@@ -4716,7 +4733,7 @@
   "resolved" "https://registry.npmjs.org/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-4.2.0.tgz"
   "version" "4.2.0"
 
-"eslint-plugin-react@^7.20.3", "eslint-plugin-react@^7.21.5":
+"eslint-plugin-react@^7.20.3", "eslint-plugin-react@^7.21.5", "eslint-plugin-react@^7.25.1":
   "integrity" "sha512-P4j9K1dHoFXxDNP05AtixcJEvIT6ht8FhYKsrkY0MPCPaUMYijhpWwNiRDZVtA8KFuZOkGSeft6QwH8KuVpJug=="
   "resolved" "https://registry.npmjs.org/eslint-plugin-react/-/eslint-plugin-react-7.25.1.tgz"
   "version" "7.25.1"
@@ -4811,7 +4828,7 @@
     "normalize-path" "^3.0.0"
     "schema-utils" "^3.0.0"
 
-"eslint@*", "eslint@^2 || ^3 || ^4 || ^5 || ^6 || ^7.2.0", "eslint@^3 || ^4 || ^5 || ^6 || ^7", "eslint@^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0", "eslint@^5 || ^6 || ^7", "eslint@^5.0.0 || ^6.0.0 || ^7.0.0", "eslint@^7.0.0", "eslint@^7.1.0", "eslint@^7.11.0", "eslint@^7.5.0", "eslint@>= 4.12.1", "eslint@>=5":
+"eslint@*", "eslint@^2 || ^3 || ^4 || ^5 || ^6 || ^7.2.0", "eslint@^3 || ^4 || ^5 || ^6 || ^7", "eslint@^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0", "eslint@^5 || ^6 || ^7", "eslint@^5.0.0 || ^6.0.0 || ^7.0.0", "eslint@^7.0.0", "eslint@^7.1.0", "eslint@^7.11.0", "eslint@^7.32.0", "eslint@^7.5.0", "eslint@>= 4.12.1", "eslint@>=5":
   "integrity" "sha512-VHZ8gX+EDfz+97jGcgyGCyRia/dPOd6Xh9yPv8Bl1+SoaIwD+a/vlrOmGRUyOYu7MwUhc7CxqeaDZU13S4+EpA=="
   "resolved" "https://registry.npmjs.org/eslint/-/eslint-7.32.0.tgz"
   "version" "7.32.0"
@@ -7472,6 +7489,11 @@
     "schema-utils" "^1.0.0"
     "webpack-sources" "^1.1.0"
 
+"mini-svg-data-uri@^1.2.3":
+  "integrity" "sha512-+fA2oRcR1dJI/7ITmeQJDrYWks0wodlOz0pAEhKYJ2IVc1z0AnwJUsKY2fzFmPAM3Jo9J0rBx8JAA9QQSJ5PuA=="
+  "resolved" "https://registry.npmjs.org/mini-svg-data-uri/-/mini-svg-data-uri-1.3.3.tgz"
+  "version" "1.3.3"
+
 "minimalistic-assert@^1.0.0", "minimalistic-assert@^1.0.1":
   "integrity" "sha512-UtJcAD4yEaGtjPezWuO9wC4nwUnVH/8/Im3yEHQP4b67cXlD/Qr9hdITCU1xDbSEXg2XKNaP8jsReV7vQd00/A=="
   "resolved" "https://registry.npmjs.org/minimalistic-assert/-/minimalistic-assert-1.0.1.tgz"
@@ -9396,7 +9418,7 @@
     "strip-ansi" "6.0.0"
     "text-table" "0.2.0"
 
-"react-dom@^16.10.2":
+"react-dom@^16 || ^17 || ^18", "react-dom@^16.10.2":
   "integrity" "sha512-81PIMmVLnCNLO/fFOQxdQkvEq/+Hfpv24XNJfpyZhTRfO0QcmQIF/PgCa1zCOj2w1hrn12MFLyaJ/G0+Mxtfag=="
   "resolved" "https://registry.npmjs.org/react-dom/-/react-dom-16.13.1.tgz"
   "version" "16.13.1"
@@ -9492,7 +9514,7 @@
   optionalDependencies:
     "fsevents" "^2.1.3"
 
-"react@^16.10.2", "react@^16.13.1", "react@>= 16":
+"react@^16 || ^17 || ^18", "react@^16.10.2", "react@^16.13.1", "react@>= 16":
   "integrity" "sha512-YMZQQq32xHLX0bz5Mnibv1/LHb3Sqzngu7xstSM+vrkE5Kzr9xE0yMByK5kMoTK30YVJE61WfbxIFFvfeDKT1w=="
   "resolved" "https://registry.npmjs.org/react/-/react-16.13.1.tgz"
   "version" "16.13.1"
@@ -10769,7 +10791,7 @@
     "string-width" "^4.2.0"
     "strip-ansi" "^6.0.0"
 
-"tailwindcss@npm:@tailwindcss/postcss7-compat@^2.2.9":
+"tailwindcss@>=2.0.0", "tailwindcss@npm:@tailwindcss/postcss7-compat@^2.2.9":
   "integrity" "sha512-cE0ed0whqMPPih/mgo205e/Fdl/N9ZC8Z/0OyUBGWuvgNjNhsrT/avpuoYECI58FDTMT2tm5kKGJsJsl+sqh7A=="
   "resolved" "https://registry.npmjs.org/@tailwindcss/postcss7-compat/-/postcss7-compat-2.2.9.tgz"
   "version" "2.2.9"

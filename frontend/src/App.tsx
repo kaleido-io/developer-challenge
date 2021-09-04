@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 import logo from './logo.svg';
 
-function App() {
+function App(): JSX.Element {
 
   const [loading, setLoading] = useState(false);
   const [deployState, setDeployState] = useState("Deploy");
