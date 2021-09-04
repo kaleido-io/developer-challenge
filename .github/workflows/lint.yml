@@ -1,0 +1,19 @@
+name: Lint
+on: [push, workflow_dispatch]
+jobs:
+  # Frontend linting
+  frontend-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Use Node 14.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+      - name: npm ci
+        run: npm ci
+        working-directory: ./frontend
+      - name: npm run lint
+        run: npm run lint
+        working-directory: ./frontend
