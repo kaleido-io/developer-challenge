@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import logo from './logo.svg';
 
 function App() {
 
@@ -21,7 +21,7 @@ function App() {
         body: JSON.stringify({}),
         headers: { 'Content-Type': 'application/json' }
       });
-      const {contractAddress : addr, error} = await res.json();
+      const { contractAddress: addr, error } = await res.json();
       if (!res.ok) {
         setErrorMsg(error)
         setDeployState("Error! - Retry Deploy");
@@ -29,7 +29,7 @@ function App() {
         setContractAddress(addr);
         setDeployState("Redeploy");
       }
-    } catch (err) {
+    } catch (err: any) {
       setErrorMsg(err.stack)
       setDeployState("Error! - Retry Deploy");
     }
@@ -47,11 +47,11 @@ function App() {
           x: desiredValue
         })
       });
-      const {error} = await res.json();
+      const { error } = await res.json();
       if (!res.ok) {
         setErrorMsg(error)
       }
-    } catch(err) {
+    } catch (err: any) {
       setErrorMsg(err.stack)
     }
     setLoading(false);
@@ -62,40 +62,40 @@ function App() {
     setErrorMsg(null);
     try {
       const res = await fetch(`/api/contract/${contractAddress}/value`);
-      const {x, error} = await res.json();
+      const { x, error } = await res.json();
       if (!res.ok) {
         setErrorMsg(error);
       } else {
         setValue(x);
       }
-    } catch(err) {
+    } catch (err: any) {
       setErrorMsg(err.stack)
     }
     setLoading(false);
   }
 
-  function handleChange(event) {
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     setDesiredValue(event.target.value);
   }
 
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" aria-busy={loading}/>        
+        <img src={logo} className="App-logo" alt="logo" aria-busy={loading} />
         <p>
           <button type="button" className="App-button" disabled={loading} onClick={deployContract}>{deployState} Contract</button>
         </p>
-        { contractAddress && <p>
+        {contractAddress && <p>
           Contract Address: {contractAddress}
         </p>}
         <p>
-          <input className="App-input" disabled={loading || !contractAddress} onChange={handleChange}/>
+          <input className="App-input" disabled={loading || !contractAddress} onChange={handleChange} />
           <button type="button" className="App-button" disabled={loading || !contractAddress || !desiredValue} onClick={setContractValue}>Set Value</button>
         </p>
         <p>
           <button type="button" className="App-button" disabled={loading || !contractAddress} onClick={getContractValue}>{value}</button>
         </p>
-        { errorMsg && <pre class="App-error">
+        {errorMsg && <pre className="App-error">
           Error: {errorMsg}
         </pre>}
       </header>
