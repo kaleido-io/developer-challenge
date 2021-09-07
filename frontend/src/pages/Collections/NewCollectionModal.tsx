@@ -23,7 +23,7 @@ export default function NewCollectionModal(props: { close: () => any, show: bool
      * On form submit, create NFT collection and close modal
      * @param e event triggered onSubmit
      */
-    const handleSubmit = (e: any) => {
+    const handleSubmit = (e: React.SyntheticEvent) => {
         e.preventDefault();
         // TODO - Request to create new NFT collection with form values
         props.close

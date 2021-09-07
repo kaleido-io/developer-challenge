@@ -3,6 +3,7 @@ import { CashIcon, ChevronRightIcon } from '@heroicons/react/solid'
 import React from 'react'
 import OverviewCard from '../../components/OverviewCard.tsx/OverviewCard'
 import { OverviewCardInterface } from '../../interfaces/overviewCardInterface'
+import { UserInterface } from '../../interfaces/userInterface'
 import { mockTransactions } from '../../mocks/mockTransactions'
 import classNames from '../../utils/classNames'
 /**
@@ -32,7 +33,7 @@ const transactionTypeStyles: transactionTypeInterface = {
 /**
  * Dashboard page
  */
-export default function Dashboard(props: { user: any }): JSX.Element {
+export default function Dashboard(props: { user: UserInterface }): JSX.Element {
   return (
     <main className="flex-1 relative pb-8 z-0 overflow-y-auto">
       {/* Page header */}

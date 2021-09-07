@@ -6,6 +6,7 @@ import React, { Fragment, SVGProps, useEffect, useState } from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import './App.css';
 import { getUser } from './graphql/queries';
+import { UserInterface } from './interfaces/userInterface';
 import Collections from './pages/Collections/Collections';
 import SingleCollection from './pages/Collections/SingleCollection';
 import Dashboard from './pages/Dashboard/Dashboard';
@@ -31,7 +32,7 @@ interface NavigationInterface {
 function App(): JSX.Element {
   const [currentNav, setCurrentNav] = useState('Home');
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [user, setUser] = useState(undefined as any)
+  const [user, setUser] = useState({} as UserInterface)
 
   // TODO: Navigation panel should depress correctly
   const navigation: NavigationInterface[] = [
@@ -59,7 +60,7 @@ function App(): JSX.Element {
   async function fetchUser(id: string) {
     try {
       const userData: any = await API.graphql(graphqlOperation(getUser, { id }))
-      const user: any = userData.data.getUser
+      const user: UserInterface = userData.data.getUser
       console.log(user)
       setUser(user)
     } catch (err) {
@@ -230,11 +231,11 @@ function App(): JSX.Element {
                   <Menu.Button className="max-w-xs bg-faded rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 lg:p-2 lg:rounded-md lg:hover:bg-gray-50">
                     <img
                       className="h-8 w-8 rounded-full"
-                      src={user?.avatar}
+                      src={user.avatar}
                       alt="avatar"
                     />
                     <span className="hidden ml-3 text-gray-700 text-sm font-medium lg:block">
-                      <span className="sr-only">Open user menu for </span>{user?.name}
+                      <span className="sr-only">Open user menu for </span>{user.name}
                     </span>
                     <ChevronDownIcon
                       className="hidden flex-shrink-0 ml-1 h-5 w-5 text-gray-400 lg:block"
@@ -254,7 +255,7 @@ function App(): JSX.Element {
                   <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-faded ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <div className="px-4 py-3">
                       <p className="text-sm">Signed in as</p>
-                      <p className="text-sm font-medium text-gray-900 truncate">{getShortenedAddress(user?.ethAddress)}</p>
+                      <p className="text-sm font-medium text-gray-900 truncate">{getShortenedAddress(user.ethAddress)}</p>
                     </div>
                     <div className="py-1">
                       {headerNavigation.map(nav => (
