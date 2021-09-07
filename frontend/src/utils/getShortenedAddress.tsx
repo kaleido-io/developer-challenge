@@ -4,5 +4,5 @@
  * @returns shortened address
  */
 export default function getShortenedAddress(add: string): string {
-    return `${add.substring(0, 8)}...${add.substring(add.length-6, add.length)}`
+    return add?.length ? `${add.substring(0, 8)}...${add.substring(add.length - 6, add.length)}` : ''
 }

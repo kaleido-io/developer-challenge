@@ -97,6 +97,62 @@ export type UpdateUserInput = {
   socials?: SocialInput | null,
 };
 
+export type CreateNFTCollectionInput = {
+  id?: string | null,
+  description: string,
+  imageUrl: string,
+  isMinted: boolean,
+  name: string,
+  totalSold: string,
+  totalTokens: string,
+};
+
+export type ModelNFTCollectionConditionInput = {
+  description?: ModelStringInput | null,
+  imageUrl?: ModelStringInput | null,
+  isMinted?: ModelBooleanInput | null,
+  name?: ModelStringInput | null,
+  totalSold?: ModelStringInput | null,
+  totalTokens?: ModelStringInput | null,
+  and?: Array< ModelNFTCollectionConditionInput | null > | null,
+  or?: Array< ModelNFTCollectionConditionInput | null > | null,
+  not?: ModelNFTCollectionConditionInput | null,
+};
+
+export type ModelBooleanInput = {
+  ne?: boolean | null,
+  eq?: boolean | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
+export type NFTCollection = {
+  __typename: "NFTCollection",
+  id: string,
+  description: string,
+  imageUrl: string,
+  isMinted: boolean,
+  name: string,
+  totalSold: string,
+  totalTokens: string,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type UpdateNFTCollectionInput = {
+  id: string,
+  description?: string | null,
+  imageUrl?: string | null,
+  isMinted?: boolean | null,
+  name?: string | null,
+  totalSold?: string | null,
+  totalTokens?: string | null,
+};
+
+export type DeleteNFTCollectionInput = {
+  id: string,
+};
+
 export type ModelUserFilterInput = {
   avatar?: ModelStringInput | null,
   description?: ModelStringInput | null,
@@ -130,6 +186,25 @@ export type ModelUserConnection = {
   nextToken?: string | null,
 };
 
+export type ModelNFTCollectionFilterInput = {
+  id?: ModelIDInput | null,
+  description?: ModelStringInput | null,
+  imageUrl?: ModelStringInput | null,
+  isMinted?: ModelBooleanInput | null,
+  name?: ModelStringInput | null,
+  totalSold?: ModelStringInput | null,
+  totalTokens?: ModelStringInput | null,
+  and?: Array< ModelNFTCollectionFilterInput | null > | null,
+  or?: Array< ModelNFTCollectionFilterInput | null > | null,
+  not?: ModelNFTCollectionFilterInput | null,
+};
+
+export type ModelNFTCollectionConnection = {
+  __typename: "ModelNFTCollectionConnection",
+  items?:  Array<NFTCollection | null > | null,
+  nextToken?: string | null,
+};
+
 export type UpdateUserMutationVariables = {
   input: UpdateUserInput,
   condition?: ModelUserConditionInput | null,
@@ -150,6 +225,66 @@ export type UpdateUserMutation = {
       twitter?: string | null,
       youtube?: string | null,
     },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateNFTCollectionMutationVariables = {
+  input: CreateNFTCollectionInput,
+  condition?: ModelNFTCollectionConditionInput | null,
+};
+
+export type CreateNFTCollectionMutation = {
+  createNFTCollection?:  {
+    __typename: "NFTCollection",
+    id: string,
+    description: string,
+    imageUrl: string,
+    isMinted: boolean,
+    name: string,
+    totalSold: string,
+    totalTokens: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateNFTCollectionMutationVariables = {
+  input: UpdateNFTCollectionInput,
+  condition?: ModelNFTCollectionConditionInput | null,
+};
+
+export type UpdateNFTCollectionMutation = {
+  updateNFTCollection?:  {
+    __typename: "NFTCollection",
+    id: string,
+    description: string,
+    imageUrl: string,
+    isMinted: boolean,
+    name: string,
+    totalSold: string,
+    totalTokens: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteNFTCollectionMutationVariables = {
+  input: DeleteNFTCollectionInput,
+  condition?: ModelNFTCollectionConditionInput | null,
+};
+
+export type DeleteNFTCollectionMutation = {
+  deleteNFTCollection?:  {
+    __typename: "NFTCollection",
+    id: string,
+    description: string,
+    imageUrl: string,
+    isMinted: boolean,
+    name: string,
+    totalSold: string,
+    totalTokens: string,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -176,5 +311,49 @@ export type GetUserQuery = {
     },
     createdAt: string,
     updatedAt: string,
+  } | null,
+};
+
+export type GetNFTCollectionQueryVariables = {
+  id: string,
+};
+
+export type GetNFTCollectionQuery = {
+  getNFTCollection?:  {
+    __typename: "NFTCollection",
+    id: string,
+    description: string,
+    imageUrl: string,
+    isMinted: boolean,
+    name: string,
+    totalSold: string,
+    totalTokens: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListNFTCollectionsQueryVariables = {
+  filter?: ModelNFTCollectionFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListNFTCollectionsQuery = {
+  listNFTCollections?:  {
+    __typename: "ModelNFTCollectionConnection",
+    items?:  Array< {
+      __typename: "NFTCollection",
+      id: string,
+      description: string,
+      imageUrl: string,
+      isMinted: boolean,
+      name: string,
+      totalSold: string,
+      totalTokens: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
   } | null,
 };

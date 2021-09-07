@@ -11,3 +11,33 @@ export const updateUser = /* GraphQL */ `
     }
   }
 `;
+export const createNFTCollection = /* GraphQL */ `
+  mutation CreateNFTCollection(
+    $input: CreateNFTCollectionInput!
+    $condition: ModelNFTCollectionConditionInput
+  ) {
+    createNFTCollection(input: $input, condition: $condition) {
+      name
+    }
+  }
+`;
+export const updateNFTCollection = /* GraphQL */ `
+  mutation UpdateNFTCollection(
+    $input: UpdateNFTCollectionInput!
+    $condition: ModelNFTCollectionConditionInput
+  ) {
+    updateNFTCollection(input: $input, condition: $condition) {
+      name
+    }
+  }
+`;
+export const deleteNFTCollection = /* GraphQL */ `
+  mutation DeleteNFTCollection(
+    $input: DeleteNFTCollectionInput!
+    $condition: ModelNFTCollectionConditionInput
+  ) {
+    deleteNFTCollection(input: $input, condition: $condition) {
+      name
+    }
+  }
+`;

@@ -7,6 +7,16 @@ type User @model {
   socials: Social!
 }
 
+type NFTCollection @model {
+  id: ID!
+  description: String!
+  imageUrl: String!
+  isMinted: Boolean!
+  name: String!
+  totalSold: String!
+  totalTokens: String!
+}
+
 type Social {
   instagram: String
   spotify: String
