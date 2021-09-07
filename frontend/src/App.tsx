@@ -1,11 +1,5 @@
 import { Dialog, Menu, Transition } from '@headlessui/react';
-import {
-  CogIcon,
-  CollectionIcon, HomeIcon,
-  LogoutIcon,
-  MenuAlt1Icon,
-  QuestionMarkCircleIcon, ShieldCheckIcon, XIcon
-} from '@heroicons/react/outline';
+import { CogIcon, CollectionIcon, HomeIcon, LogoutIcon, MenuAlt1Icon, QuestionMarkCircleIcon, ShieldCheckIcon, XIcon } from '@heroicons/react/outline';
 import { ChevronDownIcon, SearchIcon } from '@heroicons/react/solid';
 import React, { Fragment, SVGProps, useState } from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
@@ -106,7 +100,7 @@ function App(): JSX.Element {
               <div className="flex-shrink-0 flex items-center px-4">
                 <img
                   className="h-8 w-auto"
-                  src="/instock.jpeg"
+                  src="/instock.png"
                   alt="Instock logo"
                 />
               </div>
@@ -144,7 +138,7 @@ function App(): JSX.Element {
             <div className="flex items-center flex-shrink-0 px-4">
               <img
                 className="h-8 w-auto"
-                src="/instock.jpeg"
+                src="/instock.png"
                 alt="Instock logo"
               />
             </div>
