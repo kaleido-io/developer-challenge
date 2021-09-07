@@ -1,0 +1,15 @@
+type User @model {
+  avatar: String!
+  description: String!
+  ethAddress: String!
+  id: ID!
+  name: String!
+  socials: Social!
+}
+
+type Social {
+  instagram: String
+  spotify: String
+  twitter: String
+  youtube: String
+}

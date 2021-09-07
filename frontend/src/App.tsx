@@ -14,6 +14,7 @@ import PageNotFound from './pages/PageNotFound/PageNotFound';
 import Privacy from './pages/Privacy/Privacy';
 import Settings from './pages/Settings/Settings';
 import classNames from './utils/classNames';
+import getShortenedAddress from './utils/getShortenedAddress';
 
 /**
  * Interface for navigation link
@@ -228,7 +229,7 @@ function App(): JSX.Element {
                   <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-faded ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <div className="px-4 py-3">
                       <p className="text-sm">Signed in as</p>
-                      <p className="text-sm font-medium text-gray-900 truncate">{mockUser.email}</p>
+                      <p className="text-sm font-medium text-gray-900 truncate">{getShortenedAddress(mockUser.ethAddress)}</p>
                     </div>
                     <div className="py-1">
                       {headerNavigation.map(nav => (
