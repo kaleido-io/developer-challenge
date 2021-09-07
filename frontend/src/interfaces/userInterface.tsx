@@ -4,7 +4,7 @@
 export interface UserInterface {
     avatar: string;
     description: string;
-    email: string;
+    ethAddress: string;
     name: string;
     socials: {
         instagram: string;

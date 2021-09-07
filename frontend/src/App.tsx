@@ -1,11 +1,5 @@
 import { Dialog, Menu, Transition } from '@headlessui/react';
-import {
-  CogIcon,
-  CollectionIcon, HomeIcon,
-  LogoutIcon,
-  MenuAlt1Icon,
-  QuestionMarkCircleIcon, ShieldCheckIcon, XIcon
-} from '@heroicons/react/outline';
+import { CogIcon, CollectionIcon, HomeIcon, LogoutIcon, MenuAlt1Icon, QuestionMarkCircleIcon, ShieldCheckIcon, XIcon } from '@heroicons/react/outline';
 import { ChevronDownIcon, SearchIcon } from '@heroicons/react/solid';
 import React, { Fragment, SVGProps, useState } from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
@@ -20,6 +14,7 @@ import PageNotFound from './pages/PageNotFound/PageNotFound';
 import Privacy from './pages/Privacy/Privacy';
 import Settings from './pages/Settings/Settings';
 import classNames from './utils/classNames';
+import getShortenedAddress from './utils/getShortenedAddress';
 
 /**
  * Interface for navigation link
@@ -106,7 +101,7 @@ function App(): JSX.Element {
               <div className="flex-shrink-0 flex items-center px-4">
                 <img
                   className="h-8 w-auto"
-                  src="/instock.jpeg"
+                  src="/instock.png"
                   alt="Instock logo"
                 />
               </div>
@@ -144,7 +139,7 @@ function App(): JSX.Element {
             <div className="flex items-center flex-shrink-0 px-4">
               <img
                 className="h-8 w-auto"
-                src="/instock.jpeg"
+                src="/instock.png"
                 alt="Instock logo"
               />
             </div>
@@ -234,7 +229,7 @@ function App(): JSX.Element {
                   <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-faded ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <div className="px-4 py-3">
                       <p className="text-sm">Signed in as</p>
-                      <p className="text-sm font-medium text-gray-900 truncate">{mockUser.email}</p>
+                      <p className="text-sm font-medium text-gray-900 truncate">{getShortenedAddress(mockUser.ethAddress)}</p>
                     </div>
                     <div className="py-1">
                       {headerNavigation.map(nav => (
