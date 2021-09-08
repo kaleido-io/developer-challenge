@@ -1,13 +1,25 @@
-import { Dialog, Transition } from '@headlessui/react'
-import { ExternalLinkIcon } from '@heroicons/react/outline'
-import React, { Fragment } from 'react'
+import { Dialog, Transition } from '@headlessui/react';
+import { ExternalLinkIcon } from '@heroicons/react/outline';
+import { API, graphqlOperation } from 'aws-amplify';
+import React, { Fragment } from 'react';
+import { CreateNFTCollectionInput, CreateNFTTokenInput } from '../../API';
+import { createNFTCollection, createNFTToken } from '../../graphql/mutations';
+/**
+ * New NFT Collection form interface
+ */
+interface NFTCollectionForm {
+    collectionAssetLink: string;
+    collectionDescription: string;
+    collectionName: string;
+    collectionTotalTokens: string;
+}
 /**
  * New collection modal component
  * @param props track open/close state of modal
  */
 export default function NewCollectionModal(props: { close: () => any, show: boolean }): JSX.Element {
     const [assetLink, setAssetLink] = React.useState("")
-    const [formState, setFormState] = React.useState({})
+    const [formState, setFormState] = React.useState({} as NFTCollectionForm)
 
     /**
      * Change state of form when an input is changed
@@ -20,13 +32,45 @@ export default function NewCollectionModal(props: { close: () => any, show: bool
         });
     }
     /**
+     * Request to create NFT collection
+     */
+    async function createNFTCollectionFromForm() {
+        try {
+            // Create collection
+            const createCollection: any = await API
+                .graphql(graphqlOperation(createNFTCollection, {
+                    input: {
+                        description: formState.collectionDescription,
+                        imageUrl: formState.collectionAssetLink,
+                        isMinted: false,
+                        name: formState.collectionName,
+                        totalSold: "0",
+                        totalTokens: formState.collectionTotalTokens,
+                    } as CreateNFTCollectionInput
+                }))
+            const newCollectionID = createCollection.data.createNFTCollection.id
+            // Create tokens in collection in DB
+            for (let i = 0; i < Number(formState.collectionTotalTokens); i++) {
+                await API.graphql(graphqlOperation(createNFTToken, {
+                    input: {
+                        lastPrice: "",
+                        name: (i + 1).toString(),
+                        nftCollectionID: newCollectionID
+                    } as CreateNFTTokenInput
+                }))
+            }
+            props.close()
+        } catch (err) {
+            console.log(err)
+        }
+    }
+    /**
      * On form submit, create NFT collection and close modal
      * @param e event triggered onSubmit
      */
-    const handleSubmit = (e: any) => {
+    const handleSubmit = (e: React.SyntheticEvent) => {
         e.preventDefault();
-        // TODO - Request to create new NFT collection with form values
-        props.close
+        createNFTCollectionFromForm()
     }
 
     return (

@@ -1,10 +1,10 @@
 import { IdentificationIcon } from '@heroicons/react/outline'
 import { CashIcon, ChevronRightIcon } from '@heroicons/react/solid'
 import React from 'react'
+import { User } from '../../API'
 import OverviewCard from '../../components/OverviewCard.tsx/OverviewCard'
 import { OverviewCardInterface } from '../../interfaces/overviewCardInterface'
 import { mockTransactions } from '../../mocks/mockTransactions'
-import { mockUser } from '../../mocks/mockUser'
 import classNames from '../../utils/classNames'
 /**
  * Interface for transaction types
@@ -33,7 +33,7 @@ const transactionTypeStyles: transactionTypeInterface = {
 /**
  * Dashboard page
  */
-export default function Dashboard(): JSX.Element {
+export default function Dashboard(props: { user: User }): JSX.Element {
   return (
     <main className="flex-1 relative pb-8 z-0 overflow-y-auto">
       {/* Page header */}
@@ -45,18 +45,18 @@ export default function Dashboard(): JSX.Element {
               <div className="flex items-center">
                 <img
                   className="hidden h-16 w-16 rounded-full sm:block"
-                  src={mockUser.avatar}
+                  src={props.user?.avatar}
                   alt="avatar"
                 />
                 <div>
                   <div className="flex items-center">
                     <img
                       className="h-16 w-16 rounded-full sm:hidden"
-                      src={mockUser.avatar}
+                      src={props.user?.avatar}
                       alt="avatar"
                     />
                     <h1 className="ml-3 text-2xl font-bold leading-7 text-gray-900 sm:leading-9 sm:truncate">
-                      Hey, {mockUser.name}
+                      Hey, {props.user?.name}
                     </h1>
                   </div>
                   <dl className="mt-6 flex flex-col sm:ml-3 sm:mt-1 sm:flex-row sm:flex-wrap">
@@ -66,7 +66,7 @@ export default function Dashboard(): JSX.Element {
                         className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
                         aria-hidden="true"
                       />
-                      {mockUser.description}
+                      {props.user?.description}
                     </dd>
                   </dl>
                 </div>

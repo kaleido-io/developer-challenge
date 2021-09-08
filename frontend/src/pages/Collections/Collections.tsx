@@ -1,12 +1,34 @@
 import { PlusIcon } from '@heroicons/react/solid';
-import React, { useState } from 'react';
-import { mockCollections } from '../../mocks/mockCollections';
-import NewCollectionModal from './NewCollectionModal';
+import { API, graphqlOperation } from 'aws-amplify';
+import React, { useEffect, useState } from 'react';
+import { NFTCollection } from '../../API';
+import NewCollectionModal from '../../components/NewCollectionModal/NewCollectionModal';
+import { listNFTCollections } from '../../graphql/queries';
+
 /**
  * NFT Collections page
  */
 export default function Collections(): JSX.Element {
   const [showCollectionForm, setShowCollectionForm] = useState(false);
+  const [collections, setCollections] = useState([] as NFTCollection[])
+
+  useEffect(() => {
+    fetchCollections()
+  }, [])
+
+  /**
+   * Fetch collections of user
+   */
+  async function fetchCollections() {
+    try {
+      const nftCollectionData: any = await API.graphql(graphqlOperation(listNFTCollections))
+      const nftCollection: NFTCollection[] = nftCollectionData.data.listNFTCollections.items
+      setCollections(nftCollection)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   return (
     <div >
       <div className="bg-faded shadow">
@@ -38,7 +60,7 @@ export default function Collections(): JSX.Element {
       <main>
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
           <ul role="list" className="pt-4 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {mockCollections.map((c) => (
+            {collections.map((c) => (
               <li
                 key={c.name}
                 className="col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y divide-gray-200"
@@ -51,9 +73,14 @@ export default function Collections(): JSX.Element {
                     <dd className="text-gray-500 text-sm">{c.description}</dd>
                     <dt className="sr-only">Number Sold</dt>
                     <dd className="mt-3">
-                      <span className="px-2 py-1 text-green-800 text-xs font-medium bg-green-100 rounded-full">
-                        {c.totalSold} of {c.totalTokens} Sold
-                      </span>
+                      {c.isMinted ?
+                        <span className="px-2 py-1 text-green-800 text-xs font-medium bg-green-100 rounded-full">
+                          {c.totalSold} of {c.totalTokens} Sold
+                        </span> :
+                        <span className="px-2 py-1 text-red-800 text-xs font-medium bg-red-100 rounded-full">
+                          Not Minted
+                        </span>
+                      }
                     </dd>
                   </dl>
                 </div>
@@ -61,7 +88,7 @@ export default function Collections(): JSX.Element {
                   <div className="-mt-px flex divide-x divide-gray-200">
                     <div className="w-0 flex-1 flex">
                       <a
-                        href={'/collections/' + c._id}
+                        href={'/collections/' + c.id}
                         className="relative -mr-px w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-bl-lg hover:text-gray-500"
                       >
                         <span className="ml-3">View Collection</span>
