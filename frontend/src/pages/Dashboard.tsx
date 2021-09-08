@@ -1,11 +1,11 @@
 import { IdentificationIcon } from '@heroicons/react/outline'
 import { CashIcon, ChevronRightIcon } from '@heroicons/react/solid'
 import React from 'react'
-import { User } from '../../API'
-import OverviewCard from '../../components/OverviewCard.tsx/OverviewCard'
-import { OverviewCardInterface } from '../../interfaces/overviewCardInterface'
-import { mockTransactions } from '../../mocks/mockTransactions'
-import classNames from '../../utils/classNames'
+import { User } from '../API'
+import OverviewCard from '../components/OverviewCard.tsx/OverviewCard'
+import { OverviewCardInterface } from '../interfaces/overviewCardInterface'
+import { mockTransactions } from '../mocks/mockTransactions'
+import classNames from '../utils/classNames'
 /**
  * Interface for transaction types
  */

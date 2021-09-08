@@ -6,14 +6,11 @@ import React, { Fragment, SVGProps, useEffect, useState } from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import { User } from './API';
 import { getUser } from './graphql/queries';
-import Collections from './pages/Collections/Collections';
-import SingleCollection from './pages/Collections/SingleCollection';
-import Dashboard from './pages/Dashboard/Dashboard';
-import Help from './pages/Help/Help';
-import Login from './pages/Login/Login';
-import PageNotFound from './pages/PageNotFound/PageNotFound';
-import Privacy from './pages/Privacy/Privacy';
-import Settings from './pages/Settings/Settings';
+import { default as Collections, default as SingleCollection } from './pages/Collections';
+import Dashboard from './pages/Dashboard';
+import Login from './pages/Login';
+import PageNotFound from './pages/PageNotFound';
+import Settings from './pages/Settings';
 import classNames from './utils/classNames';
 import getShortenedAddress from './utils/getShortenedAddress';
 
@@ -287,12 +284,6 @@ function App(): JSX.Element {
             </Route>
             <Route path="/settings">
               <Settings user={user} />
-            </Route>
-            <Route path="/help">
-              <Help />
-            </Route>
-            <Route path="/privacy">
-              <Privacy />
             </Route>
             <Route path="/404" />
             <PageNotFound />

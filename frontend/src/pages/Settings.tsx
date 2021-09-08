@@ -1,8 +1,8 @@
 import React from 'react';
 import { SocialIcon } from 'react-social-icons';
-import { User } from '../../API';
-import { SocialInterface } from '../../interfaces/socialInterface';
-import getShortenedAddress from '../../utils/getShortenedAddress';
+import { User } from '../API';
+import { SocialInterface } from '../interfaces/socialInterface';
+import getShortenedAddress from '../utils/getShortenedAddress';
 /**
  * Supported social sign in platforms
  */

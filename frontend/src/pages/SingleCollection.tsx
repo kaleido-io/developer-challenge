@@ -2,9 +2,9 @@ import { CheckCircleIcon } from '@heroicons/react/outline'
 import { API, graphqlOperation } from 'aws-amplify'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
-import { NFTCollection, NFTToken } from '../../API'
-import { getNFTCollection, tokensByCollection } from '../../graphql/queries'
-import classNames from '../../utils/classNames'
+import { NFTCollection, NFTToken } from '../API'
+import { getNFTCollection, tokensByCollection } from '../graphql/queries'
+import classNames from '../utils/classNames'
 
 /**
  * Single collection page
