@@ -2,8 +2,8 @@ import { Dialog, Transition } from '@headlessui/react';
 import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { API, graphqlOperation } from 'aws-amplify';
 import React, { Fragment } from 'react';
-import { CreateNFTCollectionInput } from '../../API';
-import { createNFTCollection } from '../../graphql/mutations';
+import { CreateNFTCollectionInput, CreateNFTTokenInput } from '../../API';
+import { createNFTCollection, createNFTToken } from '../../graphql/mutations';
 /**
  * New NFT Collection form interface
  */
@@ -36,6 +36,7 @@ export default function NewCollectionModal(props: { close: () => any, show: bool
      */
     async function createNFTCollectionFromForm() {
         try {
+            // Create collection
             const createCollection: any = await API
                 .graphql(graphqlOperation(createNFTCollection, {
                     input: {
@@ -47,7 +48,17 @@ export default function NewCollectionModal(props: { close: () => any, show: bool
                         totalTokens: formState.collectionTotalTokens,
                     } as CreateNFTCollectionInput
                 }))
-            console.log(createCollection)
+            const newCollectionID = createCollection.data.createNFTCollection.id
+            // Create tokens in collection in DB
+            for (let i = 0; i < Number(formState.collectionTotalTokens); i++) {
+                await API.graphql(graphqlOperation(createNFTToken, {
+                    input: {
+                        lastPrice: "",
+                        name: (i + 1).toString(),
+                        nftCollectionID: newCollectionID
+                    } as CreateNFTTokenInput
+                }))
+            }
             props.close()
         } catch (err) {
             console.log(err)

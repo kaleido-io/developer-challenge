@@ -13,8 +13,37 @@ type NFTCollection @model {
   imageUrl: String!
   isMinted: Boolean!
   name: String!
+  tokens: [NFTToken]! @connection(keyName: "byNFTCollection", fields: ["id"])
   totalSold: String!
   totalTokens: String!
+}
+
+type NFTToken
+  @model
+  @key(
+    name: "byNFTCollection"
+    fields: ["nftCollectionID"]
+    queryField: "tokensByCollection"
+  ) {
+  id: ID!
+  history: [TokenHistory]! @connection(keyName: "byToken", fields: ["id"])
+  lastPrice: String!
+  name: String!
+  nftCollection: NFTCollection! @connection(fields: ["nftCollectionID"])
+  nftCollectionID: ID!
+}
+
+type TokenHistory
+  @model
+  @key(name: "byToken", fields: ["tokenID"], queryField: "historyByTokenID") {
+  date: String!
+  from: String!
+  id: ID!
+  salePrice: String!
+  to: String!
+  token: NFTToken! @connection(fields: ["tokenID"])
+  tokenID: ID!
+  transactionType: String!
 }
 
 type Social {

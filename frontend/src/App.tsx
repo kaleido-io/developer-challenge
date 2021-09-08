@@ -60,7 +60,6 @@ function App(): JSX.Element {
     try {
       const userData: any = await API.graphql(graphqlOperation(getUser, { id }))
       const user: User = userData.data.getUser
-      console.log(user)
       setUser(user)
     } catch (err) {
       console.log(err)

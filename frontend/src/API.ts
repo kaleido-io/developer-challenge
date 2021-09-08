@@ -133,8 +133,47 @@ export type NFTCollection = {
   imageUrl: string,
   isMinted: boolean,
   name: string,
+  tokens?: ModelNFTTokenConnection | null,
   totalSold: string,
   totalTokens: string,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type ModelNFTTokenConnection = {
+  __typename: "ModelNFTTokenConnection",
+  items?:  Array<NFTToken | null > | null,
+  nextToken?: string | null,
+};
+
+export type NFTToken = {
+  __typename: "NFTToken",
+  id: string,
+  history?: ModelTokenHistoryConnection | null,
+  lastPrice: string,
+  name: string,
+  nftCollection: NFTCollection,
+  nftCollectionID: string,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type ModelTokenHistoryConnection = {
+  __typename: "ModelTokenHistoryConnection",
+  items?:  Array<TokenHistory | null > | null,
+  nextToken?: string | null,
+};
+
+export type TokenHistory = {
+  __typename: "TokenHistory",
+  date: string,
+  from: string,
+  id: string,
+  salePrice: string,
+  to: string,
+  token: NFTToken,
+  tokenID: string,
+  transactionType: string,
   createdAt: string,
   updatedAt: string,
 };
@@ -153,15 +192,20 @@ export type DeleteNFTCollectionInput = {
   id: string,
 };
 
-export type ModelUserFilterInput = {
-  avatar?: ModelStringInput | null,
-  description?: ModelStringInput | null,
-  ethAddress?: ModelStringInput | null,
-  id?: ModelIDInput | null,
+export type CreateNFTTokenInput = {
+  id?: string | null,
+  lastPrice: string,
+  name: string,
+  nftCollectionID: string,
+};
+
+export type ModelNFTTokenConditionInput = {
+  lastPrice?: ModelStringInput | null,
   name?: ModelStringInput | null,
-  and?: Array< ModelUserFilterInput | null > | null,
-  or?: Array< ModelUserFilterInput | null > | null,
-  not?: ModelUserFilterInput | null,
+  nftCollectionID?: ModelIDInput | null,
+  and?: Array< ModelNFTTokenConditionInput | null > | null,
+  or?: Array< ModelNFTTokenConditionInput | null > | null,
+  not?: ModelNFTTokenConditionInput | null,
 };
 
 export type ModelIDInput = {
@@ -178,6 +222,64 @@ export type ModelIDInput = {
   attributeExists?: boolean | null,
   attributeType?: ModelAttributeTypes | null,
   size?: ModelSizeInput | null,
+};
+
+export type UpdateNFTTokenInput = {
+  id: string,
+  lastPrice?: string | null,
+  name?: string | null,
+  nftCollectionID?: string | null,
+};
+
+export type DeleteNFTTokenInput = {
+  id: string,
+};
+
+export type CreateTokenHistoryInput = {
+  date: string,
+  from: string,
+  id?: string | null,
+  salePrice: string,
+  to: string,
+  tokenID: string,
+  transactionType: string,
+};
+
+export type ModelTokenHistoryConditionInput = {
+  date?: ModelStringInput | null,
+  from?: ModelStringInput | null,
+  salePrice?: ModelStringInput | null,
+  to?: ModelStringInput | null,
+  tokenID?: ModelIDInput | null,
+  transactionType?: ModelStringInput | null,
+  and?: Array< ModelTokenHistoryConditionInput | null > | null,
+  or?: Array< ModelTokenHistoryConditionInput | null > | null,
+  not?: ModelTokenHistoryConditionInput | null,
+};
+
+export type UpdateTokenHistoryInput = {
+  date?: string | null,
+  from?: string | null,
+  id: string,
+  salePrice?: string | null,
+  to?: string | null,
+  tokenID?: string | null,
+  transactionType?: string | null,
+};
+
+export type DeleteTokenHistoryInput = {
+  id: string,
+};
+
+export type ModelUserFilterInput = {
+  avatar?: ModelStringInput | null,
+  description?: ModelStringInput | null,
+  ethAddress?: ModelStringInput | null,
+  id?: ModelIDInput | null,
+  name?: ModelStringInput | null,
+  and?: Array< ModelUserFilterInput | null > | null,
+  or?: Array< ModelUserFilterInput | null > | null,
+  not?: ModelUserFilterInput | null,
 };
 
 export type ModelUserConnection = {
@@ -204,6 +306,34 @@ export type ModelNFTCollectionConnection = {
   items?:  Array<NFTCollection | null > | null,
   nextToken?: string | null,
 };
+
+export type ModelNFTTokenFilterInput = {
+  id?: ModelIDInput | null,
+  lastPrice?: ModelStringInput | null,
+  name?: ModelStringInput | null,
+  nftCollectionID?: ModelIDInput | null,
+  and?: Array< ModelNFTTokenFilterInput | null > | null,
+  or?: Array< ModelNFTTokenFilterInput | null > | null,
+  not?: ModelNFTTokenFilterInput | null,
+};
+
+export type ModelTokenHistoryFilterInput = {
+  date?: ModelStringInput | null,
+  from?: ModelStringInput | null,
+  id?: ModelIDInput | null,
+  salePrice?: ModelStringInput | null,
+  to?: ModelStringInput | null,
+  tokenID?: ModelIDInput | null,
+  transactionType?: ModelStringInput | null,
+  and?: Array< ModelTokenHistoryFilterInput | null > | null,
+  or?: Array< ModelTokenHistoryFilterInput | null > | null,
+  not?: ModelTokenHistoryFilterInput | null,
+};
+
+export enum ModelSortDirection {
+  ASC = "ASC",
+  DESC = "DESC",
+}
 
 export type UpdateUserMutationVariables = {
   input: UpdateUserInput,
@@ -243,6 +373,19 @@ export type CreateNFTCollectionMutation = {
     imageUrl: string,
     isMinted: boolean,
     name: string,
+    tokens?:  {
+      __typename: "ModelNFTTokenConnection",
+      items?:  Array< {
+        __typename: "NFTToken",
+        id: string,
+        lastPrice: string,
+        name: string,
+        nftCollectionID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
     totalSold: string,
     totalTokens: string,
     createdAt: string,
@@ -263,6 +406,19 @@ export type UpdateNFTCollectionMutation = {
     imageUrl: string,
     isMinted: boolean,
     name: string,
+    tokens?:  {
+      __typename: "ModelNFTTokenConnection",
+      items?:  Array< {
+        __typename: "NFTToken",
+        id: string,
+        lastPrice: string,
+        name: string,
+        nftCollectionID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
     totalSold: string,
     totalTokens: string,
     createdAt: string,
@@ -283,8 +439,303 @@ export type DeleteNFTCollectionMutation = {
     imageUrl: string,
     isMinted: boolean,
     name: string,
+    tokens?:  {
+      __typename: "ModelNFTTokenConnection",
+      items?:  Array< {
+        __typename: "NFTToken",
+        id: string,
+        lastPrice: string,
+        name: string,
+        nftCollectionID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
     totalSold: string,
     totalTokens: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateNFTTokenMutationVariables = {
+  input: CreateNFTTokenInput,
+  condition?: ModelNFTTokenConditionInput | null,
+};
+
+export type CreateNFTTokenMutation = {
+  createNFTToken?:  {
+    __typename: "NFTToken",
+    id: string,
+    history?:  {
+      __typename: "ModelTokenHistoryConnection",
+      items?:  Array< {
+        __typename: "TokenHistory",
+        date: string,
+        from: string,
+        id: string,
+        salePrice: string,
+        to: string,
+        tokenID: string,
+        transactionType: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
+    lastPrice: string,
+    name: string,
+    nftCollection:  {
+      __typename: "NFTCollection",
+      id: string,
+      description: string,
+      imageUrl: string,
+      isMinted: boolean,
+      name: string,
+      tokens?:  {
+        __typename: "ModelNFTTokenConnection",
+        nextToken?: string | null,
+      } | null,
+      totalSold: string,
+      totalTokens: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    nftCollectionID: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateNFTTokenMutationVariables = {
+  input: UpdateNFTTokenInput,
+  condition?: ModelNFTTokenConditionInput | null,
+};
+
+export type UpdateNFTTokenMutation = {
+  updateNFTToken?:  {
+    __typename: "NFTToken",
+    id: string,
+    history?:  {
+      __typename: "ModelTokenHistoryConnection",
+      items?:  Array< {
+        __typename: "TokenHistory",
+        date: string,
+        from: string,
+        id: string,
+        salePrice: string,
+        to: string,
+        tokenID: string,
+        transactionType: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
+    lastPrice: string,
+    name: string,
+    nftCollection:  {
+      __typename: "NFTCollection",
+      id: string,
+      description: string,
+      imageUrl: string,
+      isMinted: boolean,
+      name: string,
+      tokens?:  {
+        __typename: "ModelNFTTokenConnection",
+        nextToken?: string | null,
+      } | null,
+      totalSold: string,
+      totalTokens: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    nftCollectionID: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteNFTTokenMutationVariables = {
+  input: DeleteNFTTokenInput,
+  condition?: ModelNFTTokenConditionInput | null,
+};
+
+export type DeleteNFTTokenMutation = {
+  deleteNFTToken?:  {
+    __typename: "NFTToken",
+    id: string,
+    history?:  {
+      __typename: "ModelTokenHistoryConnection",
+      items?:  Array< {
+        __typename: "TokenHistory",
+        date: string,
+        from: string,
+        id: string,
+        salePrice: string,
+        to: string,
+        tokenID: string,
+        transactionType: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
+    lastPrice: string,
+    name: string,
+    nftCollection:  {
+      __typename: "NFTCollection",
+      id: string,
+      description: string,
+      imageUrl: string,
+      isMinted: boolean,
+      name: string,
+      tokens?:  {
+        __typename: "ModelNFTTokenConnection",
+        nextToken?: string | null,
+      } | null,
+      totalSold: string,
+      totalTokens: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    nftCollectionID: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateTokenHistoryMutationVariables = {
+  input: CreateTokenHistoryInput,
+  condition?: ModelTokenHistoryConditionInput | null,
+};
+
+export type CreateTokenHistoryMutation = {
+  createTokenHistory?:  {
+    __typename: "TokenHistory",
+    date: string,
+    from: string,
+    id: string,
+    salePrice: string,
+    to: string,
+    token:  {
+      __typename: "NFTToken",
+      id: string,
+      history?:  {
+        __typename: "ModelTokenHistoryConnection",
+        nextToken?: string | null,
+      } | null,
+      lastPrice: string,
+      name: string,
+      nftCollection:  {
+        __typename: "NFTCollection",
+        id: string,
+        description: string,
+        imageUrl: string,
+        isMinted: boolean,
+        name: string,
+        totalSold: string,
+        totalTokens: string,
+        createdAt: string,
+        updatedAt: string,
+      },
+      nftCollectionID: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    tokenID: string,
+    transactionType: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateTokenHistoryMutationVariables = {
+  input: UpdateTokenHistoryInput,
+  condition?: ModelTokenHistoryConditionInput | null,
+};
+
+export type UpdateTokenHistoryMutation = {
+  updateTokenHistory?:  {
+    __typename: "TokenHistory",
+    date: string,
+    from: string,
+    id: string,
+    salePrice: string,
+    to: string,
+    token:  {
+      __typename: "NFTToken",
+      id: string,
+      history?:  {
+        __typename: "ModelTokenHistoryConnection",
+        nextToken?: string | null,
+      } | null,
+      lastPrice: string,
+      name: string,
+      nftCollection:  {
+        __typename: "NFTCollection",
+        id: string,
+        description: string,
+        imageUrl: string,
+        isMinted: boolean,
+        name: string,
+        totalSold: string,
+        totalTokens: string,
+        createdAt: string,
+        updatedAt: string,
+      },
+      nftCollectionID: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    tokenID: string,
+    transactionType: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteTokenHistoryMutationVariables = {
+  input: DeleteTokenHistoryInput,
+  condition?: ModelTokenHistoryConditionInput | null,
+};
+
+export type DeleteTokenHistoryMutation = {
+  deleteTokenHistory?:  {
+    __typename: "TokenHistory",
+    date: string,
+    from: string,
+    id: string,
+    salePrice: string,
+    to: string,
+    token:  {
+      __typename: "NFTToken",
+      id: string,
+      history?:  {
+        __typename: "ModelTokenHistoryConnection",
+        nextToken?: string | null,
+      } | null,
+      lastPrice: string,
+      name: string,
+      nftCollection:  {
+        __typename: "NFTCollection",
+        id: string,
+        description: string,
+        imageUrl: string,
+        isMinted: boolean,
+        name: string,
+        totalSold: string,
+        totalTokens: string,
+        createdAt: string,
+        updatedAt: string,
+      },
+      nftCollectionID: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    tokenID: string,
+    transactionType: string,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -326,6 +777,19 @@ export type GetNFTCollectionQuery = {
     imageUrl: string,
     isMinted: boolean,
     name: string,
+    tokens?:  {
+      __typename: "ModelNFTTokenConnection",
+      items?:  Array< {
+        __typename: "NFTToken",
+        id: string,
+        lastPrice: string,
+        name: string,
+        nftCollectionID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
     totalSold: string,
     totalTokens: string,
     createdAt: string,
@@ -349,8 +813,252 @@ export type ListNFTCollectionsQuery = {
       imageUrl: string,
       isMinted: boolean,
       name: string,
+      tokens?:  {
+        __typename: "ModelNFTTokenConnection",
+        nextToken?: string | null,
+      } | null,
       totalSold: string,
       totalTokens: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetNFTTokenQueryVariables = {
+  id: string,
+};
+
+export type GetNFTTokenQuery = {
+  getNFTToken?:  {
+    __typename: "NFTToken",
+    id: string,
+    history?:  {
+      __typename: "ModelTokenHistoryConnection",
+      items?:  Array< {
+        __typename: "TokenHistory",
+        date: string,
+        from: string,
+        id: string,
+        salePrice: string,
+        to: string,
+        tokenID: string,
+        transactionType: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
+    lastPrice: string,
+    name: string,
+    nftCollection:  {
+      __typename: "NFTCollection",
+      id: string,
+      description: string,
+      imageUrl: string,
+      isMinted: boolean,
+      name: string,
+      tokens?:  {
+        __typename: "ModelNFTTokenConnection",
+        nextToken?: string | null,
+      } | null,
+      totalSold: string,
+      totalTokens: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    nftCollectionID: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListNFTTokensQueryVariables = {
+  filter?: ModelNFTTokenFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListNFTTokensQuery = {
+  listNFTTokens?:  {
+    __typename: "ModelNFTTokenConnection",
+    items?:  Array< {
+      __typename: "NFTToken",
+      id: string,
+      history?:  {
+        __typename: "ModelTokenHistoryConnection",
+        nextToken?: string | null,
+      } | null,
+      lastPrice: string,
+      name: string,
+      nftCollection:  {
+        __typename: "NFTCollection",
+        id: string,
+        description: string,
+        imageUrl: string,
+        isMinted: boolean,
+        name: string,
+        totalSold: string,
+        totalTokens: string,
+        createdAt: string,
+        updatedAt: string,
+      },
+      nftCollectionID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetTokenHistoryQueryVariables = {
+  id: string,
+};
+
+export type GetTokenHistoryQuery = {
+  getTokenHistory?:  {
+    __typename: "TokenHistory",
+    date: string,
+    from: string,
+    id: string,
+    salePrice: string,
+    to: string,
+    token:  {
+      __typename: "NFTToken",
+      id: string,
+      history?:  {
+        __typename: "ModelTokenHistoryConnection",
+        nextToken?: string | null,
+      } | null,
+      lastPrice: string,
+      name: string,
+      nftCollection:  {
+        __typename: "NFTCollection",
+        id: string,
+        description: string,
+        imageUrl: string,
+        isMinted: boolean,
+        name: string,
+        totalSold: string,
+        totalTokens: string,
+        createdAt: string,
+        updatedAt: string,
+      },
+      nftCollectionID: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    tokenID: string,
+    transactionType: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListTokenHistoriesQueryVariables = {
+  filter?: ModelTokenHistoryFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListTokenHistoriesQuery = {
+  listTokenHistories?:  {
+    __typename: "ModelTokenHistoryConnection",
+    items?:  Array< {
+      __typename: "TokenHistory",
+      date: string,
+      from: string,
+      id: string,
+      salePrice: string,
+      to: string,
+      token:  {
+        __typename: "NFTToken",
+        id: string,
+        lastPrice: string,
+        name: string,
+        nftCollectionID: string,
+        createdAt: string,
+        updatedAt: string,
+      },
+      tokenID: string,
+      transactionType: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type TokensByCollectionQueryVariables = {
+  nftCollectionID?: string | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelNFTTokenFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type TokensByCollectionQuery = {
+  tokensByCollection?:  {
+    __typename: "ModelNFTTokenConnection",
+    items?:  Array< {
+      __typename: "NFTToken",
+      id: string,
+      history?:  {
+        __typename: "ModelTokenHistoryConnection",
+        nextToken?: string | null,
+      } | null,
+      lastPrice: string,
+      name: string,
+      nftCollection:  {
+        __typename: "NFTCollection",
+        id: string,
+        description: string,
+        imageUrl: string,
+        isMinted: boolean,
+        name: string,
+        totalSold: string,
+        totalTokens: string,
+        createdAt: string,
+        updatedAt: string,
+      },
+      nftCollectionID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type HistoryByTokenIDQueryVariables = {
+  tokenID?: string | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelTokenHistoryFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type HistoryByTokenIDQuery = {
+  historyByTokenID?:  {
+    __typename: "ModelTokenHistoryConnection",
+    items?:  Array< {
+      __typename: "TokenHistory",
+      date: string,
+      from: string,
+      id: string,
+      salePrice: string,
+      to: string,
+      token:  {
+        __typename: "NFTToken",
+        id: string,
+        lastPrice: string,
+        name: string,
+        nftCollectionID: string,
+        createdAt: string,
+        updatedAt: string,
+      },
+      tokenID: string,
+      transactionType: string,
       createdAt: string,
       updatedAt: string,
     } | null > | null,
