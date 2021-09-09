@@ -16,7 +16,7 @@ async function loginUser(credentials: LoginInterface): Promise<void> {
 /**
  * Login page
  */
-export default function Login(): JSX.Element {
+export const Login = (): JSX.Element => {
     const [ethAddress, setEthAddress] = useState("");
     const [password, setPassword] = useState("");
 

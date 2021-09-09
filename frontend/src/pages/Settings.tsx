@@ -1,8 +1,8 @@
 import React from 'react';
 import { SocialIcon } from 'react-social-icons';
-import { User } from '../../API';
-import { SocialInterface } from '../../interfaces/socialInterface';
-import getShortenedAddress from '../../utils/getShortenedAddress';
+import { User } from '../API';
+import { SocialInterface } from '../interfaces/socialInterface';
+import { getShortenedAddress } from '../utils/getShortenedAddress';
 /**
  * Supported social sign in platforms
  */
@@ -15,7 +15,7 @@ const socialSignIns: SocialInterface[] = [
 /**
  * Settings page
  */
-export default function Settings(props: { user: User }): JSX.Element {
+export const Settings = (props: { user: User }): JSX.Element => {
   return (
     <main className="flex-1 overflow-y-auto focus:outline-none">
       <div className="relative max-w-4xl mx-auto md:px-8 xl:px-0">
@@ -80,7 +80,7 @@ export default function Settings(props: { user: User }): JSX.Element {
                   <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:pt-5">
                     <dt className="text-sm font-medium text-gray-500">ETH Address</dt>
                     <dd className="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                      <span className="flex-grow">{getShortenedAddress(props.user?.ethAddress)}</span>
+                      <span className="flex-grow">{getShortenedAddress(props.user.ethAddress)}</span>
                       <span className="ml-4 flex-shrink-0">
                         <button
                           type="button"

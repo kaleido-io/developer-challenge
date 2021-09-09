@@ -2,7 +2,7 @@ import React from 'react';
 /**
  * Page not found
  */
-export default function PageNotFound(): JSX.Element {
+export const PageNotFound = (): JSX.Element => {
     return (
         <div className="bg-faded min-h-screen px-4 py-16 sm:px-6 sm:py-24 md:grid md:place-items-center lg:px-8">
             <div className="max-w-max mx-auto">

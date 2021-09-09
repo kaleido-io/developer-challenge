@@ -2,8 +2,8 @@ import { Dialog, Transition } from '@headlessui/react';
 import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { API, graphqlOperation } from 'aws-amplify';
 import React, { Fragment } from 'react';
-import { CreateNFTCollectionInput, CreateNFTTokenInput } from '../../API';
-import { createNFTCollection, createNFTToken } from '../../graphql/mutations';
+import { CreateNFTCollectionInput, CreateNFTTokenInput } from '../API';
+import { createNFTCollection, createNFTToken } from '../graphql/mutations';
 /**
  * New NFT Collection form interface
  */
@@ -17,7 +17,7 @@ interface NFTCollectionForm {
  * New collection modal component
  * @param props track open/close state of modal
  */
-export default function NewCollectionModal(props: { close: () => any, show: boolean }): JSX.Element {
+export const NewCollectionModal = (props: { close: () => any, show: boolean }): JSX.Element => {
     const [assetLink, setAssetLink] = React.useState("")
     const [formState, setFormState] = React.useState({} as NFTCollectionForm)
 
