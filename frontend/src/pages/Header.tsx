@@ -84,6 +84,11 @@ export const Header = (): JSX.Element => {
                                                 <a
                                                     href={nav.href}
                                                     className='group flex items-center px-4 py-2 text-sm text-gray-700'
+                                                    onClick={() => {
+                                                        if (nav.name = 'Logout') {
+                                                            localStorage.removeItem('loggedIn')
+                                                        }
+                                                    }}
                                                 >
                                                     <nav.icon className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
                                                     {nav.name}

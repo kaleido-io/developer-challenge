@@ -17,5 +17,5 @@ export const navigation: NavigationInterface[] = [
     { name: 'NFT Collections', href: '/collections', icon: CollectionIcon, secondaryNav: false },
     { name: 'Settings', href: '/settings', icon: CogIcon, secondaryNav: false },
     { name: 'Account Settings', href: '/settings', icon: CogIcon, secondaryNav: true },
-    { name: 'Logout', href: '/logout', icon: LogoutIcon, secondaryNav: true }
+    { name: 'Logout', href: '/', icon: LogoutIcon, secondaryNav: true }
 ]

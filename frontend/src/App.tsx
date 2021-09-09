@@ -1,6 +1,7 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
 import { User } from './API';
 import { Collections } from './pages/Collections';
 import { Dashboard } from './pages/Dashboard';
@@ -10,17 +11,24 @@ import { PageNotFound } from './pages/PageNotFound';
 import { Settings } from './pages/Settings';
 import { Sidebar } from './pages/Sidebar';
 import { SingleCollection } from './pages/SingleCollection';
-import { State } from './state';
+import { actionCreators, State } from './state';
 
 /**
  * Main app component
  */
 const App = (): JSX.Element => {
   const user: User = useSelector((state: State) => state.user)
+  const dispatch = useDispatch();
+  const { fetchUser } = bindActionCreators(actionCreators, dispatch)
 
-  // TODO: Implement Authentication
-  if (false) {
+  // Check for logged in user
+  const ethAddress = localStorage.getItem('loggedIn')
+
+  // If user not logged in
+  if (!ethAddress) {
     return <Login />
+  } else if (ethAddress && !user.id.length) {
+    fetchUser(ethAddress)
   }
 
   return (
@@ -34,7 +42,7 @@ const App = (): JSX.Element => {
         <BrowserRouter>
           <Switch>
             <Route exact path={["/", "/dashboard"]}>
-              <Dashboard user={user} />
+              <Dashboard />
             </Route>
             <Route path="/collections/:id">
               <SingleCollection />
@@ -43,7 +51,7 @@ const App = (): JSX.Element => {
               <Collections />
             </Route>
             <Route path="/settings">
-              <Settings user={user} />
+              <Settings />
             </Route>
             <Route path="/404" />
             <PageNotFound />

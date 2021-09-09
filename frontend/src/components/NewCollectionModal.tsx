@@ -32,7 +32,7 @@ export const NewCollectionModal = (props: { close: () => any, show: boolean }): 
         });
     }
     /**
-     * Request to create NFT collection
+     * Request to create NFT collection and close modal if successful
      */
     async function createNFTCollectionFromForm() {
         try {

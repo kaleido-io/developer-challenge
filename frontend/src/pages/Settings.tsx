@@ -1,7 +1,9 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { SocialIcon } from 'react-social-icons';
 import { User } from '../API';
 import { SocialInterface } from '../interfaces/socialInterface';
+import { State } from '../state';
 import { getShortenedAddress } from '../utils/getShortenedAddress';
 /**
  * Supported social sign in platforms
@@ -15,7 +17,8 @@ const socialSignIns: SocialInterface[] = [
 /**
  * Settings page
  */
-export const Settings = (props: { user: User }): JSX.Element => {
+export const Settings = (): JSX.Element => {
+  const user: User = useSelector((state: State) => state.user)
   return (
     <main className="flex-1 overflow-y-auto focus:outline-none">
       <div className="relative max-w-4xl mx-auto md:px-8 xl:px-0">
@@ -37,7 +40,7 @@ export const Settings = (props: { user: User }): JSX.Element => {
                   <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
                     <dt className="text-sm font-medium text-gray-500">Name</dt>
                     <dd className="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                      <span className="flex-grow">{props.user?.name}</span>
+                      <span className="flex-grow">{user.name}</span>
                       <span className="ml-4 flex-shrink-0">
                         <button
                           type="button"
@@ -54,7 +57,7 @@ export const Settings = (props: { user: User }): JSX.Element => {
                       <span className="flex-grow">
                         <img
                           className="h-8 w-8 rounded-full"
-                          src={props.user?.avatar}
+                          src={user.avatar}
                           alt=""
                         />
                       </span>
@@ -80,7 +83,7 @@ export const Settings = (props: { user: User }): JSX.Element => {
                   <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:pt-5">
                     <dt className="text-sm font-medium text-gray-500">ETH Address</dt>
                     <dd className="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                      <span className="flex-grow">{getShortenedAddress(props.user.ethAddress)}</span>
+                      <span className="flex-grow">{getShortenedAddress(user.ethAddress)}</span>
                       <span className="ml-4 flex-shrink-0">
                         <button
                           type="button"
@@ -94,7 +97,7 @@ export const Settings = (props: { user: User }): JSX.Element => {
                   <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-b sm:border-gray-200">
                     <dt className="text-sm font-medium text-gray-500">Description</dt>
                     <dd className="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                      <span className="flex-grow">{props.user?.description}</span>
+                      <span className="flex-grow">{user.description}</span>
                       <span className="ml-4 flex-shrink-0">
                         <button
                           type="button"

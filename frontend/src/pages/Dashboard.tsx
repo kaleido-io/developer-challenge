@@ -1,10 +1,12 @@
 import { IdentificationIcon } from '@heroicons/react/outline'
 import { CashIcon, ChevronRightIcon } from '@heroicons/react/solid'
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { User } from '../API'
 import { OverviewCard } from '../components/OverviewCard'
 import { OverviewCardInterface } from '../interfaces/overviewCardInterface'
 import { mockTransactions } from '../mocks/mockTransactions'
+import { State } from '../state'
 import { classNames } from '../utils/classNames'
 /**
  * Interface for transaction types
@@ -33,7 +35,9 @@ const transactionTypeStyles: transactionTypeInterface = {
 /**
  * Dashboard page
  */
-export const Dashboard = (props: { user: User }): JSX.Element => {
+export const Dashboard = (): JSX.Element => {
+  const user: User = useSelector((state: State) => state.user)
+
   return (
     <main className="flex-1 relative pb-8 z-0 overflow-y-auto">
       {/* Page header */}
@@ -45,18 +49,18 @@ export const Dashboard = (props: { user: User }): JSX.Element => {
               <div className="flex items-center">
                 <img
                   className="hidden h-16 w-16 rounded-full sm:block"
-                  src={props.user?.avatar}
+                  src={user.avatar}
                   alt="avatar"
                 />
                 <div>
                   <div className="flex items-center">
                     <img
                       className="h-16 w-16 rounded-full sm:hidden"
-                      src={props.user?.avatar}
+                      src={user.avatar}
                       alt="avatar"
                     />
                     <h1 className="ml-3 text-2xl font-bold leading-7 text-gray-900 sm:leading-9 sm:truncate">
-                      Hey, {props.user?.name}
+                      Hey, {user.name}
                     </h1>
                   </div>
                   <dl className="mt-6 flex flex-col sm:ml-3 sm:mt-1 sm:flex-row sm:flex-wrap">
@@ -66,7 +70,7 @@ export const Dashboard = (props: { user: User }): JSX.Element => {
                         className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
                         aria-hidden="true"
                       />
-                      {props.user?.description}
+                      {user.description}
                     </dd>
                   </dl>
                 </div>

@@ -1,24 +1,14 @@
 import React, { useState } from 'react';
-/**
- * Interface for ethAddress/password
- */
-interface LoginInterface {
-    ethAddress: string;
-    password: string;
-}
-/**
- * Make request to log in user
- * @param credentials ethAddress/password to login with
- */
-async function loginUser(credentials: LoginInterface): Promise<void> {
-    localStorage.setItem('loggedIn', credentials.ethAddress)
-}
+import { useDispatch } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { actionCreators } from '../state';
 /**
  * Login page
  */
 export const Login = (): JSX.Element => {
     const [ethAddress, setEthAddress] = useState("");
-    const [password, setPassword] = useState("");
+    const dispatch = useDispatch();
+    const { fetchUser } = bindActionCreators(actionCreators, dispatch)
 
     /**
      * Handle sign in button
@@ -26,10 +16,8 @@ export const Login = (): JSX.Element => {
      */
     const handleSubmit = async (e: React.SyntheticEvent<EventTarget>) => {
         e.preventDefault();
-        await loginUser({
-            ethAddress,
-            password
-        });
+        localStorage.setItem('loggedIn', ethAddress)
+        fetchUser(ethAddress)
     }
 
     return (
@@ -71,7 +59,6 @@ export const Login = (): JSX.Element => {
                             </label>
                             <div className="mt-1">
                                 <input
-                                    onChange={e => setPassword(e.target.value)}
                                     id="password"
                                     name="password"
                                     type="password"
