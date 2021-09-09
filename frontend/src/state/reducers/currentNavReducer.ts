@@ -9,7 +9,6 @@ import { Action } from '../actions';
 const reducer = (state = "Home", action: Action): string => {
     switch (action.type) {
         case ActionType.CHANGE_CURRENT_NAV:
-            console.log(action.payload)
             return action.payload
         default:
             return state
