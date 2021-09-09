@@ -3,7 +3,9 @@ import { Dispatch } from 'redux';
 import { User } from '../../API';
 import { getUser } from '../../graphql/queries';
 import { ActionType } from '../action-types';
+import { Action } from "../actions/index"
 /**
+ * 
  * Fetch user information from the database
  * @param id id of user
  * @returns logged in user information
@@ -21,5 +23,28 @@ export const fetchUser = (id: string): any => {
     catch (e) {
       console.log(e)
     }
+  }
+}
+/**
+ * Open sidebar
+ * @returns desired state of sidebar. True: open; false: closed
+ */
+export const openSidebar = (): ((dispatch: Dispatch<Action>) => void) => {
+  return (dispatch: Dispatch<Action>) => {
+    dispatch({
+      type: ActionType.SHOW_SIDEBAR
+    })
+  }
+}
+/**
+ * Close sidebar
+ * @returns desired state of sidebar. True: open; false: closed
+ */
+export const closeSidebar = (): ((dispatch: Dispatch<Action>) => void) => {
+  return (dispatch: Dispatch<Action>) => {
+    dispatch({
+      type: ActionType.HIDE_SIDEBAR,
+      payload: false
+    })
   }
 }

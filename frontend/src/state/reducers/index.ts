@@ -1,10 +1,12 @@
 import { combineReducers } from "redux"
+import sidebarReducer from './sidebarReducer'
 import userReducer from './userReducer'
 /**
  * Combine reducers
  */
 const reducers = combineReducers({
-    user: userReducer
+    user: userReducer,
+    sideBarOpened: sidebarReducer
 })
 
 export default reducers

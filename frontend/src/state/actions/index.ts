@@ -7,5 +7,17 @@ interface GetUserAction {
     type: ActionType.GET_USER,
     payload: User
 }
+/**
+* Action for hiding sidebar
+*/
+interface HideSidebarAction {
+    type: ActionType.HIDE_SIDEBAR
+}
+/**
+* Action for showing sidebar
+*/
+interface ShowSidebarAction {
+    type: ActionType.SHOW_SIDEBAR
+}
 
-export type Action = GetUserAction
+export type Action = GetUserAction | HideSidebarAction | ShowSidebarAction

@@ -9,8 +9,10 @@ const testStrings = {
 /**
  * Test getShortenedAddress()
  */
-it('should return first 8 and last 6 characters of a string, separated by 3 dots', () => {
-    for (const [key, value] of Object.entries(testStrings)) {
-        expect(getShortenedAddress(key)).toEqual(value)
-    }
-});
+describe('getShortenedAddress()', () => {
+    it('should return first 8 and last 6 characters of a string, separated by 3 dots', () => {
+        for (const [key, value] of Object.entries(testStrings)) {
+            expect(getShortenedAddress(key)).toEqual(value)
+        }
+    });
+})
