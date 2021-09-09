@@ -1,6 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { navigation } from '../components/Navigation';
@@ -8,10 +8,10 @@ import { actionCreators, State } from '../state';
 import { classNames } from '../utils/classNames';
 
 export const Sidebar = (): JSX.Element => {
-    const [currentNav, setCurrentNav] = useState('Home');
     const sidebarOpen: boolean = useSelector((state: State) => state.sideBarOpened)
+    const currentNav: string = useSelector((state: State) => state.currentNav)
     const dispatch = useDispatch();
-    const { closeSidebar } = bindActionCreators(actionCreators, dispatch)
+    const { changeNav, closeSidebar } = bindActionCreators(actionCreators, dispatch)
     return (
         <>
             <Transition.Root show={sidebarOpen} as={Fragment}>
@@ -70,7 +70,7 @@ export const Sidebar = (): JSX.Element => {
                                     {navigation.filter(n => !n.secondaryNav).map((item) => (
                                         <a
                                             key={item.name}
-                                            onClick={() => setCurrentNav(item.name)}
+                                            onClick={() => changeNav(item.name)}
                                             href={item.href}
                                             className={classNames(
                                                 currentNav === item.name ? 'bg-primary-800 text-white' : 'text-primary-100 hover:text-white hover:bg-primary-600',
@@ -108,7 +108,7 @@ export const Sidebar = (): JSX.Element => {
                                 {navigation.filter(n => !n.secondaryNav).map((item) => (
                                     <a
                                         key={item.name}
-                                        onClick={() => setCurrentNav(item.name)}
+                                        onClick={() => changeNav(item.name)}
                                         href={item.href}
                                         className={classNames(
                                             currentNav === item.name ? 'bg-primary-800 text-white' : 'text-primary-100 hover:text-white hover:bg-primary-600',

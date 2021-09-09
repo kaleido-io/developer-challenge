@@ -5,6 +5,18 @@ import { getUser } from '../../graphql/queries';
 import { ActionType } from '../action-types';
 import { Action } from "../actions/index"
 /**
+ * Change navigation
+ * @returns new navigation menu title
+ */
+export const changeNav = (navTitle: string): ((dispatch: Dispatch<Action>) => void) => {
+  return (dispatch: Dispatch<Action>) => {
+    dispatch({
+      payload: navTitle,
+      type: ActionType.CHANGE_CURRENT_NAV
+    })
+  }
+}
+/**
  * 
  * Fetch user information from the database
  * @param id id of user
@@ -16,8 +28,8 @@ export const fetchUser = (id: string): any => {
       const userData: any = await API.graphql(graphqlOperation(getUser, { id }))
       const user: User = userData.data.getUser
       dispatch({
-        type: ActionType.GET_USER,
-        payload: user
+        payload: user,
+        type: ActionType.GET_USER
       })
     }
     catch (e) {
