@@ -1,7 +1,7 @@
 import { ArrowSmDownIcon, ArrowSmUpIcon } from '@heroicons/react/outline';
 import React from 'react';
-import { OverviewCardInterface } from '../../interfaces/overviewCardInterface';
-import classNames from '../../utils/classNames';
+import { OverviewCardInterface } from '../interfaces/overviewCardInterface';
+import classNames from '../utils/classNames';
 /**
  * Overview card component
  * @param props details for card
@@ -37,6 +37,5 @@ export default function OverviewCard(props: { card: OverviewCardInterface }): JS
                 </div>
             </dd>
         </div>
-
     )
 }

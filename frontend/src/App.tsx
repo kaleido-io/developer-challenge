@@ -1,26 +1,20 @@
 import { Dialog, Menu, Transition } from '@headlessui/react';
-import { CogIcon, CollectionIcon, HomeIcon, LogoutIcon, MenuAlt1Icon, QuestionMarkCircleIcon, ShieldCheckIcon, XIcon } from '@heroicons/react/outline';
+import { MenuAlt1Icon, XIcon } from '@heroicons/react/outline';
 import { ChevronDownIcon, SearchIcon } from '@heroicons/react/solid';
-import React, { Fragment, SVGProps, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import { User } from './API';
+import { navigation } from './components/Navigation';
 import { default as Collections, default as SingleCollection } from './pages/Collections';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import PageNotFound from './pages/PageNotFound';
 import Settings from './pages/Settings';
-import { State } from './state';
+import { State, store } from './state';
 import classNames from './utils/classNames';
 import getShortenedAddress from './utils/getShortenedAddress';
-/**
- * Interface for navigation link
- */
-interface NavigationInterface {
-  href: string;
-  icon: (props: SVGProps<SVGSVGElement>) => JSX.Element;
-  name: string;
-}
+
 /**
  * Main app component
  */
@@ -29,20 +23,6 @@ function App(): JSX.Element {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const user: User = useSelector((state: State) => state.user)
 
-  // TODO: Navigation panel should depress correctly
-  const navigation: NavigationInterface[] = [
-    { name: 'Home', href: '/', icon: HomeIcon },
-    { name: 'NFT Collections', href: '/collections', icon: CollectionIcon },
-    { name: 'Settings', href: '/settings', icon: CogIcon },
-    { name: 'Help', href: '/help', icon: QuestionMarkCircleIcon },
-    { name: 'Privacy', href: '/privacy', icon: ShieldCheckIcon },
-  ]
-
-  // TODO: Navigation panel should depress correctly
-  const headerNavigation: NavigationInterface[] = [
-    { name: 'Account Settings', href: '/settings', icon: CogIcon },
-    { name: 'Logout', href: '/logout', icon: LogoutIcon }
-  ]
   // TODO: Implement Authentication
   if (false) {
     return <Login />
@@ -142,7 +122,7 @@ function App(): JSX.Element {
             </div>
             <nav className="mt-5 flex-1 flex flex-col divide-y divide-primary-800 overflow-y-auto" aria-label="Sidebar">
               <div className="px-2 space-y-1">
-                {navigation.map((item) => (
+                {navigation.filter(n => !n.secondaryNav).map((item) => (
                   <a
                     key={item.name}
                     onClick={() => setCurrentNav(item.name)}
@@ -229,7 +209,7 @@ function App(): JSX.Element {
                       <p className="text-sm font-medium text-gray-900 truncate">{getShortenedAddress(user.ethAddress)}</p>
                     </div>
                     <div className="py-1">
-                      {headerNavigation.map(nav => (
+                      {navigation.filter(n => n.secondaryNav).map(nav => (
                         <Menu.Item key={nav.name}>
                           <a
                             href={nav.href}

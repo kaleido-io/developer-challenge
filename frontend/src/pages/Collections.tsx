@@ -2,7 +2,7 @@ import { PlusIcon } from '@heroicons/react/solid';
 import { API, graphqlOperation } from 'aws-amplify';
 import React, { useEffect, useState } from 'react';
 import { NFTCollection } from '../API';
-import NewCollectionModal from '../components/NewCollectionModal/NewCollectionModal';
+import NewCollectionModal from '../components/NewCollectionModal';
 import { listNFTCollections } from '../graphql/queries';
 
 /**

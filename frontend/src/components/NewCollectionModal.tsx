@@ -2,8 +2,8 @@ import { Dialog, Transition } from '@headlessui/react';
 import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { API, graphqlOperation } from 'aws-amplify';
 import React, { Fragment } from 'react';
-import { CreateNFTCollectionInput, CreateNFTTokenInput } from '../../API';
-import { createNFTCollection, createNFTToken } from '../../graphql/mutations';
+import { CreateNFTCollectionInput, CreateNFTTokenInput } from '../API';
+import { createNFTCollection, createNFTToken } from '../graphql/mutations';
 /**
  * New NFT Collection form interface
  */
