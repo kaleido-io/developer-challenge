@@ -1,19 +1,18 @@
 import { Dialog, Menu, Transition } from '@headlessui/react';
 import { CogIcon, CollectionIcon, HomeIcon, LogoutIcon, MenuAlt1Icon, QuestionMarkCircleIcon, ShieldCheckIcon, XIcon } from '@heroicons/react/outline';
 import { ChevronDownIcon, SearchIcon } from '@heroicons/react/solid';
-import { API, graphqlOperation } from 'aws-amplify';
-import React, { Fragment, SVGProps, useEffect, useState } from 'react';
+import React, { Fragment, SVGProps, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import { User } from './API';
-import { getUser } from './graphql/queries';
 import { default as Collections, default as SingleCollection } from './pages/Collections';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import PageNotFound from './pages/PageNotFound';
 import Settings from './pages/Settings';
+import { State } from './state';
 import classNames from './utils/classNames';
 import getShortenedAddress from './utils/getShortenedAddress';
-
 /**
  * Interface for navigation link
  */
@@ -28,7 +27,7 @@ interface NavigationInterface {
 function App(): JSX.Element {
   const [currentNav, setCurrentNav] = useState('Home');
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [user, setUser] = useState({} as User)
+  const user: User = useSelector((state: State) => state.user)
 
   // TODO: Navigation panel should depress correctly
   const navigation: NavigationInterface[] = [
@@ -44,32 +43,9 @@ function App(): JSX.Element {
     { name: 'Account Settings', href: '/settings', icon: CogIcon },
     { name: 'Logout', href: '/logout', icon: LogoutIcon }
   ]
-
-  useEffect(() => {
-    fetchUser('38679115-7c2f-487c-aae9-2a1614b85938')
-  }, [])
-
-  /**
-   * Fetch user from dynamo db
-   * @param id id of user to fetch
-   */
-  async function fetchUser(id: string) {
-    try {
-      const userData: any = await API.graphql(graphqlOperation(getUser, { id }))
-      const user: User = userData.data.getUser
-      setUser(user)
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
   // TODO: Implement Authentication
   if (false) {
     return <Login />
-  }
-
-  if (!user) {
-    return (<div></div>)
   }
 
   return (
@@ -226,11 +202,11 @@ function App(): JSX.Element {
                   <Menu.Button className="max-w-xs bg-faded rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 lg:p-2 lg:rounded-md lg:hover:bg-gray-50">
                     <img
                       className="h-8 w-8 rounded-full"
-                      src={user?.avatar}
+                      src={user.avatar}
                       alt="avatar"
                     />
                     <span className="hidden ml-3 text-gray-700 text-sm font-medium lg:block">
-                      <span className="sr-only">Open user menu for </span>{user?.name}
+                      <span className="sr-only">Open user menu for </span>{user.name}
                     </span>
                     <ChevronDownIcon
                       className="hidden flex-shrink-0 ml-1 h-5 w-5 text-gray-400 lg:block"
@@ -250,7 +226,7 @@ function App(): JSX.Element {
                   <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-faded ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <div className="px-4 py-3">
                       <p className="text-sm">Signed in as</p>
-                      <p className="text-sm font-medium text-gray-900 truncate">{getShortenedAddress(user?.ethAddress)}</p>
+                      <p className="text-sm font-medium text-gray-900 truncate">{getShortenedAddress(user.ethAddress)}</p>
                     </div>
                     <div className="py-1">
                       {headerNavigation.map(nav => (
