@@ -1,12 +1,12 @@
 import { ArrowSmDownIcon, ArrowSmUpIcon } from '@heroicons/react/outline';
 import React from 'react';
 import { OverviewCardInterface } from '../interfaces/overviewCardInterface';
-import classNames from '../utils/classNames';
+import { classNames } from '../utils/classNames';
 /**
  * Overview card component
  * @param props details for card
  */
-export default function OverviewCard(props: { card: OverviewCardInterface }): JSX.Element {
+export const OverviewCard = (props: { card: OverviewCardInterface }): JSX.Element => {
     return (
         <div className="px-4 py-5 sm:p-6">
             <dt className="text-base font-normal text-gray-900">{props.card.name}</dt>

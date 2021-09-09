@@ -6,19 +6,20 @@ import { useSelector } from 'react-redux';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import { User } from './API';
 import { navigation } from './components/Navigation';
-import { default as Collections, default as SingleCollection } from './pages/Collections';
-import Dashboard from './pages/Dashboard';
-import Login from './pages/Login';
-import PageNotFound from './pages/PageNotFound';
-import Settings from './pages/Settings';
-import { State, store } from './state';
-import classNames from './utils/classNames';
-import getShortenedAddress from './utils/getShortenedAddress';
+import { Collections } from './pages/Collections';
+import { Dashboard } from './pages/Dashboard';
+import { Login } from './pages/Login';
+import { PageNotFound } from './pages/PageNotFound';
+import { Settings } from './pages/Settings';
+import { SingleCollection } from './pages/SingleCollection';
+import { State } from './state';
+import { classNames } from './utils/classNames';
+import { getShortenedAddress } from './utils/getShortenedAddress';
 
 /**
  * Main app component
  */
-function App(): JSX.Element {
+const App = (): JSX.Element => {
   const [currentNav, setCurrentNav] = useState('Home');
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const user: User = useSelector((state: State) => state.user)

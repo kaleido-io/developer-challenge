@@ -17,7 +17,7 @@ interface NFTCollectionForm {
  * New collection modal component
  * @param props track open/close state of modal
  */
-export default function NewCollectionModal(props: { close: () => any, show: boolean }): JSX.Element {
+export const NewCollectionModal = (props: { close: () => any, show: boolean }): JSX.Element => {
     const [assetLink, setAssetLink] = React.useState("")
     const [formState, setFormState] = React.useState({} as NFTCollectionForm)
 

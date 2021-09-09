@@ -8,7 +8,7 @@ import { ActionType } from '../action-types';
  * @param id id of user
  * @returns logged in user information
  */
-export const fetchUser: any = (id: string) => {
+export const fetchUser = (id: string): any => {
   return async (dispatch: Dispatch) => {
     try {
       const userData: any = await API.graphql(graphqlOperation(getUser, { id }))

@@ -2,7 +2,7 @@ import React from 'react';
 import { SocialIcon } from 'react-social-icons';
 import { User } from '../API';
 import { SocialInterface } from '../interfaces/socialInterface';
-import getShortenedAddress from '../utils/getShortenedAddress';
+import { getShortenedAddress } from '../utils/getShortenedAddress';
 /**
  * Supported social sign in platforms
  */
@@ -15,7 +15,7 @@ const socialSignIns: SocialInterface[] = [
 /**
  * Settings page
  */
-export default function Settings(props: { user: User }): JSX.Element {
+export const Settings = (props: { user: User }): JSX.Element => {
   return (
     <main className="flex-1 overflow-y-auto focus:outline-none">
       <div className="relative max-w-4xl mx-auto md:px-8 xl:px-0">

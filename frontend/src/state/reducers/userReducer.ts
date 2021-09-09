@@ -2,7 +2,7 @@ import { User } from '../../API';
 import { ActionType } from '../action-types';
 import { Action } from '../actions';
 /** Initial blank user state */
-const initialState: any = {
+const initialState: User = {
     __typename: "User",
     avatar: '',
     description: '',

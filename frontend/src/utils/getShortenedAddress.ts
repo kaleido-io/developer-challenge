@@ -3,6 +3,4 @@
  * @param add long address
  * @returns shortened address
  */
-export default function getShortenedAddress(add: string): string {
-    return `${add.substring(0, 8)}...${add.substring(add.length - 6, add.length)}`
-}
+export const getShortenedAddress = (add: string): string => `${add.substring(0, 8)}...${add.substring(add.length - 6, add.length)}`

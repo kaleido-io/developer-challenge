@@ -2,13 +2,13 @@ import { PlusIcon } from '@heroicons/react/solid';
 import { API, graphqlOperation } from 'aws-amplify';
 import React, { useEffect, useState } from 'react';
 import { NFTCollection } from '../API';
-import NewCollectionModal from '../components/NewCollectionModal';
+import { NewCollectionModal } from '../components/NewCollectionModal';
 import { listNFTCollections } from '../graphql/queries';
 
 /**
  * NFT Collections page
  */
-export default function Collections(): JSX.Element {
+export const Collections = (): JSX.Element => {
   const [showCollectionForm, setShowCollectionForm] = useState(false);
   const [collections, setCollections] = useState([] as NFTCollection[])
 

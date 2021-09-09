@@ -1,4 +1,4 @@
-import getShortenedAddress from "./getShortenedAddress";
+import { getShortenedAddress } from "./getShortenedAddress";
 /** Test strings. Key is input, value is expected output */
 const testStrings = {
     '0xEJZlqwr336Nx0TyLJQX9N8Wy3MFt7W01ezuWikCk': '0xEJZlqw...uWikCk',
