@@ -4,7 +4,7 @@ Build a DApp on Kaleido.
 
 Fork this repo, choose a use case you think would be interesting to build as a decentralized application (DApp), then get creative and have fun.
 
-... and please **ask questions** - we don't want you to be stuck, an appreciate collaboration through the project.
+... and please **ask questions** - we don't want you to be stuck, and appreciate collaboration through the project.
 
 ## What is a DApp?
 
