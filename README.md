@@ -8,9 +8,9 @@ Fork this repo, choose a use case you think would be interesting to build as a d
 
 ## What is a DApp?
 
-- [Blockgeeks](https://blockgeeks.com/guides/dapps/)
+- [Ethereum Foundation](https://ethereum.org/en/developers/docs/dapps/)
   - Background of how DApps have evolved in the wild, and why
-- [State of the DApps](https://www.stateofthedapps.com/)
+- [DApps Build on Ethereum](https://ethereum.org/en/dapps/)
   - All that's been built in the wonderful world of public Ethereum
 - [Kaleido docs](https://docs.kaleido.io/kaleido-platform/full-stack/dapps/)
   - DApps in an Enterprise context
@@ -20,10 +20,11 @@ Fork this repo, choose a use case you think would be interesting to build as a d
 We would like your project to demonstrate your concept end-to-end, but it doesn't need to be a complete application.
 
 It must:
+
 - Have a Web based user experience, built in React
 - Have a backend-for-the-frontend (BFF), written in Node.js
 - Have on-chain Smart Contract logic, written in Solidity
-- Use a Kaleido blockchain 
+- Use a Kaleido blockchain
 - Contain a README that gives a quick overview of the use case, and tells us how to run it
 
 How much time you spend on each tier is down to you - depending on your interests and the skills you want to show.
@@ -48,6 +49,7 @@ It's your choice whether you focus more on how things work under the covers, or 
 ## Want more dev stack?
 
 Here are some dev technologies (not in the starter repo) that we love at Kaleido:
+
 - Material UI (or insert your favorite component library here) - at Kaleido we love re-use
 - Redux for front-end state
 - GraphQL (Apollo) for front-end/back-end comms
@@ -74,14 +76,13 @@ This repo is a thin layer on top of [create-react-app](https://github.com/facebo
 - Go to the Kaleido console page for your node
   - `KALEIDO_REST_GATEWAY_URL`: Grab the `REST API Gateway` URL
   - `FROM_ADDRESS`: Grab the `User account` - this will be your managed wallet signing key
-  ![REST API Gateway URL](readme1.png)
+    ![REST API Gateway URL](readme1.png)
 - Click the `Connect App` button in the Kaleido console on your blockchain node
   - Then `Create new App Cred` create yourself a secure credential
 - Once on the `App Cred Details` page you will need:
   - `KALEIDO_AUTH_USERNAME`: The generated `ID` (the username)
   - `KALEIDO_AUTH_PASSWORD`: The generated `Password`
-  ![App Credential](readme2.png)
-  
+    ![App Credential](readme2.png)
 
 Copy [backend/config.example.json](backend/config.example.json) to `backend/config.json` and edit it to the values from the Kaleido Connect panel.
 
@@ -100,10 +101,10 @@ npm i
 npm start
 ```
 
-   
 ## Blockchain accelerators
 
 Some full-stack blockchain services available out-of-the-box with Kaleido that you might find helpful in getting your use case built quickly:
+
 - [Block explorer](https://docs.kaleido.io/kaleido-services/block-explorer/)
   - See the transactions that you submit from your application mined into blocks in your blockchain
 - [REST API Gateway](https://docs.kaleido.io/kaleido-services/ethconnect)
@@ -119,10 +120,8 @@ Some full-stack blockchain services available out-of-the-box with Kaleido that y
 
 If you want to be inspired by the Kaleido brand...
 
-
 ### Styles
 
 ![Product Colors](StyleGuide/Colors.png?raw=true 'Product Colors')
 
 ![Text Styles](StyleGuide/TextStyles.png?raw=true 'Text Styles')
-
