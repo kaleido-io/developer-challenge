@@ -11,10 +11,10 @@ import AddIcon from '@mui/icons-material/Add';
 import styled from 'styled-components';
 
 import { API_URL } from '../config';
+import { DarkTheme } from '../Themes';
 import { UserContext, WhoAreYou } from '../contexts/UserContext';
 import { Centered } from '../layouts/Centered';
 import { dataReducer, ACTION_TYPES } from '../reducers/reducer';
-import { NewRawData } from '../components/NewRawData';
 import { RawDataDetail, RawDataNew } from '../components/RawDataDetail';
 import { PaperDetail, PaperNew } from '../components/PaperDetail';
 
@@ -199,12 +199,14 @@ function DataStudioInner() {
 
 export function DataStudio() {
     return (
-        <Centered>
-            <WhoAreYou>
-                <ReduxProvider store={dataStore}>
-                    <DataStudioInner />
-                </ReduxProvider>
-            </WhoAreYou>
-        </Centered>
+        <DarkTheme>
+            <Centered>
+                <WhoAreYou>
+                    <ReduxProvider store={dataStore}>
+                        <DataStudioInner />
+                    </ReduxProvider>
+                </WhoAreYou>
+            </Centered>
+        </DarkTheme>
     );
 }

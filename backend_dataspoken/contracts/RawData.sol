@@ -55,7 +55,6 @@ contract RawData {
   }
 
   function getMetadata(uint256 id) public view returns (address, uint256, string memory, string memory, string memory) {
-    require(_access[id][msg.sender] == true, "Access Denied");
     return (_metadata[id].createdBy, _metadata[id].createdAt, _metadata[id].dataType, _metadata[id].description, _dataHash[id]);
   }
 

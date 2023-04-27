@@ -3,7 +3,7 @@ import { Router } from 'express';
 import multer from 'multer';
 
 import { getRawData, createRawData, approveAccess, getFileStream } from './raw-data';
-import { getPapers, createPaper } from './papers';
+import { getPapers, getPaper, createPaper } from './papers';
 
 // const upload = multer({ dest: `${__dirname}/../../datafiles` });
 const upload = multer({ dest: os.tmpdir() });
@@ -59,6 +59,16 @@ routes.get('/papers', async (req, res) => {
         const caller = req.query.wallet_address;
         const papers = await getPapers(caller);
         res.status(200).send(papers);
+    } catch (err) {
+        res.status(500).send({ error: getErrorString(err) });
+    }
+});
+
+routes.get('/papers/:paperId', async (req, res) => {
+    try {
+        const caller = req.query.wallet_address;
+        const paper = await getPaper(caller, req.params.paperId);
+        res.status(200).send(paper);
     } catch (err) {
         res.status(500).send({ error: getErrorString(err) });
     }

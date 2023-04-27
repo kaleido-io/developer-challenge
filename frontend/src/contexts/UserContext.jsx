@@ -41,7 +41,7 @@ const WhoAreYouContainer = styled.div`
 `;
 
 export function WhoAreYou({ children }) {
-    const [user, setUser] = useState(USERS[0]);
+    const [user, setUser] = useState(USERS[2]);
     // const [user, setUser] = useState();
     const value = useMemo(() => ({ user }), [user]);
 

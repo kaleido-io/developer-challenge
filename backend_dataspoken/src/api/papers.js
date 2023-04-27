@@ -15,6 +15,15 @@ export async function getPapers(caller) {
     return papers;
 }
 
+export async function getPaper(caller, paperId) {
+    const metadata = await getPaperMetadata(caller, paperId);
+    const dbRecord = await getDbRecord(metadata.dsId);
+    return {
+        ...metadata,
+        figures: dbRecord.figures
+    };
+}
+
 async function getPaperIds(caller) {
     const { papers } = getSwaggerClients();
     const response = await papers.client.apis.default.getPaperIds_get({
@@ -39,8 +48,8 @@ async function getPaperMetadata(caller, paperId) {
         onChainId: paperId,
         dsId: metadata.output,
         author: metadata.output1,
-        title: metadata.output2,
-        organization: metadata.output3
+        title: metadata.output3,
+        organization: metadata.output4
     };
 }
 
