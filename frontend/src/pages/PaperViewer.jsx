@@ -1,12 +1,16 @@
-import React, { useEffect, useState, useContext, useMemo } from 'react';
+import React, {
+    useEffect, useState, useContext, useMemo
+} from 'react';
 import { useParams } from 'react-router-dom';
 import { faker } from '@faker-js/faker';
-import { Fab, Modal, Fade, Box, Typography } from '@mui/material';
+import {
+    Fab, Modal, Fade, Box, Typography
+} from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import styled from 'styled-components';
 import axios from 'axios';
 
-import { API_URL } from '../config';
+import { DS_API_URL } from '../config';
 import { UserContext, WhoAreYou } from '../contexts/UserContext';
 import { Centered } from '../layouts/Centered';
 
@@ -64,7 +68,7 @@ function useRandomResearch(paper) {
                 organization: faker.company.name(),
                 city: `${faker.address.cityName()}, ${faker.address.country()}`,
                 email: faker.internet.email(firstName, lastName)
-            })
+            });
         }
         if (paper.organization) {
             generatedAuthors[0].organization = paper.organization;
@@ -89,7 +93,7 @@ function useRandomResearch(paper) {
                     text: faker.lorem.sentence(numBodyPageWords)
                 };
                 if (i <= numFigures) {
-                    page['figure'] = paper.figures[i - 1];
+                    page.figure = paper.figures[i - 1];
                 }
                 generatedBodyPages.push(page);
             }
@@ -122,7 +126,8 @@ function PageInfo() {
                         left: '50%',
                         transform: 'translate(-50%, -50%)',
                         bgcolor: 'background.paper'
-                    }}>
+                    }}
+                    >
                         <div>About this page:</div>
                     </Box>
                 </Fade>
@@ -197,7 +202,7 @@ const FigureContainer = styled.div`
         }
         .ds-links {
             display: flex;
-            justify-content: space-between;
+            justify-content: space-around;
             padding-top: 4px;
             
             a {
@@ -216,17 +221,17 @@ function RawDataList({ rawDataIds, user }) {
             <div className="ds-title">DataSpoken&trade; Data Verification</div>
             <div className="ds-links">
                 {rawDataIds.map((dataId) => (
-                    <a key={`rd-${dataId}`} href={`${RAW_DATA_LINK_BASE}/${dataId}/file?wallet_address=${user.walletAddress}`} target="_blank">Data {dataId}</a>
+                    <a key={`rd-${dataId}`} href={`${RAW_DATA_LINK_BASE}/${dataId}/file?wallet_address=${user.walletAddress}`} target="_blank" rel="noreferrer">Data {dataId}</a>
                 ))}
             </div>
         </div>
-    )
+    );
 }
 
 function Figure({ name, rawDataIds, user }) {
     return (
         <FigureContainer>
-            <img src={faker.image.abstract(FIGURE_IMG_WIDTH, FIGURE_IMG_HEIGHT, true)} />
+            <img alt={name || 'figure'} src={faker.image.abstract(FIGURE_IMG_WIDTH, FIGURE_IMG_HEIGHT, true)} />
             <div>{name || 'Figure ___'}</div>
             {rawDataIds && rawDataIds.length > 0 && <RawDataList rawDataIds={rawDataIds} user={user} />}
         </FigureContainer>
@@ -257,13 +262,12 @@ function Page({ text, figure, user }) {
                     <Figure user={user} {...figure} />
                     <div>{text.substring(splitPosition, numCharacters)}</div>
                 </>
-            )
-        } else {
-            const numCharacters = parseInt(text.length / 2);
-            return (
-                <div>{text.substring(0, numCharacters)}</div>
-            )
+            );
         }
+        const numCharacters = parseInt(text.length / 2);
+        return (
+            <div>{text.substring(0, numCharacters)}</div>
+        );
     }, [text, figure, figurePlacement]);
 
     const contentRight = useMemo(() => {
@@ -276,13 +280,12 @@ function Page({ text, figure, user }) {
                     <Figure user={user} {...figure} />
                     <div>{text.substring(numCharacters + FIGURE_SIZE_IN_CHARACTERS + splitPosition)}</div>
                 </>
-            )
-        } else {
-            const numCharacters = parseInt(text.length / 2);
-            return (
-                <div>{text.substring(numCharacters, 0)}</div>
-            )
+            );
         }
+        const numCharacters = parseInt(text.length / 2);
+        return (
+            <div>{text.substring(numCharacters, 0)}</div>
+        );
     }, [text, figure, figurePlacement]);
 
     return (
@@ -290,11 +293,13 @@ function Page({ text, figure, user }) {
             <div>{contentLeft}</div>
             <div>{contentRight}</div>
         </PageContainer>
-    )
+    );
 }
 
 function Paper({ paper, user }) {
-    const { title, authors, abstract, body } = useRandomResearch(paper);
+    const {
+        title, authors, abstract, body
+    } = useRandomResearch(paper);
     return (
         <div>
             <Title variant="h3" component="div">{title}</Title>
@@ -326,7 +331,7 @@ function PaperViewerInner() {
     const { paperId } = useParams();
     const [paper, setPaper] = useState();
     useEffect(() => {
-        axios.get(`${API_URL}/papers/${paperId}?wallet_address=${user.walletAddress}`).then((response) => {
+        axios.get(`${DS_API_URL}/papers/${paperId}?wallet_address=${user.walletAddress}`).then((response) => {
             if (response.data) {
                 setPaper(response.data);
             }

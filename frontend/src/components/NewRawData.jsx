@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import axios from 'axios';
 
-import { API_URL } from '../config';
+import { DS_API_URL } from '../config';
 
 export function NewRawData({ walletAddress, onCreate, onCreated }) {
     const [dataType, setDataType] = useState();
@@ -27,7 +27,7 @@ export function NewRawData({ walletAddress, onCreate, onCreated }) {
             onCreate();
         }
 
-        axios.post(`${API_URL}/data`, formData, {
+        axios.post(`${DS_API_URL}/data`, formData, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'multipart/form-data'

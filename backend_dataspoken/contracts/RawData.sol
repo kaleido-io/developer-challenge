@@ -55,6 +55,8 @@ contract RawData {
   }
 
   function getMetadata(uint256 id) public view returns (address, uint256, string memory, string memory, string memory) {
+    // Raw data is visible for everyone once it is published. Until then, only who's approved can see it.
+    require(_states[id].published == true || _access[id][msg.sender] == true, "Access Denied");
     return (_metadata[id].createdBy, _metadata[id].createdAt, _metadata[id].dataType, _metadata[id].description, _dataHash[id]);
   }
 
@@ -65,6 +67,7 @@ contract RawData {
 
   function approveAccess(uint256 id, address to) public {
     require(_metadata[id].createdBy == msg.sender, "Only the creator can approve access");
+    require(_access[id][to] != true, "Access has been already approved for the user");
     _access[id][to] = true;
     _allowedIds[to].push(id);
   }

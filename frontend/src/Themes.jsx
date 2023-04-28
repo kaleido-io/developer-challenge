@@ -4,7 +4,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 
 export const darkTheme = createTheme({
     palette: {
-        mode: 'dark',
+        mode: 'dark'
     },
     typography: {
         fontFamily: 'Merriweather'

@@ -1,10 +1,12 @@
 import React, { useCallback, useState, useMemo } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import { TextField, Button, Popover, Typography, Chip, Paper, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import {
+    TextField, Button, Popover, Typography, Chip, Paper, Table, TableBody, TableCell, TableHead, TableRow, Select, MenuItem
+} from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 
-import { API_URL } from '../config';
+import { DS_API_URL } from '../config';
 
 const FieldsWrapper = styled.div`
     display: flex;
@@ -46,8 +48,8 @@ function NewFigure({ availableRawData, onCreated, onCancel }) {
                 defaultValue="Figure Name"
                 onChange={(e) => {
                     setName(e.target.value);
-                    }}
-                />
+                }}
+            />
             <DataGrid
                 columns={rawDataColumns}
                 rows={rawDataRows}
@@ -59,7 +61,7 @@ function NewFigure({ availableRawData, onCreated, onCancel }) {
             <Button type="button" onClick={() => onCreated(name, selectedIds)} variant="contained">Add</Button>
             <Button type="button" onClick={() => onCancel()} variant="text">Cancel</Button>
         </>
-    )
+    );
 }
 
 const Section = styled.div`
@@ -86,9 +88,17 @@ const ActionsWrapper = styled.div`
 `;
 
 export function PaperDetail({
-    onChainId, title, setTitle, organization, setOrganization, figures, setFigures, onSubmit, availableRawData
+    onChainId, title, setTitle, organization, setOrganization, figures, setFigures, onSubmit, availableRawData, journals, user
 }) {
     const [popoverAnchorEl, setPopoverAnchorEl] = useState(null);
+    const [journalPopoverAnchorEl, setJournalPopoverAnchorEl] = useState(null);
+    const [submitPaperTo, setSubmitPaperTo] = useState('');
+
+    const submitPaper = useCallback(() => {
+        axios.post(`${DS_API_URL}/papers/${onChainId}/publish/${submitPaperTo}`, {
+            wallet_address: user.walletAddress
+        }).then(() => { setJournalPopoverAnchorEl(); });
+    }, [onChainId, submitPaperTo]);
 
     return (
         <DetailWrapper>
@@ -154,20 +164,39 @@ export function PaperDetail({
                         )}
                         {setFigures && <Button aria-describedby="popover-new-figure" type="button" variant="outlined" onClick={(e) => { setPopoverAnchorEl(e.currentTarget); }}>Add Figure</Button>}
                         <Popover id="popover-new-figure" open={!!popoverAnchorEl} anchorEl={popoverAnchorEl}>
-                            <NewFigure availableRawData={availableRawData} onCreated={(figureName, selectedRawDataIds) => {
-                                setFigures((oldFigures) => ([...oldFigures, {
-                                    name: figureName,
-                                    rawDataIds: selectedRawDataIds
-                                }]));
-                                setPopoverAnchorEl();
-                            }} onCancel={() => { setPopoverAnchorEl(); }}/>
+                            <NewFigure
+                                availableRawData={availableRawData}
+                                onCreated={(figureName, selectedRawDataIds) => {
+                                    setFigures((oldFigures) => ([...oldFigures, {
+                                        name: figureName,
+                                        rawDataIds: selectedRawDataIds
+                                    }]));
+                                    setPopoverAnchorEl();
+                                }}
+                                onCancel={() => { setPopoverAnchorEl(); }}
+                            />
                         </Popover>
                     </Section>
-                    <div>
-
-                    </div>
+                    <div />
                     <ActionsWrapper>
                         {onSubmit && <Button type="submit" variant="outlined">Create</Button>}
+                        {typeof onChainId === 'number' && (
+                            <>
+                                <Button type="button" variant="text" onClick={(e) => { setJournalPopoverAnchorEl(e.currentTarget); }}>Publish</Button>
+                                <Popover id="popover-new-figure" open={!!journalPopoverAnchorEl} anchorEl={journalPopoverAnchorEl}>
+                                    <Typography variant="body" component="div">Submit this paper to :</Typography>
+                                    <Select label="Submit this paper to" value={submitPaperTo} onChange={(e) => { setSubmitPaperTo(e.target.value); }}>
+                                        {journals.map((journal) => (
+                                            <MenuItem key={`journal-${journal.issn}`} value={journal.onChainId}>{journal.title}</MenuItem>
+                                        ))}
+                                    </Select>
+                                    <ActionsWrapper>
+                                        <Button type="button" variant="outlined" onClick={submitPaper}>Submit</Button>
+                                        <Button type="button" variant="text" onClick={() => { setJournalPopoverAnchorEl(); }}>Cancel</Button>
+                                    </ActionsWrapper>
+                                </Popover>
+                            </>
+                        )}
                     </ActionsWrapper>
                 </form>
             </StyledPaper>
@@ -188,7 +217,7 @@ export function PaperNew({
             onCreate();
         }
 
-        axios.post(`${API_URL}/papers`, {
+        axios.post(`${DS_API_URL}/papers`, {
             wallet_address: walletAddress,
             title,
             organization,
@@ -198,7 +227,9 @@ export function PaperNew({
         });
     }, [walletAddress, title, organization, figures, onCreate, onCreated]);
 
-    const propsThru = { title, setTitle, organization, setOrganization, figures, setFigures, onSubmit: handleSubmit, availableRawData };
+    const propsThru = {
+        title, setTitle, organization, setOrganization, figures, setFigures, onSubmit: handleSubmit, availableRawData
+    };
 
     return (
         <PaperDetail {...propsThru} />

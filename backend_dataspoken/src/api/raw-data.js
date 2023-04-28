@@ -28,14 +28,14 @@ async function getRawDataMetadata(caller, rawDataId) {
     const { rawData } = getSwaggerClients();
     const response = await rawData.client.apis.default.getMetadata_get({
         address: rawData.contractAddress,
-        id: rawDataId,
+        id: `${rawDataId}`,
         'kld-from': caller,
         'kld-sync': 'true'
     });
     const metadata = response.body;
 
     return {
-        onChainId: rawDataId,
+        onChainId: parseInt(rawDataId),
         createdBy: metadata.output,
         dataType: metadata.output2,
         description: metadata.output3,

@@ -1,9 +1,11 @@
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import { TextField, Button, Typography, Paper, Popover, Select, MenuItem } from '@mui/material';
+import {
+    TextField, Button, Typography, Paper, Popover, Select, MenuItem
+} from '@mui/material';
 
-import { API_URL } from '../config';
+import { DS_API_URL } from '../config';
 import { USERS } from '../users';
 
 const FieldsWrapper = styled.div`
@@ -45,10 +47,10 @@ export function RawDataDetail({
     const [approveAccessFor, setApproveAccessFor] = useState('');
 
     const approveAccess = useCallback(() => {
-        axios.post(`${API_URL}/data/${onChainId}/approve/${approveAccessFor}`, {
+        axios.post(`${DS_API_URL}/data/${onChainId}/approve/${approveAccessFor}`, {
             wallet_address: user.walletAddress
-        }).then((response) => { setAccessPopoverAnchorEl(); });
-    }, [approveAccessFor]);
+        }).then(() => { setAccessPopoverAnchorEl(); });
+    }, [onChainId, approveAccessFor]);
 
     return (
         <DetailWrapper>
@@ -71,7 +73,7 @@ export function RawDataDetail({
                                 label="Description"
                                 type="text"
                                 variant="standard"
-                            value={description}
+                                value={description}
                                 onChange={(e) => {
                                     setDescription(e.target.value);
                                 }}
@@ -95,7 +97,7 @@ export function RawDataDetail({
                     )}
                     <ActionsWrapper>
                         {onSubmit && <Button type="submit" variant="outlined">Create</Button>}
-                        {onChainId && createdBy === user.walletAddress && (
+                        {typeof onChainId === 'number' && createdBy === user.walletAddress && (
                             <>
                                 <Button type="button" variant="text" onClick={(e) => { setAccessPopoverAnchorEl(e.currentTarget); }}>Approve Access</Button>
                                 <Popover id="popover-new-figure" open={!!accessPopoverAnchorEl} anchorEl={accessPopoverAnchorEl}>
@@ -145,7 +147,7 @@ export function RawDataNew({
             onCreate();
         }
 
-        axios.post(`${API_URL}/data`, formData, {
+        axios.post(`${DS_API_URL}/data`, formData, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'multipart/form-data'
@@ -155,7 +157,9 @@ export function RawDataNew({
         });
     }, [selectedFile, description, walletAddress, onCreate, onCreated]);
 
-    const propsThru = { dataType, setDataType, description, setDescription, setSelectedFile, onSubmit: handleSubmit };
+    const propsThru = {
+        dataType, setDataType, description, setDescription, setSelectedFile, onSubmit: handleSubmit
+    };
 
     return (
         <RawDataDetail {...propsThru} />

@@ -38,14 +38,14 @@ async function getPaperMetadata(caller, paperId) {
     const { papers } = getSwaggerClients();
     const response = await papers.client.apis.default.getMetadata_get({
         address: papers.contractAddress,
-        id: paperId,
+        id: `${paperId}`,
         'kld-from': caller,
         'kld-sync': 'true'
     });
     const metadata = response.body;
 
     return {
-        onChainId: paperId,
+        onChainId: parseInt(paperId),
         dsId: metadata.output,
         author: metadata.output1,
         title: metadata.output3,
@@ -87,9 +87,38 @@ export async function createPaper(caller, payload) {
     return newPaper;
 }
 
+
+export async function publishToJournal(caller, paperId, journalId) {
+    const { journals } = getSwaggerClients();
+    await journals.client.apis.default.publishToJournal_post({
+        address: journals.contractAddress,
+        body: {
+            journalId,
+            paperId
+        },
+        'kld-from': caller,
+        'kld-sync': 'true'
+    });
+}
+
 async function createDbRecord(payload) {
-    const paper = new Paper(payload);
+    const paper = new Paper({
+        ...payload,
+        figures: sanitizeFigures(payload.figures)
+    });
     return await paper.save();
+}
+
+function sanitizeFigures(figures) {
+    return figures.map((figure, idx) => {
+        if (figure.name) {
+            return figure;
+        }
+        return {
+            name: `Figure ${idx}`,
+            rawDataIds: figure.rawDataIds
+        };
+    });
 }
 
 async function getDbRecord(dsId) {

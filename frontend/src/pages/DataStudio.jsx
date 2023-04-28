@@ -10,7 +10,7 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import styled from 'styled-components';
 
-import { API_URL } from '../config';
+import { DS_API_URL } from '../config';
 import { DarkTheme } from '../Themes';
 import { UserContext, WhoAreYou } from '../contexts/UserContext';
 import { Centered } from '../layouts/Centered';
@@ -107,10 +107,11 @@ function DataStudioInner() {
 
     const rawData = useSelector((state) => state.rawData);
     const papers = useSelector((state) => state.papers);
+    const journals = useSelector((state) => state.journals);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        axios.get(`${API_URL}/data?wallet_address=${user.walletAddress}`).then((response) => {
+        axios.get(`${DS_API_URL}/data?wallet_address=${user.walletAddress}`).then((response) => {
             if (response.data) {
                 response.data.forEach((data) => {
                     dispatch({
@@ -120,12 +121,22 @@ function DataStudioInner() {
                 });
             }
         });
-        axios.get(`${API_URL}/papers?wallet_address=${user.walletAddress}`).then((response) => {
+        axios.get(`${DS_API_URL}/papers?wallet_address=${user.walletAddress}`).then((response) => {
             if (response.data) {
                 response.data.forEach((paper) => {
                     dispatch({
                         type: ACTION_TYPES.PAPER_CREATED,
                         newPaper: paper
+                    });
+                });
+            }
+        });
+        axios.get(`${DS_API_URL}/journals?wallet_address=${user.walletAddress}`).then((response) => {
+            if (response.data) {
+                response.data.forEach((journal) => {
+                    dispatch({
+                        type: ACTION_TYPES.JOURNAL_CREATED,
+                        newJournal: journal
                     });
                 });
             }
@@ -145,7 +156,7 @@ function DataStudioInner() {
     return (
         <StyledGridContainer className="data-studio" container>
             <Grid sm={3} item>
-                <StyledNavContainer bgColor='blue'>
+                <StyledNavContainer bgColor="blue">
                     <Tabs value={mode === APP_MODE.RAW_DATA ? 0 : 1} onChange={handleTabValueChange} variant="fullWidth">
                         <Tab label="Raw Data" />
                         <Tab label="Papers" />
@@ -191,7 +202,7 @@ function DataStudioInner() {
                     />
                 )}
                 {!isCreating && !!currentObject && mode === APP_MODE.RAW_DATA && <RawDataDetail user={user} {...currentObject} />}
-                {!isCreating && !!currentObject && mode === APP_MODE.PAPERS && <PaperDetail user={user} {...currentObject} />}
+                {!isCreating && !!currentObject && mode === APP_MODE.PAPERS && <PaperDetail user={user} journals={journals} {...currentObject} />}
             </Grid>
         </StyledGridContainer>
     );

@@ -15,7 +15,7 @@ app.listen(API_PORT, () => {
 });
 
 (async () => {
-    console.info(`Starting up lab server...`);
+    console.info('Starting up lab server...');
     
     await initializeMongoClient();
     await initializeSwaggerClients();
@@ -33,9 +33,9 @@ app.listen(API_PORT, () => {
 const server = http.Server(app);
 const onConnect = async socket => {
     try {
-        console.log('Connection incoming');
+        console.info('Connection incoming');
     } catch (ex) {
-        console.log(ex);
+        console.error(ex);
         socket.disconnect(true);
         return;
     }

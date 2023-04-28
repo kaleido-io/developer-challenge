@@ -3,9 +3,9 @@ import { Router } from 'express';
 import multer from 'multer';
 
 import { getRawData, createRawData, approveAccess, getFileStream } from './raw-data';
-import { getPapers, getPaper, createPaper } from './papers';
+import { getPapers, getPaper, createPaper, publishToJournal } from './papers';
+import { getJournals } from './journals';
 
-// const upload = multer({ dest: `${__dirname}/../../datafiles` });
 const upload = multer({ dest: os.tmpdir() });
 
 export const routes = Router();
@@ -45,7 +45,7 @@ routes.get('/data/:dataId/file', async (req, res) => {
     try {
         const fileStream = await getFileStream(req.query.wallet_address, req.params.dataId);
         if (!fileStream) {
-            res.sendStatus(400);
+            res.status(409).send('Tampered data');
             return;
         }
         fileStream.pipe(res);
@@ -86,6 +86,26 @@ routes.post('/papers', async (req, res) => {
         };
         const paper = await createPaper(caller, payload);
         res.status(201).send(paper);
+    } catch (err) {
+        res.status(500).send({ error: getErrorString(err) });
+    }
+});
+
+routes.post('/papers/:paperId/publish/:journalId', async (req, res) => {
+    try {
+        const { wallet_address: caller } = req.body;
+        await publishToJournal(caller, req.params.paperId, req.params.journalId);
+        res.sendStatus(201);
+    } catch (err) {
+        res.status(500).send({ error: getErrorString(err) });
+    }
+});
+
+routes.get('/journals', async (req, res) => {
+    try {
+        const caller = req.query.wallet_address;
+        const journals = await getJournals(caller);
+        res.status(200).send(journals);
     } catch (err) {
         res.status(500).send({ error: getErrorString(err) });
     }

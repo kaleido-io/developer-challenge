@@ -1,11 +1,13 @@
 export const ACTION_TYPES = {
     RAWDATA_CREATED: 'rawdata_created',
-    PAPER_CREATED: 'paper_created'
+    PAPER_CREATED: 'paper_created',
+    JOURNAL_CREATED: 'journal_created'
 };
 
 export const INITIAL_STATE = {
     rawData: [],
-    papers: []
+    papers: [],
+    journals: []
 };
 
 export function dataReducer(state = INITIAL_STATE, action) {
@@ -19,6 +21,11 @@ export function dataReducer(state = INITIAL_STATE, action) {
         return {
             ...state,
             papers: [...state.papers, action.newPaper]
+        };
+    case ACTION_TYPES.JOURNAL_CREATED:
+        return {
+            ...state,
+            journals: [...state.journals, action.newJournal]
         };
     default:
         return state;
