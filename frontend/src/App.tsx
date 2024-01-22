@@ -1,5 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
-import logo from "./kaleido_logo.svg";
+import { FormEvent, useState } from "react";
 import "./App.css";
 
 function App() {
@@ -46,14 +45,19 @@ function App() {
     setLoading(false);
   }
 
-  function handleChange(event: React.FormEvent<HTMLInputElement>) {
+  function handleChange(event: FormEvent<HTMLInputElement>) {
     setDesiredValue(event.currentTarget.value);
   }
 
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" aria-busy={loading} />
+        <img
+          src={"/kaleido_logo.svg"}
+          className="App-logo"
+          alt="logo"
+          aria-busy={loading}
+        />
         <p>
           <input className="App-input" onChange={handleChange} />
           <button

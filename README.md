@@ -51,7 +51,7 @@ It's your choice whether you focus more on how things work under the covers, or 
 
 Here are some dev technologies (not in the starter repo) that we love at Kaleido:
 
-- Material UI (or insert your favorite component library here) - at Kaleido we love re-use
+- TailwindCSS or Material UI (or insert your favorite component library here) - at Kaleido we love re-use
 - GraphQL (Apollo) for front-end/back-end comms
 - WebSockets for live updating and notifications
 - PostgreSQL for relational data
