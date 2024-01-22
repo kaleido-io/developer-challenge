@@ -4,7 +4,7 @@ import bodyparser from "body-parser";
 import simplestorage from "../contracts/simple_storage.json";
 import { v4 as uuidv4 } from "uuid";
 
-const PORT = 4000;
+const PORT = 4001;
 const HOST = "http://localhost:5000";
 const NAMESPACE = "default";
 const app = express();
