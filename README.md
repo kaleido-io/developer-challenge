@@ -1,6 +1,6 @@
 # Developer Challenge
 
-Build a DApp on Kaleido.
+Build a DApp on using FireFly.
 
 Fork this repo, choose a use case you think would be interesting to build as a decentralized application (DApp), then get creative and have fun.
 
@@ -12,7 +12,7 @@ Fork this repo, choose a use case you think would be interesting to build as a d
   - Background of how DApps have evolved in the wild, and why
 - [DApps Build on Ethereum](https://ethereum.org/en/dapps/)
   - All that's been built in the wonderful world of public Ethereum
-- [Kaleido docs](https://docs.kaleido.io/kaleido-platform/full-stack/dapps/)
+- [FireFly docs](https://docs.kaleido.io/kaleido-platform/full-stack/dapps/)
   - DApps in an Enterprise context
 
 ## What does done look like?
@@ -21,10 +21,11 @@ We would like your project to demonstrate your concept end-to-end, but it doesn'
 
 It must:
 
-- Have a Web based user experience, built in React
-- Have a backend-for-the-frontend (BFF), written in Node.js
+- Have a Web based frontend user experience which talks to your app's backend
+- Have a backend-for-the-frontend (BFF), that uses FireFly's API
+  - Note: An SDK including API wrappers and a WebSocket event listener is provided for Node.js and includes type definitions for TypeScript. You are not required to use it, but we strongly recommend it as it will save you a lot of time.
+- Use Hyperledger FireFly
 - Have on-chain Smart Contract logic, written in Solidity
-- Use a Kaleido blockchain
 - Contain a README that gives a quick overview of the use case, and tells us how to run it
 
 How much time you spend on each tier is down to you - depending on your interests and the skills you want to show.
@@ -50,10 +51,10 @@ It's your choice whether you focus more on how things work under the covers, or 
 
 Here are some dev technologies (not in the starter repo) that we love at Kaleido:
 
-- Material UI (or insert your favorite component library here) - at Kaleido we love re-use
-- Redux for front-end state
+- TailwindCSS or Material UI (or insert your favorite component library here) - at Kaleido we love re-use
 - GraphQL (Apollo) for front-end/back-end comms
-- WebSockets (Socket.io) for live updating and notifications
+- WebSockets for live updating and notifications
+- PostgreSQL for relational data
 - MongoDB NoSQL database for configuration and local state
 
 Remember we'd like a thin thread through your DApp, so choose technologies you think you can be productive in.
@@ -61,67 +62,31 @@ Remember we'd like a thin thread through your DApp, so choose technologies you t
 Want to throw away most of the original `create-react-app` + `express` based repo?
 No problem. Go for it.
 
-## Setting up your Kaleido blockchain
+## Setting up your FireFly on your machine
 
-Run through our [Quick Start](https://docs.kaleido.io/using-kaleido/quick-start-ethereum/first-blockchain/).
+Run through our [Getting Started guide](https://hyperledger.github.io/firefly/gettingstarted/).
 
-When you're done, you will have your very own blockchain!
+When you're done, you will have FireFly and all its microservices, including your very own private blockchain, running on your machine.
 
 ## Getting this repo up and running
 
-This repo is a thin layer on top of [create-react-app](https://github.com/facebook/create-react-app).
+This repo has two directories in it:
 
-### Configure the config file
+- `backend`: A very simple TypeScript Node.js app that uses the FireFly SDK to interact with a custom smart contract
+- `frontend`: A TypeScript React UI bootstrapped with [create-react-app](https://github.com/facebook/create-react-app) that calls the API in the backend.
 
-- Go to the Kaleido console page for your node
-  - `KALEIDO_REST_GATEWAY_URL`: Grab the `REST API Gateway` URL
-  - `FROM_ADDRESS`: Grab the `User account` - this will be your managed wallet signing key
-    ![REST API Gateway URL](readme1.png)
-- Click the `Connect App` button in the Kaleido console on your blockchain node
-  - Then `Create new App Cred` create yourself a secure credential
-- Once on the `App Cred Details` page you will need:
-  - `KALEIDO_AUTH_USERNAME`: The generated `ID` (the username)
-  - `KALEIDO_AUTH_PASSWORD`: The generated `Password`
-    ![App Credential](readme2.png)
-
-Copy [backend/config.example.json](backend/config.example.json) to `backend/config.json` and edit it to the values from the Kaleido Connect panel.
-
-### Start it up
+To run these, `cd` into each directory and run:
 
 ```
-# Start the backend in one terminal
-cd backend
-npm i
-npm start
-
-# Start a dev server for your react app in another
-# Note the package.json sets `"proxy": "http://localhost:4000"` to pass through API calls to the backend
-cd frontend
-npm i
+npm install
 npm start
 ```
 
-## Blockchain accelerators
+When the backend starts it will set up a contract using the FireFly SDK automatically. The buttons on the Web UI will call the backend API endpoints to set and get a value from the blockchain.
 
-Some full-stack blockchain services available out-of-the-box with Kaleido that you might find helpful in getting your use case built quickly:
+![Backend](backend.png)
+![Frontend](frontend.png)
 
-- [Block explorer](https://docs.kaleido.io/kaleido-services/block-explorer/)
-  - See the transactions that you submit from your application mined into blocks in your blockchain
-- [REST API Gateway](https://docs.kaleido.io/kaleido-services/ethconnect)
-  - Full details of the REST APIs you created in the quick start, and used in the sample deployment in this repo
-- [IPFS](https://docs.kaleido.io/kaleido-services/ipfs)
-  - Decentralized file storage, with a way to "pin" your files to your on-chain logic using hashes. Easy way to store things to big to put on the blockchain itself.
-- [Token Factory](https://docs.kaleido.io/kaleido-services/token-factory)
-  - Create tokens according to the ERC20/ERC721 standard via a factory UI/API, without needing to learn the code.
-- [Ethereum Dev Tooling](https://docs.kaleido.io/developers/smart-contracts/)
-  - Great tools to help you develop your smart contract logic
+## Your journey begins here
 
-## Want to know our style?
-
-If you want to be inspired by the Kaleido brand...
-
-### Styles
-
-![Product Colors](StyleGuide/Colors.png?raw=true 'Product Colors')
-
-![Text Styles](StyleGuide/TextStyles.png?raw=true 'Text Styles')
+Now it's your turn to build something! You can use this backend and frontend as a starting point for your app, or you can start from scratch if you want.

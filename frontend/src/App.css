@@ -3,52 +3,38 @@
 }
 
 .App-logo {
-  height: 150px;
+  height: 40vmin;
+  pointer-events: none;
 }
 
-.App-logo[aria-busy="true"] {
-  animation-name: ckw;
-  animation-duration: 10s;
-  animation-iteration-count: infinite;
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
 }
 
-@keyframes ckw {
-  0% {
-      transform: rotate(0deg);
-  }
-  100% {
-      transform: rotate(360deg);
-  }
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
 }
 
 .App-link {
-  color: #3842C1;
+  color: #61dafb;
 }
 
-.App-input {
-  font-size: calc(10px + 2vmin);
-  margin-right: 25px;
-}
-
-.App-button {
-  background-color: #3842C1;
-  color: #ffffff;
-  border: #ffffff solid 3px;
-  border-radius: 50px;
-  padding: 20px;
-  font-size: 25px;
-  cursor: pointer;
-  outline: none;
-}
-
-.App-button:active {
-  background-color: #ffffff;
-  color: #3842C1;
-  border-color: #3842C1;
-}
-
-.App-button:disabled {
-  background-color: #e0e0e0;
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .App-error {
