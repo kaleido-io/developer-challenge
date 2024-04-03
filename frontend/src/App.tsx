@@ -1,11 +1,7 @@
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useState, useEffect } from "react";
 import "./App.css";
-import Carousel from 'react-material-ui-carousel';
-import {
-    Paper,
-    Button,
-    Typography,
-} from '@mui/material'
+import "./App.scss";
+import {TextField, Box, MenuItem, Button} from '@mui/material';
 
 export type Item = {
   name: string,
@@ -14,102 +10,111 @@ export type Item = {
   href: string
 }
 
-interface ProjectProps
-{
-    movie: Item
-}
+// interface ProjectProps
+// {
+//     movie: Item
+// }
 
 function App() {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
   const [desiredValue, setDesiredValue] = useState("test");
   const [value, setValue] = useState("");
-  // const [movieList, setMovieList] = useState([])
   const movieUrls = [
     "https://movie-database-alternative.p.rapidapi.com?i=tt15239678",
-    "https://movie-database-alternative.p.rapidapi.com?i=tt14539740",
+    "https://movie-database-alternative.p.rapidapi.com?i=tt11057302",
     "https://movie-database-alternative.p.rapidapi.com?i=tt21235248",
     "https://movie-database-alternative.p.rapidapi.com?i=tt14230458",
     "https://movie-database-alternative.p.rapidapi.com?i=tt2049403",
-    "https://movie-database-alternative.p.rapidapi.com?i=tt15398776",
-    "https://movie-database-alternative.p.rapidapi.com?i=tt21692408",
-    "https://movie-database-alternative.p.rapidapi.com?i=tt6166392",
-    "https://movie-database-alternative.p.rapidapi.com?i=tt11057302",
-    "https://movie-database-alternative.p.rapidapi.com?i=tt1745960"
   ]
   const [movies, setMovies] = useState<{movies: Item[]}>()
   let movieList: Item[] = []
+  const [movieRatings, setMovieRatings] = useState({})
+  const [emailAddress, setEmailAddress] = useState('')
 
-  function EachMovieCard(movie: Item) {
-    return (
-        <Paper
-            className="Project"
-            style={{
-                // backgroundColor: movie.color,
-            }}
-            elevation={10}
-        >
-            <Typography variant='h5'>{movie.name}</Typography>
-            <br/>
-            <Typography>{movie.imageURL}</Typography>
-  
-            <Button className="CheckButton" component='a' href={movie.href} target='_blank' rel='noreferrer'>
-                Check it out!
-            </Button>
-        </Paper>
-    )
+  // to handle when user select a rating - save to an object with key(movie name)-value(selected rating) pair
+  function handleSelect(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, key: string) {
+    setMovieRatings({...movieRatings, [key]: event.target.value})
   }
+
+  function handleInput(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+    setEmailAddress(event.target.value)
+  }
+
+  function handleSubmit() {
+    fetchMovies()
+  }
+
+  function submitRatings() {
+    console.log("in submit", movieRatings)
+    // this is where smart contract API will be called to set transaction
+  }
+
   interface Props
   {
       movies: Item[]
   }
-//   function MovieCarousel({movies}: MoviesProps) {
-//     console.log("movies;;;;", movies)
-//     // return (
-//     //     <div style={{ marginTop: "50px", color: "#494949" }}>
-//     //         <Typography variant='h4'>Example: Learus Projects (random)</Typography>
-//     //         <br/>
-//     //         <Carousel
-//     //             className="SecondExample"
-//     //         >
-//     //             {
-//     //                 movies.map((movie, index) => {
-//     //                     return <EachMovieCard movie={movie} key={index} />
-//     //                 })
-//     //             }
-//     //         </Carousel>
-//     //         <br/>
-//     //     </div>
-//     // )
-// }
 
+// Render movie posters + titles + select options
 class MovieCarousel extends React.Component<Props, {}> {
   render() {
-    
     return movies && (
-    <div style={{ height: '300px', overflowY: 'auto', width: '1000px'}}>
-      {movies.movies.map(movie => <img style={{width: '250px', height: '350px'}}src={movie.imageURL} alt={movie.name}></img>)}
-    </div>
+      <body>
+        <main id="carousel" style={{flexDirection: "row", display: "flex"}}>
+          {movies.movies.map(movie => 
+            <span style={{marginRight: "20px"}} key={`${movie.name}-span`}>
+                <text>{movie.name}</text>
+                <div className="movie-card" key={movie.name} style={{width: '250px', height: '350px',marginBottom: "20px", backgroundImage: `url(${movie.imageURL})`, backgroundPosition: 'center', backgroundSize: 'cover'}}></div>
+                <label className="select-label">
+                  <TextField
+                    key={movie.imageURL}
+                    id={movie.imageURL}
+                    select
+                    label="Select"
+                    // defaultValue=""
+                    helperText="Please select your rating"
+                    variant="filled"
+                    onChange={e => handleSelect(e, movie.name)}
+                    value={movieRatings[movie.name as keyof typeof movieRatings]}
+                  >
+                    <MenuItem key="1" value="1">First</MenuItem>
+                    <MenuItem key="2" value="2">Second</MenuItem>
+                    <MenuItem key="3" value="3">Third</MenuItem>
+                    <MenuItem key="4" value="4">Fourth</MenuItem>
+                    <MenuItem key="5" value="5">Fifth</MenuItem>
+                  </TextField>
+                </label>
+            </span>)}
+        </main>
+      </body>
     );
   }
-  // render() {
-  //   return 
-  //     (
-  //       <div style={{ marginTop: "50px", color: "#494949" }}>
-  //        {/* <Typography variant='h4'>Example: Learus Projects (random)</Typography>
-  //        <br/>
-  //        <Carousel
-  //            className="SecondExample"
-  //        >
-  //            {
-  //                movies.map((movie, index) =><EachMovieCard movie={movie} key={index} />)
-  //            }
-  //        </Carousel>
-  //        <br/> */}
-  //       </div>
-  //   )
-  // }
 }
+
+  async function fetchMovies() {
+    setLoading(true);
+    setErrorMsg(null);
+    try {
+      const res = await Promise.all(movieUrls.map(e => fetch(e, {
+        method: "GET",
+        headers: { 
+          'X-RapidAPI-Key': '80ea1982d5msh094b5a03b6ce240p152960jsn3d7f5f682b43',
+          'X-RapidAPI-Host': 'movie-database-alternative.p.rapidapi.com',
+          "Content-Type": "application/json" 
+        }
+      })));
+
+      let resJson = await Promise.all(res.map(e => e.json()))
+      for (const each of resJson) {
+        const movieData = {name: each.Title, imageURL: each.Poster} as Item
+        movieList.push(movieData)
+      }
+
+      setMovies({movies: movieList})
+    } catch (err: any) {
+      setErrorMsg(err.stack);
+    }
+  }
 
   async function setContractValue() {
     setLoading(true);
@@ -169,13 +174,11 @@ class MovieCarousel extends React.Component<Props, {}> {
       })));
 
       let resJson = await Promise.all(res.map(e => e.json()))
-      console.log("resJson ---> ", resJson);
       for (const each of resJson) {
         const movieData = {name: each.Title, imageURL: each.Poster} as Item
         movieList.push(movieData)
       }
       setMovies({movies: movieList})
-      // console.log("movielist", movieList)
     } catch (err: any) {
       setErrorMsg(err.stack);
     }
@@ -187,21 +190,60 @@ class MovieCarousel extends React.Component<Props, {}> {
     setDesiredValue(event.currentTarget.value);
   }
 
-  console.log("movieList", movies)
+  // event: React.MouseEvent<HTMLButtonElement, MouseEvent>, text: string
   return (
     <div className="App">
       <header className="App-header">
-        <p>
-          <input className="App-input" onChange={handleChange} />
-          <button
-            type="button"
-            className="App-button"
-            onClick={setContractValue}
+        <h1><img src="../images/movie-icon-2.png" alt="movie-icon" style={{width: '50px'}}/>ReelRater</h1>
+        <br />
+        {!movies && 
+          <Box
+            component="form"
+            noValidate
+            autoComplete="off"
           >
-            Set Value
-          </button>
-        </p>
+            <TextField
+              sx={{width: '300px', marginBottom: '20px'}}
+              error={emailAddress === ''}
+              id="outlined-error"
+              label="Email Address"
+              value={emailAddress}
+              onChange={handleInput}
+              helperText={!emailAddress && "Please enter email address to continue rating movies"}
+            />
+            <br/>
+            <Button 
+              sx={{
+                borderColor: "black",
+                color: "black"
+              }}
+              variant="outlined"
+              disabled={emailAddress === ''}
+              onClick={handleSubmit}
+            >
+              Start Rating!
+            </Button>
+          </Box>
+        }
         <MovieCarousel movies={movieList} />
+        {
+          movies && (
+            <>
+              <br/>
+              <p>
+              {/* <input className="App-input" onChange={handleChange} /> */}
+                <Button
+                  type="button"
+                  className="submit-button"
+                  onClick={submitRatings}
+                  variant="outlined"
+                >
+                  Submit Ratings
+                </Button>
+              </p>
+            </>
+          )
+        }
         <p>
           <button
             type="button"
