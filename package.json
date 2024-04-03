@@ -3,6 +3,8 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/material": "^5.15.14",
+    "dotenv": "^16.4.5",
+    "kareem": "^2.6.0",
     "react-material-ui-carousel": "^3.4.2"
   },
   "devDependencies": {

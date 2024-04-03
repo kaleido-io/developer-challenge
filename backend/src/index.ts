@@ -3,6 +3,14 @@ import express from "express";
 import bodyparser from "body-parser";
 import simplestorage from "../contracts/simple_storage.json";
 import { v4 as uuidv4 } from "uuid";
+// import mongoose from 'mongoose';
+import winston from "winston";
+import * as mongoDB from "mongodb";
+import * as dotenv from "dotenv";
+
+const logger = winston.createLogger({
+  transports: [new winston.transports.Console()],
+});
 
 const PORT = 4001;
 const HOST = "http://localhost:5000";
@@ -16,6 +24,41 @@ const firefly = new FireFly({
 let apiName: string;
 
 app.use(bodyparser.json());
+
+
+
+//CONNECTION TO MONGOOSE DATABASE
+export async function initDb() {
+    dotenv.config();
+    const client = new mongoDB.MongoClient('mongodb+srv://hiruFernando:temp@clusterkaleido.jr7jn26.mongodb.net/')
+    // const client: mongoDB.MongoClient = new mongoDB.MongoClient(process.env.MONGODB_URL);   
+    await client.connect();
+        
+    const db: mongoDB.Db = client.db('UserTransaction');
+    const userTransactionCollection: mongoDB.Collection = db.collection("Users");
+
+
+    console.log(`Successfully connected to database: ${db.databaseName} and collection: ${userTransactionCollection.collectionName}`);
+
+    // Inserting single document 
+    // REMOVE THIS!!!!
+    userTransactionCollection.insertOne({"emailAddress": 'hirusepalika@gmail.com', "transactionId": 'faketransactionid'}); 
+
+  // return new Promise<void>((resolve, reject) => {
+  //   mongoose.connection.on('connected', () => {
+  //     logger.info('Mongoose connected');
+  //     resolve();
+  //   });
+  //   mongoose.connection.on('error', (error) => {
+  //     logger.error('Mongoose connection error', { error });
+  //     reject();
+  //   });
+  //   mongoose.connection.on('disconnected', () => {
+  //     logger.error('Mongoose disconnected');
+  //   });
+  //   mongoose.connect(MONGODB_URL);
+  // });
+}
 
 app.get("/api/value", async (req, res) => {
   res.send(await firefly.queryContractAPI(apiName, "get", {}));
@@ -94,6 +137,8 @@ async function init() {
       console.log(event.blockchainEvent?.output);
     }
   );
+
+  await initDb()
 
   // Start listening
   app.listen(PORT, () =>
