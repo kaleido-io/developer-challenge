@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 import winston from "winston";
 import * as mongoDB from "mongodb";
 import * as dotenv from "dotenv";
+import UserTransaction from './models/userTransaction'
 
 const logger = winston.createLogger({
   transports: [new winston.transports.Console()],
@@ -25,39 +26,34 @@ let apiName: string;
 
 app.use(bodyparser.json());
 
+dotenv.config();
 
+export const collections: { users?: mongoDB.Collection } = {}
+
+interface Env {
+  MONGODB_URL: string;
+}
+
+const myEnv: Env = {
+  MONGODB_URL: process.env.REACT_APP_MONGODB_URL || ''
+};
 
 //CONNECTION TO MONGOOSE DATABASE
 export async function initDb() {
-    dotenv.config();
-    const client = new mongoDB.MongoClient('mongodb+srv://hiruFernando:temp@clusterkaleido.jr7jn26.mongodb.net/')
+    const client = new mongoDB.MongoClient(process.env.MONGODB_URL as string)
     // const client: mongoDB.MongoClient = new mongoDB.MongoClient(process.env.MONGODB_URL);   
     await client.connect();
         
-    const db: mongoDB.Db = client.db('UserTransaction');
-    const userTransactionCollection: mongoDB.Collection = db.collection("Users");
+    const db: mongoDB.Db = client.db(process.env.DB_NAME as string);
+    const userTransactionCollection: mongoDB.Collection = db.collection(process.env.DB_COLLECTION_NAME as string);
+    
 
+    logger.info(`Successfully connected to database: ${db.databaseName} and collection: ${userTransactionCollection.collectionName}`)
 
-    console.log(`Successfully connected to database: ${db.databaseName} and collection: ${userTransactionCollection.collectionName}`);
-
+    collections.users = userTransactionCollection;
     // Inserting single document 
     // REMOVE THIS!!!!
-    userTransactionCollection.insertOne({"emailAddress": 'hirusepalika@gmail.com', "transactionId": 'faketransactionid'}); 
-
-  // return new Promise<void>((resolve, reject) => {
-  //   mongoose.connection.on('connected', () => {
-  //     logger.info('Mongoose connected');
-  //     resolve();
-  //   });
-  //   mongoose.connection.on('error', (error) => {
-  //     logger.error('Mongoose connection error', { error });
-  //     reject();
-  //   });
-  //   mongoose.connection.on('disconnected', () => {
-  //     logger.error('Mongoose disconnected');
-  //   });
-  //   mongoose.connect(MONGODB_URL);
-  // });
+    // userTransactionCollection.insertOne({"emailAddress": 'hirusepalika@gmail.com', "transactionId": 'faketransactionid'}); 
 }
 
 app.get("/api/value", async (req, res) => {
@@ -78,6 +74,16 @@ app.post("/api/value", async (req, res) => {
     res.status(500).send({
       error: e.message,
     });
+  }
+});
+
+app.get("/api/userTransactions", async (req, res) => {
+  try {
+     const userData = (await collections.users.find({}).toArray());
+
+      res.status(200).send(userData);
+  } catch (error) {
+      res.status(500).send(error.message);
   }
 });
 

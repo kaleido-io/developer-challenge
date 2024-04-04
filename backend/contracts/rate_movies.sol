@@ -1,32 +1,32 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.10;
 
-struct UserMovieInfo {
-   MovieRating[] ratings;
-}
-
 struct MovieRating {
-    string movieTitle;
-    string movieRating;
+    bytes32 movieTitle;
+    bytes32 movieRating;
 }
 
 // Declares a new contract
-contract SimpleStorage {
+contract UserMovieRating {
     // Storage. Persists in between transactions
-    // uint256 x;
-    UserMovieInfo info;
+    MovieRating[] ratings;
 
-    // Allows the unsigned integer stored to be changed
-    function set(UserMovieInfo memory _userInfo) public {
-        // TODO: need to call get and iterate to see if user email address already has a transaction
-        info = _userInfo;
-        emit Changed(msg.sender, info);
+    // Allows the user movie info (array of ratings) stored to be changed
+    function set(MovieRating[] memory ratingInfo) public {
+        // ratings = ratingInfo; // memory to storage not yet supported error
+        // for loop
+        for (uint256 i = 0; i < ratingInfo.length; i++) {
+            ratings.push(MovieRating(ratingInfo[i].movieTitle, ratingInfo[i].movieRating));
+        }
+
+        emit Changed(msg.sender, ratings);
     }
 
     // Returns the currently stored unsigned integer
-    function get() public view returns (UserMovieInfo memory) {
-        return info;
+    function get() public view returns (MovieRating[] memory) {
+        // needed for transaction ID -> to make sure same user can't create multiple rating transactions.
+        return ratings;
     }
 
-    event Changed(address indexed from, UserMovieInfo userInfo);
+    event Changed(address indexed from, MovieRating[] ratingInfo);
 }

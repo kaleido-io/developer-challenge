@@ -45,8 +45,17 @@ function App() {
     fetchMovies()
   }
 
-  function submitRatings() {
+  async function submitRatings() {
     console.log("in submit", movieRatings)
+
+    const res = await fetch('/api/userTransactions');
+    const { data, error } = await res.json();
+      if (!res.ok) {
+        // setErrorMsg(error);
+      } else {
+        console.log("data from mongo ---", data)
+      }
+
     // this is where smart contract API will be called to set transaction
   }
 
@@ -157,28 +166,13 @@ class MovieCarousel extends React.Component<Props, {}> {
     setLoading(true);
     setErrorMsg(null);
     try {
-      // const res = await fetch(`/api/value`);
-      // const { x, error } = await res.json();
-      // if (!res.ok) {
-      //   setErrorMsg(error);
-      // } else {
-      //   setValue(x);
-      // }
-      const res = await Promise.all(movieUrls.map(e => fetch(e, {
-        method: "GET",
-        headers: { 
-          'X-RapidAPI-Key': '80ea1982d5msh094b5a03b6ce240p152960jsn3d7f5f682b43',
-          'X-RapidAPI-Host': 'movie-database-alternative.p.rapidapi.com',
-          "Content-Type": "application/json" 
-        }
-      })));
-
-      let resJson = await Promise.all(res.map(e => e.json()))
-      for (const each of resJson) {
-        const movieData = {name: each.Title, imageURL: each.Poster} as Item
-        movieList.push(movieData)
+      const res = await fetch(`/api/value`);
+      const { x, error } = await res.json();
+      if (!res.ok) {
+        setErrorMsg(error);
+      } else {
+        setValue(x);
       }
-      setMovies({movies: movieList})
     } catch (err: any) {
       setErrorMsg(err.stack);
     }
