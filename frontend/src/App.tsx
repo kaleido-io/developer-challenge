@@ -2,6 +2,7 @@ import React, { FormEvent, useState, useEffect } from "react";
 import "./App.css";
 import "./App.scss";
 import {TextField, Box, MenuItem, Button} from '@mui/material';
+import NewUserRegisterModal from './NewUserModal';
 
 export type Item = {
   name: string,
@@ -9,11 +10,6 @@ export type Item = {
   color: string,
   href: string
 }
-
-// interface ProjectProps
-// {
-//     movie: Item
-// }
 
 function App() {
   const [loading, setLoading] = useState(false);
@@ -31,6 +27,13 @@ function App() {
   let movieList: Item[] = []
   const [movieRatings, setMovieRatings] = useState({})
   const [emailAddress, setEmailAddress] = useState('')
+  const [newUserEmailAddress, setNewUserEmailAddress] = useState('');
+
+
+  // modal props
+  const [openModal, setOpenModal] = useState(false);
+  const handleOpen = () => setOpenModal(true);
+  const handleClose = () => setOpenModal(false);
 
   // to handle when user select a rating - save to an object with key(movie name)-value(selected rating) pair
   function handleSelect(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, key: string) {
@@ -41,22 +44,31 @@ function App() {
     setEmailAddress(event.target.value)
   }
 
-  function handleSubmit() {
-    fetchMovies()
+  async function handleSubmit() {
+    const res = await fetch('/api/userTransactions');
+    const allowedUsers = await res.json();
+      if (!res.ok) {
+        // setErrorMsg(error);
+      } else { // if user is found then let them rate movies
+        if(allowedUsers.find((allowedUser: any) => allowedUser.emailAddress === emailAddress)) {
+          fetchMovies()
+        } else { // if user is not found
+          // set error
+        }
+      }
   }
 
   async function submitRatings() {
     console.log("in submit", movieRatings)
+    // TODO: call setMovieRating here!!!
 
-    const res = await fetch('/api/userTransactions');
-    const { data, error } = await res.json();
-      if (!res.ok) {
-        // setErrorMsg(error);
-      } else {
-        console.log("data from mongo ---", data)
-      }
-
-    // this is where smart contract API will be called to set transaction
+    // const res = await fetch('/api/setMovieRating');
+    // const { data, error } = await res.json();
+    //   if (!res.ok) {
+    //     // setErrorMsg(error);
+    //   } else {
+    //     console.log("data from mongo ---", data)
+    //   }
   }
 
   interface Props
@@ -238,7 +250,7 @@ class MovieCarousel extends React.Component<Props, {}> {
             </>
           )
         }
-        <p>
+        {/* <p>
           <button
             type="button"
             className="App-button"
@@ -247,6 +259,26 @@ class MovieCarousel extends React.Component<Props, {}> {
             Get Value
           </button>
           {value !== "" ? <p>Retrieved value: {value}</p> : <p>&nbsp;</p>}
+        </p> */}
+        <br />
+        <p style={{fontSize: '14px', fontFamily: 'monospace', color: 'black'}}>
+          If new user, please register first: {'   '}
+          <Button
+            type="button"
+            className="submit-button"
+            onClick={handleOpen}
+            variant="contained"
+            sx={{backgroundColor: 'darksalmon'}}
+          >
+            Register as New User
+          </Button>
+          <NewUserRegisterModal 
+            title="User Registration Information:" 
+            newUserEmailAddress={newUserEmailAddress}
+            setNewUserEmailAddress={setNewUserEmailAddress}
+            openModal={openModal}
+            handleClose={handleClose} 
+          />
         </p>
         {errorMsg && <pre className="App-error">Error: {errorMsg}</pre>}
       </header>

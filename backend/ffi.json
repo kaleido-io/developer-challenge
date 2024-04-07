@@ -1,0 +1,277 @@
+{
+	"namespace": "default",
+	"name": "movie-rater-1",
+	"description": "",
+	"version": "1.0.0",
+	"methods": [
+		{
+			"name": "getMovieRatings",
+			"pathname": "",
+			"description": "",
+			"params": [
+				{
+					"name": "userId",
+					"schema": {
+						"type": "string",
+						"details": {
+							"type": "bytes32",
+							"internalType": "bytes32"
+						},
+						"description": "A hex encoded set of bytes, with an optional '0x' prefix"
+					}
+				}
+			],
+			"returns": [
+				{
+					"name": "",
+					"schema": {
+						"type": "array",
+						"details": {
+							"type": "tuple[]",
+							"internalType": "struct MovieRating[]"
+						},
+						"items": {
+							"type": "object",
+							"properties": {
+								"movieRating": {
+									"oneOf": [
+										{
+											"type": "string"
+										},
+										{
+											"type": "integer"
+										}
+									],
+									"details": {
+										"type": "uint256",
+										"internalType": "uint256",
+										"index": 1
+									},
+									"description": "An integer. You are recommended to use a JSON string. A JSON number can be used for values up to the safe maximum."
+								},
+								"movieTitle": {
+									"type": "string",
+									"details": {
+										"type": "bytes32",
+										"internalType": "bytes32",
+										"index": 0
+									},
+									"description": "A hex encoded set of bytes, with an optional '0x' prefix"
+								}
+							}
+						}
+					}
+				}
+			],
+			"details": {
+				"stateMutability": "view"
+			}
+		},
+		{
+			"name": "setMovieRating",
+			"pathname": "",
+			"description": "",
+			"params": [
+				{
+					"name": "userId",
+					"schema": {
+						"type": "string",
+						"details": {
+							"type": "bytes32",
+							"internalType": "bytes32"
+						},
+						"description": "A hex encoded set of bytes, with an optional '0x' prefix"
+					}
+				},
+				{
+					"name": "ratingInfo",
+					"schema": {
+						"type": "object",
+						"details": {
+							"type": "tuple",
+							"internalType": "struct MovieRating"
+						},
+						"properties": {
+							"movieRating": {
+								"oneOf": [
+									{
+										"type": "string"
+									},
+									{
+										"type": "integer"
+									}
+								],
+								"details": {
+									"type": "uint256",
+									"internalType": "uint256",
+									"index": 1
+								},
+								"description": "An integer. You are recommended to use a JSON string. A JSON number can be used for values up to the safe maximum."
+							},
+							"movieTitle": {
+								"type": "string",
+								"details": {
+									"type": "bytes32",
+									"internalType": "bytes32",
+									"index": 0
+								},
+								"description": "A hex encoded set of bytes, with an optional '0x' prefix"
+							}
+						}
+					}
+				}
+			],
+			"returns": [],
+			"details": {
+				"stateMutability": "nonpayable"
+			}
+		},
+		{
+			"name": "transactions",
+			"pathname": "",
+			"description": "",
+			"params": [
+				{
+					"name": "",
+					"schema": {
+						"type": "string",
+						"details": {
+							"type": "bytes32",
+							"internalType": "bytes32"
+						},
+						"description": "A hex encoded set of bytes, with an optional '0x' prefix"
+					}
+				},
+				{
+					"name": "",
+					"schema": {
+						"oneOf": [
+							{
+								"type": "string"
+							},
+							{
+								"type": "integer"
+							}
+						],
+						"details": {
+							"type": "uint256",
+							"internalType": "uint256"
+						},
+						"description": "An integer. You are recommended to use a JSON string. A JSON number can be used for values up to the safe maximum."
+					}
+				}
+			],
+			"returns": [
+				{
+					"name": "movieTitle",
+					"schema": {
+						"type": "string",
+						"details": {
+							"type": "bytes32",
+							"internalType": "bytes32"
+						},
+						"description": "A hex encoded set of bytes, with an optional '0x' prefix"
+					}
+				},
+				{
+					"name": "movieRating",
+					"schema": {
+						"oneOf": [
+							{
+								"type": "string"
+							},
+							{
+								"type": "integer"
+							}
+						],
+						"details": {
+							"type": "uint256",
+							"internalType": "uint256"
+						},
+						"description": "An integer. You are recommended to use a JSON string. A JSON number can be used for values up to the safe maximum."
+					}
+				}
+			],
+			"details": {
+				"stateMutability": "view"
+			}
+		}
+	],
+	"events": [
+		{
+			"signature": "",
+			"name": "Changed",
+			"description": "",
+			"params": [
+				{
+					"name": "from",
+					"schema": {
+						"type": "string",
+						"details": {
+							"type": "address",
+							"internalType": "address",
+							"indexed": true
+						},
+						"description": "A hex encoded set of bytes, with an optional '0x' prefix"
+					}
+				},
+				{
+					"name": "ratingInfo",
+					"schema": {
+						"type": "object",
+						"details": {
+							"type": "tuple",
+							"internalType": "struct TransactionInfo"
+						},
+						"properties": {
+							"rating": {
+								"type": "object",
+								"details": {
+									"type": "tuple",
+									"internalType": "struct MovieRating",
+									"index": 1
+								},
+								"properties": {
+									"movieRating": {
+										"oneOf": [
+											{
+												"type": "string"
+											},
+											{
+												"type": "integer"
+											}
+										],
+										"details": {
+											"type": "uint256",
+											"internalType": "uint256",
+											"index": 1
+										},
+										"description": "An integer. You are recommended to use a JSON string. A JSON number can be used for values up to the safe maximum."
+									},
+									"movieTitle": {
+										"type": "string",
+										"details": {
+											"type": "bytes32",
+											"internalType": "bytes32",
+											"index": 0
+										},
+										"description": "A hex encoded set of bytes, with an optional '0x' prefix"
+									}
+								}
+							},
+							"userId": {
+								"type": "string",
+								"details": {
+									"type": "bytes32",
+									"internalType": "bytes32",
+									"index": 0
+								},
+								"description": "A hex encoded set of bytes, with an optional '0x' prefix"
+							}
+						}
+					}
+				}
+			]
+		}
+	]
+}

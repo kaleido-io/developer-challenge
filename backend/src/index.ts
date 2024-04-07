@@ -38,6 +38,8 @@ const myEnv: Env = {
   MONGODB_URL: process.env.REACT_APP_MONGODB_URL || ''
 };
 
+let userTransactionCollection: mongoDB.Collection;
+
 //CONNECTION TO MONGOOSE DATABASE
 export async function initDb() {
     const client = new mongoDB.MongoClient(process.env.MONGODB_URL as string)
@@ -45,7 +47,7 @@ export async function initDb() {
     await client.connect();
         
     const db: mongoDB.Db = client.db(process.env.DB_NAME as string);
-    const userTransactionCollection: mongoDB.Collection = db.collection(process.env.DB_COLLECTION_NAME as string);
+    userTransactionCollection = db.collection(process.env.DB_COLLECTION_NAME as string);
     
 
     logger.info(`Successfully connected to database: ${db.databaseName} and collection: ${userTransactionCollection.collectionName}`)
@@ -84,6 +86,19 @@ app.get("/api/userTransactions", async (req, res) => {
       res.status(200).send(userData);
   } catch (error) {
       res.status(500).send(error.message);
+  }
+});
+
+app.post("/api/newUser", (req, res) => {
+  try {
+    const {body} = req;
+    // add new user to our user registry in mongodb
+    userTransactionCollection.insertOne({"emailAddress": body.newUserEmail})
+    res.status(202).send({
+      emailAddress: body.newUserEmail,
+    });
+  } catch (error) {
+    res.status(500).send(error.message);
   }
 });
 
