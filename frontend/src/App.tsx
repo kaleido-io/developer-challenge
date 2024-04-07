@@ -14,8 +14,8 @@ export type Item = {
 function App() {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
-  const [desiredValue, setDesiredValue] = useState("test");
-  const [value, setValue] = useState("");
+  // const [desiredValue, setDesiredValue] = useState("test");
+  // const [value, setValue] = useState("");
   const movieUrls = [
     "https://movie-database-alternative.p.rapidapi.com?i=tt15239678",
     "https://movie-database-alternative.p.rapidapi.com?i=tt11057302",
@@ -23,17 +23,21 @@ function App() {
     "https://movie-database-alternative.p.rapidapi.com?i=tt14230458",
     "https://movie-database-alternative.p.rapidapi.com?i=tt2049403",
   ]
-  const [movies, setMovies] = useState<{movies: Item[]}>()
+  const [movies, setMovies] = useState<Item[]>([])
   let movieList: Item[] = []
   const [movieRatings, setMovieRatings] = useState({})
   const [emailAddress, setEmailAddress] = useState('')
   const [newUserEmailAddress, setNewUserEmailAddress] = useState('');
-
-
+  
   // modal props
   const [openModal, setOpenModal] = useState(false);
   const handleOpen = () => setOpenModal(true);
   const handleClose = () => setOpenModal(false);
+
+  interface Props
+  {
+      movies: Item[]
+  }
 
   // to handle when user select a rating - save to an object with key(movie name)-value(selected rating) pair
   function handleSelect(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, key: string) {
@@ -47,71 +51,18 @@ function App() {
   async function handleSubmit() {
     const res = await fetch('/api/userTransactions');
     const allowedUsers = await res.json();
-      if (!res.ok) {
-        // setErrorMsg(error);
-      } else { // if user is found then let them rate movies
-        if(allowedUsers.find((allowedUser: any) => allowedUser.emailAddress === emailAddress)) {
-          fetchMovies()
-        } else { // if user is not found
-          // set error
-        }
+    if (!res.ok) {
+      // setErrorMsg(error);
+    } else { // if user is found then let them rate movies
+      if(allowedUsers?.find((allowedUser: any) => allowedUser.emailAddress === emailAddress)) {
+        fetchMovies()
+      } else { // if user is not found
+        // set error
       }
+    }
   }
 
-  async function submitRatings() {
-    console.log("in submit", movieRatings)
-    // TODO: call setMovieRating here!!!
-
-    // const res = await fetch('/api/setMovieRating');
-    // const { data, error } = await res.json();
-    //   if (!res.ok) {
-    //     // setErrorMsg(error);
-    //   } else {
-    //     console.log("data from mongo ---", data)
-    //   }
-  }
-
-  interface Props
-  {
-      movies: Item[]
-  }
-
-// Render movie posters + titles + select options
-class MovieCarousel extends React.Component<Props, {}> {
-  render() {
-    return movies && (
-      <body>
-        <main id="carousel" style={{flexDirection: "row", display: "flex"}}>
-          {movies.movies.map(movie => 
-            <span style={{marginRight: "20px"}} key={`${movie.name}-span`}>
-                <text>{movie.name}</text>
-                <div className="movie-card" key={movie.name} style={{width: '250px', height: '350px',marginBottom: "20px", backgroundImage: `url(${movie.imageURL})`, backgroundPosition: 'center', backgroundSize: 'cover'}}></div>
-                <label className="select-label">
-                  <TextField
-                    key={movie.imageURL}
-                    id={movie.imageURL}
-                    select
-                    label="Select"
-                    // defaultValue=""
-                    helperText="Please select your rating"
-                    variant="filled"
-                    onChange={e => handleSelect(e, movie.name)}
-                    value={movieRatings[movie.name as keyof typeof movieRatings]}
-                  >
-                    <MenuItem key="1" value="1">First</MenuItem>
-                    <MenuItem key="2" value="2">Second</MenuItem>
-                    <MenuItem key="3" value="3">Third</MenuItem>
-                    <MenuItem key="4" value="4">Fourth</MenuItem>
-                    <MenuItem key="5" value="5">Fifth</MenuItem>
-                  </TextField>
-                </label>
-            </span>)}
-        </main>
-      </body>
-    );
-  }
-}
-
+  // movie poster and title fetch
   async function fetchMovies() {
     setLoading(true);
     setErrorMsg(null);
@@ -131,33 +82,121 @@ class MovieCarousel extends React.Component<Props, {}> {
         movieList.push(movieData)
       }
 
-      setMovies({movies: movieList})
+      setMovies(movieList)
     } catch (err: any) {
       setErrorMsg(err.stack);
     }
   }
 
-  async function setContractValue() {
-    setLoading(true);
-    setErrorMsg(null);
-    try {
-      const res = await fetch(`/api/value`, {
+  // async function postMovieRating() {
+  //   try {
+  //     await fetch(`/api/setMovieRating`, {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({
+  //         userId: emailAddress,
+  //       }),
+  //     });
+    
+  //   } catch (err: any) {
+  //     setErrorMsg(err.stack);
+  //   }
+  // }
+
+  async function submitRatings() {
+    console.log("in submit", movieRatings)
+
+    const ratings = [];
+    for (const [key, value] of Object.entries(movieRatings)) {
+      ratings.push(fetch(`/api/setMovieRating`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          x: desiredValue,
+          userId: emailAddress,
+          ratingInfo: 
+          {
+              movieTitle: key,
+              movieRating: value
+          }
         }),
-      });
-      const { error } = await res.json();
-      if (!res.ok) {
-        setErrorMsg(error);
-      }
-    } catch (err: any) {
-      setErrorMsg(err.stack);
+      }));
     }
-    setLoading(false);
+
+    const promises = await Promise.all(ratings);
+    const responses = await Promise.all(promises.map(e => e.json()))
+    console.log("promise responses ---- ", responses)
+    // await postMovieRating();
+    setMovies([]);
+    setEmailAddress('');
+    
+    // TODO: call setMovieRating here!!!
+
+    // const res = await fetch('/api/setMovieRating');
+    // const { data, error } = await res.json();
+    //   if (!res.ok) {
+    //     // setErrorMsg(error);
+    //   } else {
+    //     console.log("data from mongo ---", data)
+    //   }
   }
 
+  // Render movie posters + titles + select options
+  class MovieCarousel extends React.Component<Props, {}> {
+    render() {
+      return movies?.length > 0 && (
+        <body>
+          <main id="carousel" style={{flexDirection: "row", display: "flex"}}>
+            {movies.map(movie => 
+              <span style={{marginRight: "20px"}} key={`${movie.name}-span`}>
+                  <div title={movie.name} className="movie-card" key={movie.name} style={{ backgroundImage: `url(${movie.imageURL})`}}></div>
+                  <label className="select-label">
+                    <TextField
+                      key={movie.imageURL}
+                      id={movie.imageURL}
+                      select
+                      label="Select"
+                      helperText="Please select your rating"
+                      variant="filled"
+                      onChange={e => handleSelect(e, movie.name)}
+                      value={movieRatings[movie.name as keyof typeof movieRatings]}
+                    >
+                      <MenuItem key="1" value="1">First</MenuItem>
+                      <MenuItem key="2" value="2">Second</MenuItem>
+                      <MenuItem key="3" value="3">Third</MenuItem>
+                      <MenuItem key="4" value="4">Fourth</MenuItem>
+                      <MenuItem key="5" value="5">Fifth</MenuItem>
+                    </TextField>
+                  </label>
+              </span>)}
+          </main>
+        </body>
+      );
+    }
+  }
+
+  // TODO: old remove
+  // async function setContractValue() {
+  //   setLoading(true);
+  //   setErrorMsg(null);
+  //   try {
+  //     const res = await fetch(`/api/value`, {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({
+  //         x: desiredValue,
+  //       }),
+  //     });
+  //     const { error } = await res.json();
+  //     if (!res.ok) {
+  //       setErrorMsg(error);
+  //     }
+  //   } catch (err: any) {
+  //     setErrorMsg(err.stack);
+  //   }
+  //   setLoading(false);
+  // }
+
+  // TODO: old remove
   // async function getContractValue() {
   //   setLoading(true);
   //   setErrorMsg(null);
@@ -174,35 +213,18 @@ class MovieCarousel extends React.Component<Props, {}> {
   //   }
   //   setLoading(false);
   // }
-  async function getContractValue() {
-    setLoading(true);
-    setErrorMsg(null);
-    try {
-      const res = await fetch(`/api/value`);
-      const { x, error } = await res.json();
-      if (!res.ok) {
-        setErrorMsg(error);
-      } else {
-        setValue(x);
-      }
-    } catch (err: any) {
-      setErrorMsg(err.stack);
-    }
-    setLoading(false);
-  }
 
+  // TODO: old remove
+  // function handleChange(event: FormEvent<HTMLInputElement>) {
+  //   setDesiredValue(event.currentTarget.value);
+  // }
 
-  function handleChange(event: FormEvent<HTMLInputElement>) {
-    setDesiredValue(event.currentTarget.value);
-  }
-
-  // event: React.MouseEvent<HTMLButtonElement, MouseEvent>, text: string
   return (
     <div className="App">
       <header className="App-header">
         <h1><img src="../images/movie-icon-2.png" alt="movie-icon" style={{width: '50px'}}/>ReelRater</h1>
         <br />
-        {!movies && 
+        {movies?.length === 0 && 
           <Box
             component="form"
             noValidate
@@ -233,7 +255,7 @@ class MovieCarousel extends React.Component<Props, {}> {
         }
         <MovieCarousel movies={movieList} />
         {
-          movies && (
+          movies?.length > 0 && (
             <>
               <br/>
               <p>
@@ -250,16 +272,6 @@ class MovieCarousel extends React.Component<Props, {}> {
             </>
           )
         }
-        {/* <p>
-          <button
-            type="button"
-            className="App-button"
-            onClick={getContractValue}
-          >
-            Get Value
-          </button>
-          {value !== "" ? <p>Retrieved value: {value}</p> : <p>&nbsp;</p>}
-        </p> */}
         <br />
         <p style={{fontSize: '14px', fontFamily: 'monospace', color: 'black'}}>
           If new user, please register first: {'   '}

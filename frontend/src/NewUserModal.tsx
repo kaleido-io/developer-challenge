@@ -30,15 +30,27 @@ function NewUserRegisterModal({ title,  newUserEmailAddress, setNewUserEmailAddr
     // call mongodb api to register new user
     const handleRegister = async () => {
         try {
-            await fetch(`/api/newUser`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                newUserEmail: newUserEmailAddress,
-              }),
-            });
-            setErrorMsg("");
-            handleClose();
+            const res = await fetch('/api/userTransactions');
+            const allowedUsers = await res.json();
+            if (!res.ok) {
+                setErrorMsg("Couldn't fetch allowed users!")
+            } else { 
+                // if user is found then error - can't register same users
+                if(allowedUsers?.find((allowedUser: any) => allowedUser.emailAddress === newUserEmailAddress)) {
+                    setErrorMsg("User already exists!")
+                } else {
+                    // if user is not found in database
+                    await fetch(`/api/newUser`, {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({
+                        newUserEmail: newUserEmailAddress,
+                      }),
+                    });
+                    setErrorMsg("");
+                    handleClose();
+                }
+            }
           } catch (err: any) {
             setErrorMsg("Failed to register. Please try again.");
         }
@@ -76,16 +88,16 @@ function NewUserRegisterModal({ title,  newUserEmailAddress, setNewUserEmailAddr
                 <Typography id="transition-modal-title" variant="h6" component="h2">
                     {title}
                 </Typography>
-                <TextField
-                    error={newUserEmailAddress?.length === 0}
-                    id="filled-error"
-                    label="New User Email Address"
-                    variant="filled"
-                    value={newUserEmailAddress}
-                    onChange={handleChange}
-                    sx={{fontSize: 'large'}}
-                />
                 <br/>
+                    <TextField
+                        sx={{width: '300px', marginBottom: '20px'}}
+                        error={newUserEmailAddress?.length === 0}
+                        id="outlined-error"
+                        label="Email Address"
+                        value={newUserEmailAddress}
+                        onChange={handleChange}
+                        helperText={newUserEmailAddress?.length === 0 && "Please enter email address to register"}
+                    />
                 <br/>
                 <Button
                     type="button"

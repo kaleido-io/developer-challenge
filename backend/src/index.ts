@@ -3,11 +3,9 @@ import express from "express";
 import bodyparser from "body-parser";
 import simplestorage from "../contracts/simple_storage.json";
 import { v4 as uuidv4 } from "uuid";
-// import mongoose from 'mongoose';
 import winston from "winston";
 import * as mongoDB from "mongodb";
 import * as dotenv from "dotenv";
-import UserTransaction from './models/userTransaction'
 
 const logger = winston.createLogger({
   transports: [new winston.transports.Console()],
@@ -77,6 +75,36 @@ app.post("/api/value", async (req, res) => {
       error: e.message,
     });
   }
+});
+
+app.post("/api/setMovieRating", async (req, res) => {
+  try {
+    const fireflyRes = await firefly.invokeContractAPI("movieRater3", "setMovieRating", {
+      input: {
+        userId: req.body.userId,
+        ratingInfo: 
+          {
+              movieTitle: req.body.ratingInfo.movieTitle,
+              movieRating: req.body.ratingInfo.movieRating
+          }
+      },
+    });
+    res.status(202).send({
+      id: fireflyRes.id,
+    });
+  } catch (e: any) {
+    res.status(500).send({
+      error: e.message,
+    });
+  }
+});
+
+app.get("/api/getMovieRatings", async (req, res) => {
+  res.send(await firefly.queryContractAPI("movieRater3", "get", {
+    input: {
+      userId: req.body.userId
+    }
+  }));
 });
 
 app.get("/api/userTransactions", async (req, res) => {
