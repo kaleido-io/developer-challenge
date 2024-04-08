@@ -3,6 +3,7 @@ import "./App.css";
 import "./App.scss";
 import {TextField, Box, MenuItem, Button} from '@mui/material';
 import NewUserRegisterModal from './NewUserModal';
+import {ASCIItoHEX} from './StringHexConverter';
 
 export type Item = {
   name: string,
@@ -33,6 +34,9 @@ function App() {
   const [openModal, setOpenModal] = useState(false);
   const handleOpen = () => setOpenModal(true);
   const handleClose = () => setOpenModal(false);
+
+
+  console.log("hexxx", ASCIItoHEX("hirusepalika@gmail.com"))
 
   interface Props
   {
@@ -112,11 +116,11 @@ function App() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          userId: emailAddress,
+          userId: ASCIItoHEX(emailAddress),
           ratingInfo: 
           {
-              movieTitle: key,
-              movieRating: value
+              movieTitle: ASCIItoHEX(key),
+              movieRating: ASCIItoHEX(value)
           }
         }),
       }));
@@ -173,28 +177,6 @@ function App() {
       );
     }
   }
-
-  // TODO: old remove
-  // async function setContractValue() {
-  //   setLoading(true);
-  //   setErrorMsg(null);
-  //   try {
-  //     const res = await fetch(`/api/value`, {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify({
-  //         x: desiredValue,
-  //       }),
-  //     });
-  //     const { error } = await res.json();
-  //     if (!res.ok) {
-  //       setErrorMsg(error);
-  //     }
-  //   } catch (err: any) {
-  //     setErrorMsg(err.stack);
-  //   }
-  //   setLoading(false);
-  // }
 
   // TODO: old remove
   // async function getContractValue() {
