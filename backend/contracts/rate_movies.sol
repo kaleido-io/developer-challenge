@@ -6,22 +6,13 @@ struct MovieRating {
     uint256 movieRating;
 }
 
-struct TransactionInfo {
-    bytes32 userId;
-    MovieRating rating;
-}
-
 // Declares a new contract
 contract UserMovieRating {
     // Storage. Persists in between transactions
-    // MovieRating[] ratings;
-    // TransactionInfo transInfo;
 
     mapping (bytes32 => MovieRating[]) public transactions; // "user email address": [{movieTitle: "a", movieRating: 3}]
 
     function setMovieRating(bytes32 userId, MovieRating memory ratingInfo) public {        
-        // transInfo.userId = userId;
-        // transInfo.rating = ratingInfo;
 
         // add to transactions[userId] -> movie ratings for that particular user
         transactions[userId].push(MovieRating(ratingInfo.movieTitle, ratingInfo.movieRating));
