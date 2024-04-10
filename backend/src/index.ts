@@ -28,20 +28,11 @@ dotenv.config();
 
 export const collections: { users?: mongoDB.Collection } = {}
 
-interface Env {
-  MONGODB_URL: string;
-}
-
-const myEnv: Env = {
-  MONGODB_URL: process.env.REACT_APP_MONGODB_URL || ''
-};
-
 let userTransactionCollection: mongoDB.Collection;
 
 //CONNECTION TO MONGOOSE DATABASE
 export async function initDb() {
-    const client = new mongoDB.MongoClient(process.env.MONGODB_URL as string)
-    // const client: mongoDB.MongoClient = new mongoDB.MongoClient(process.env.MONGODB_URL);   
+    const client = new mongoDB.MongoClient(process.env.MONGODB_URL as string);  
     await client.connect();
         
     const db: mongoDB.Db = client.db(process.env.DB_NAME as string);
@@ -50,36 +41,13 @@ export async function initDb() {
 
     logger.info(`Successfully connected to database: ${db.databaseName} and collection: ${userTransactionCollection.collectionName}`)
 
-    collections.users = userTransactionCollection;
-    // Inserting single document 
-    // REMOVE THIS!!!!
-    // userTransactionCollection.insertOne({"emailAddress": 'hirusepalika@gmail.com', "transactionId": 'faketransactionid'}); 
+    collections.users = userTransactionCollection; 
 }
 
-app.get("/api/value", async (req, res) => {
-  res.send(await firefly.queryContractAPI(apiName, "get", {}));
-});
-
-app.post("/api/value", async (req, res) => {
-  try {
-    const fireflyRes = await firefly.invokeContractAPI(apiName, "set", {
-      input: {
-        x: req.body.x,
-      },
-    });
-    res.status(202).send({
-      id: fireflyRes.id,
-    });
-  } catch (e: any) {
-    res.status(500).send({
-      error: e.message,
-    });
-  }
-});
-
+// set movie rating with user id
 app.post("/api/setMovieRating", async (req, res) => {
   try {
-    const fireflyRes = await firefly.invokeContractAPI("movieRater3", "setMovieRating", {
+    const fireflyRes = await firefly.invokeContractAPI("movieRater6", "setMovieRating", {
       input: {
         userId: req.body.userId,
         ratingInfo: 
@@ -99,15 +67,24 @@ app.post("/api/setMovieRating", async (req, res) => {
   }
 });
 
+// fetch movie ratings for given user
 app.get("/api/getMovieRatings", async (req, res) => {
-  res.send(await firefly.queryContractAPI("movieRater3", "get", {
-    input: {
-      userId: req.body.userId
-    }
-  }));
+  try {
+    res.status(202).send(await firefly.queryContractAPI("movieRater6", "getMovieRatings", {
+      input: {
+        userId: req.query.userId
+      }
+    }));
+  } catch (e: any) {
+    res.status(500).send({
+      error: e.message,
+    });
+  }
+  
 });
 
-app.get("/api/userTransactions", async (req, res) => {
+// get existing users from mongoDB
+app.get("/api/allowedUsers", async (req, res) => {
   try {
      const userData = (await collections.users.find({}).toArray());
 
@@ -117,6 +94,7 @@ app.get("/api/userTransactions", async (req, res) => {
   }
 });
 
+// create new user and add to mongoDB
 app.post("/api/newUser", (req, res) => {
   try {
     const {body} = req;

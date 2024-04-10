@@ -5,7 +5,10 @@
     "@mui/material": "^5.15.14",
     "dotenv": "^16.4.5",
     "kareem": "^2.6.0",
-    "react-material-ui-carousel": "^3.4.2"
+    "process": "^0.11.10",
+    "react-material-ui-carousel": "^3.4.2",
+    "web3": "^4.7.0",
+    "webpack": "^5.91.0"
   },
   "devDependencies": {
     "sass": "^1.72.0"

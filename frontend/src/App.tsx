@@ -1,7 +1,7 @@
-import React, { FormEvent, useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./App.css";
 import "./App.scss";
-import {TextField, Box, MenuItem, Button} from '@mui/material';
+import {TextField, Box, MenuItem, Button, Alert} from '@mui/material';
 import NewUserRegisterModal from './NewUserModal';
 import {ASCIItoHEX} from './StringHexConverter';
 
@@ -13,10 +13,7 @@ export type Item = {
 }
 
 function App() {
-  const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState(null);
-  // const [desiredValue, setDesiredValue] = useState("test");
-  // const [value, setValue] = useState("");
+  const [errorMsg, setErrorMsg] = useState<string>();
   const movieUrls = [
     "https://movie-database-alternative.p.rapidapi.com?i=tt15239678",
     "https://movie-database-alternative.p.rapidapi.com?i=tt11057302",
@@ -29,14 +26,12 @@ function App() {
   const [movieRatings, setMovieRatings] = useState({})
   const [emailAddress, setEmailAddress] = useState('')
   const [newUserEmailAddress, setNewUserEmailAddress] = useState('');
+  const [successfulSubmit, setSuccessfulSubmit] = useState(false);
   
   // modal props
   const [openModal, setOpenModal] = useState(false);
   const handleOpen = () => setOpenModal(true);
   const handleClose = () => setOpenModal(false);
-
-
-  console.log("hexxx", ASCIItoHEX("hirusepalika@gmail.com"))
 
   interface Props
   {
@@ -48,34 +43,50 @@ function App() {
     setMovieRatings({...movieRatings, [key]: event.target.value})
   }
 
+  // to handle input when user types in email address
   function handleInput(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     setEmailAddress(event.target.value)
+    setSuccessfulSubmit(false);
+    setErrorMsg("");
   }
 
+  // handle submit after user entered their email address
   async function handleSubmit() {
-    const res = await fetch('/api/userTransactions');
-    const allowedUsers = await res.json();
-    if (!res.ok) {
-      // setErrorMsg(error);
-    } else { // if user is found then let them rate movies
+    try {
+      const res = await fetch('/api/allowedUsers');
+      const allowedUsers = await res.json();
+      // user is found
       if(allowedUsers?.find((allowedUser: any) => allowedUser.emailAddress === emailAddress)) {
-        fetchMovies()
+        try {
+          const data = await getRatings();
+          if(data?.output?.length > 0) { // user already has ratings. Disable don't fetch movies
+            setErrorMsg("You have already rated movies!");
+            setNewUserEmailAddress("");
+          } else { // user has not rated movies
+            await fetchMovies(); // fetch movies to rate
+          }
+        } catch(err: any) {
+          setErrorMsg("Error getting ratings for user.");
+        }
       } else { // if user is not found
-        // set error
+        setErrorMsg("User is not found. Please register as a new user.");
+        setNewUserEmailAddress("");
       }
+    } catch(err: any) {
+      // allowed users API fetch error
+      setErrorMsg("Allowed Users API fetch failed.");
+      setNewUserEmailAddress("");
     }
   }
 
   // movie poster and title fetch
-  async function fetchMovies() {
-    setLoading(true);
-    setErrorMsg(null);
+  async function fetchMovies() {  
     try {
       const res = await Promise.all(movieUrls.map(e => fetch(e, {
         method: "GET",
         headers: { 
-          'X-RapidAPI-Key': '80ea1982d5msh094b5a03b6ce240p152960jsn3d7f5f682b43',
-          'X-RapidAPI-Host': 'movie-database-alternative.p.rapidapi.com',
+          'X-RapidAPI-Key': "80ea1982d5msh094b5a03b6ce240p152960jsn3d7f5f682b43", // TODO: remove this if env is figured out.
+          'X-RapidAPI-Host': "movie-database-alternative.p.rapidapi.com",
           "Content-Type": "application/json" 
         }
       })));
@@ -87,61 +98,57 @@ function App() {
       }
 
       setMovies(movieList)
+      setErrorMsg("");
     } catch (err: any) {
-      setErrorMsg(err.stack);
+      setErrorMsg("Fetching movies failed.");
     }
   }
 
-  // async function postMovieRating() {
-  //   try {
-  //     await fetch(`/api/setMovieRating`, {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify({
-  //         userId: emailAddress,
-  //       }),
-  //     });
-    
-  //   } catch (err: any) {
-  //     setErrorMsg(err.stack);
-  //   }
-  // }
-
-  async function submitRatings() {
-    console.log("in submit", movieRatings)
-
-    const ratings = [];
-    for (const [key, value] of Object.entries(movieRatings)) {
-      ratings.push(fetch(`/api/setMovieRating`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          userId: ASCIItoHEX(emailAddress),
-          ratingInfo: 
-          {
-              movieTitle: ASCIItoHEX(key),
-              movieRating: ASCIItoHEX(value)
-          }
-        }),
-      }));
+  // Grab ratings for user email address entered
+  async function getRatings() {
+    try {
+      const resp = await fetch(`/api/getMovieRatings?userId=${ASCIItoHEX(emailAddress)}`)
+      const respJson = await resp.json();
+      setErrorMsg("");
+      return respJson;
+    } catch(err: any) {
+      setErrorMsg("Fetching movie ratings from the block chain");
     }
-
-    const promises = await Promise.all(ratings);
-    const responses = await Promise.all(promises.map(e => e.json()))
-    console.log("promise responses ---- ", responses)
-    // await postMovieRating();
-    setMovies([]);
-    setEmailAddress('');
+  }
     
-    // TODO: call setMovieRating here!!!
+  // submit movie ratings to the blockchain
+  async function submitRatings() {
+    try {
+      const ratings = [];
+      for (const [key, value] of Object.entries(movieRatings)) {
+        ratings.push(fetch(`/api/setMovieRating`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userId: ASCIItoHEX(emailAddress),
+            ratingInfo: 
+            {
+                movieTitle: ASCIItoHEX(key),
+                movieRating: ASCIItoHEX(value)
+            }
+          }),
+        }));
+      }
+      const promises = await Promise.all(ratings);
+      await Promise.all(promises.map(e => e.json()))
 
-    // const res = await fetch('/api/setMovieRating');
-    // const { data, error } = await res.json();
-    //   if (!res.ok) {
-    //     // setErrorMsg(error);
-    //   } else {
-    //     console.log("data from mongo ---", data)
-    //   }
+      setMovies([]);
+      setEmailAddress('');
+      setErrorMsg("");
+      setSuccessfulSubmit(true);
+      setMovieRatings({});
+    } catch(err: any) {
+      setMovies([]);
+      setEmailAddress('');
+      setErrorMsg("Failed to submit ratings. Please try again.");
+      setSuccessfulSubmit(false);
+      setMovieRatings({});
+    }
   }
 
   // Render movie posters + titles + select options
@@ -177,29 +184,6 @@ function App() {
       );
     }
   }
-
-  // TODO: old remove
-  // async function getContractValue() {
-  //   setLoading(true);
-  //   setErrorMsg(null);
-  //   try {
-  //     const res = await fetch(`/api/value`);
-  //     const { x, error } = await res.json();
-  //     if (!res.ok) {
-  //       setErrorMsg(error);
-  //     } else {
-  //       setValue(x);
-  //     }
-  //   } catch (err: any) {
-  //     setErrorMsg(err.stack);
-  //   }
-  //   setLoading(false);
-  // }
-
-  // TODO: old remove
-  // function handleChange(event: FormEvent<HTMLInputElement>) {
-  //   setDesiredValue(event.currentTarget.value);
-  // }
 
   return (
     <div className="App">
@@ -241,7 +225,6 @@ function App() {
             <>
               <br/>
               <p>
-              {/* <input className="App-input" onChange={handleChange} /> */}
                 <Button
                   type="button"
                   className="submit-button"
@@ -255,26 +238,31 @@ function App() {
           )
         }
         <br />
-        <p style={{fontSize: '14px', fontFamily: 'monospace', color: 'black'}}>
-          If new user, please register first: {'   '}
-          <Button
-            type="button"
-            className="submit-button"
-            onClick={handleOpen}
-            variant="contained"
-            sx={{backgroundColor: 'darksalmon'}}
-          >
-            Register as New User
-          </Button>
-          <NewUserRegisterModal 
-            title="User Registration Information:" 
-            newUserEmailAddress={newUserEmailAddress}
-            setNewUserEmailAddress={setNewUserEmailAddress}
-            openModal={openModal}
-            handleClose={handleClose} 
-          />
-        </p>
-        {errorMsg && <pre className="App-error">Error: {errorMsg}</pre>}
+        {
+          movies?.length === 0 && 
+          <p style={{fontSize: '14px', fontFamily: 'monospace', color: 'black'}}>
+            If new user, please register first: {'   '}
+            <Button
+              type="button"
+              className="submit-button"
+              onClick={handleOpen}
+              variant="contained"
+              sx={{backgroundColor: 'darksalmon'}}
+            >
+              Register as New User
+            </Button>
+            <NewUserRegisterModal 
+              title="User Registration Information:" 
+              newUserEmailAddress={newUserEmailAddress}
+              setNewUserEmailAddress={setNewUserEmailAddress}
+              openModal={openModal}
+              handleClose={handleClose} 
+            />
+          </p>
+        }
+        <br/>
+        {successfulSubmit && <Alert variant="filled" severity="success">Your submission was successful! Thank you for rating!</Alert>}
+        {errorMsg && <Alert variant="filled" severity="error">Error: {errorMsg}</Alert>}
       </header>
     </div>
   );

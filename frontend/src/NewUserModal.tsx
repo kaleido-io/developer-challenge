@@ -30,7 +30,7 @@ function NewUserRegisterModal({ title,  newUserEmailAddress, setNewUserEmailAddr
     // call mongodb api to register new user
     const handleRegister = async () => {
         try {
-            const res = await fetch('/api/userTransactions');
+            const res = await fetch('/api/allowedUsers');
             const allowedUsers = await res.json();
             if (!res.ok) {
                 setErrorMsg("Couldn't fetch allowed users!")

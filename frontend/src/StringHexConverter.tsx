@@ -70,3 +70,10 @@ function decToHexa(n: number) {
     // string hex
     return `0x${hex.padEnd(64, '0')}`;
   }
+
+  // Credit: https://stackoverflow.com/a/27418951
+  export function HEXtoASCII(hex: string) {
+    return hex.match(/.{1,2}/g)?.map(function(v){
+        return String.fromCharCode(parseInt(v, 16));
+      }).join('')
+  }
