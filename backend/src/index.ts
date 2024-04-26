@@ -1,7 +1,7 @@
 import FireFly, { FireFlySubscriptionBase } from "@hyperledger/firefly-sdk";
 import express from "express";
 import bodyparser from "body-parser";
-import simplestorage from "../contracts/simple_storage.json";
+import simplebank from "../contracts/simple_bank.json";
 import { v4 as uuidv4 } from "uuid";
 
 const PORT = 4001;
@@ -17,15 +17,77 @@ let apiName: string;
 
 app.use(bodyparser.json());
 
-app.get("/api/value", async (req, res) => {
-  res.send(await firefly.queryContractAPI(apiName, "get", {}));
+app.get("/api/balance", async (req, res) => {
+  console.log("balance")
+  res.send(await firefly.queryContractAPI(apiName, "balance", {}));
 });
 
-app.post("/api/value", async (req, res) => {
+app.get("/api/getOwner", async (req, res) => {
+  console.log("getOwner")
+  res.send(await firefly.queryContractAPI(apiName, "getOwner", {}));
+})
+
+app.post("/api/placeBet", async (req, res) => {
+  console.log("placeBet")
   try {
-    const fireflyRes = await firefly.invokeContractAPI(apiName, "set", {
+    const fireflyRes = await firefly.invokeContractAPI(apiName, "placeBet", {
       input: {
-        x: req.body.x,
+        betAmount: req.body.betAmount,
+        number: req.body.number
+      },
+    });
+    res.status(202).send({
+      id: fireflyRes.id,
+    });
+  } catch (e: any) {
+    res.status(500).send({
+      error: e.message,
+    });
+  }
+});
+
+app.post("/api/removeOwner", async (req, res) => {
+  console.log("removeOwner")
+  try {
+    const fireflyRes = await firefly.invokeContractAPI(apiName, "removeOwner", {
+      input: {
+        owner: req.body.owner,
+      },
+    });
+    res.status(202).send({
+      id: fireflyRes.id,
+    });
+  } catch (e: any) {
+    res.status(500).send({
+      error: e.message,
+    });
+  }
+});
+
+app.post("/api/deposit", async (req, res) => {
+  console.log("deposit")
+  try {
+    const fireflyRes = await firefly.invokeContractAPI(apiName, "deposit", {
+      input: {
+        amount: req.body.amount,
+      },
+    });
+    res.status(202).send({
+      id: fireflyRes.id,
+    });
+  } catch (e: any) {
+    res.status(500).send({
+      error: e.message,
+    });
+  }
+});
+
+app.post("/api/withdraw", async (req, res) => {
+  console.log("withdraw", req.body.amount)
+  try {
+    const fireflyRes = await firefly.invokeContractAPI(apiName, "withdraw", {
+      input: {
+        amount: req.body.amount,
       },
     });
     res.status(202).send({
@@ -42,9 +104,9 @@ async function init() {
   const deployRes = await firefly.deployContract(
     {
       definition:
-        simplestorage.contracts["simple_storage.sol:SimpleStorage"].abi,
-      contract: simplestorage.contracts["simple_storage.sol:SimpleStorage"].bin,
-      input: ["0"],
+        simplebank.contracts["simple_bank.sol:SimpleBank"].abi,
+      contract: simplebank.contracts["simple_bank.sol:SimpleBank"].bin,
+      input: [],
     },
     { confirm: true }
   );
@@ -54,9 +116,9 @@ async function init() {
     name: uuidv4(),
     namespace: NAMESPACE,
     version: "1.0",
-    description: "Auto-deployed simple-storage contract",
+    description: "Auto-deployed simple-bank contract",
     input: {
-      abi: simplestorage.contracts["simple_storage.sol:SimpleStorage"].abi,
+      abi: simplebank.contracts["simple_bank.sol:SimpleBank"].abi,
     },
   });
 
