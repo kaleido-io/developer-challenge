@@ -12,6 +12,7 @@ const firefly = new FireFly({
   host: HOST,
   namespace: NAMESPACE,
 });
+require("dotenv").config()
 
 let apiName: string;
 
@@ -93,6 +94,57 @@ app.post("/api/withdraw", async (req, res) => {
     res.status(202).send({
       id: fireflyRes.id,
     });
+  } catch (e: any) {
+    res.status(500).send({
+      error: e.message,
+    });
+  }
+});
+
+app.post("/api/sendGuess", async (req, res) => {
+  console.log("SENDGUESS")
+  try {
+    const dice1 = Math.floor(Math.random() * 6 + 1);
+    const dice2 = Math.floor(Math.random() * 6 + 1)
+
+    const options = {
+        confirm: true,
+    }
+    
+    const fireflyRes = await firefly.sendBroadcast({
+      header: {},
+      data: [{
+        value: {
+          guess: req.body.guess,
+          dice1,        
+          dice2,
+        }
+      }]
+    }, options)
+    
+    const messageID = fireflyRes?.header?.id
+    const player = fireflyRes?.header?.key
+
+    // console.log("ENV", process.env.TOKEN_POOL)
+    // const tokenPoolRes = await firefly.getTokenPools({name: process.env.TOKEN_POOL})
+    // console.log("tokenpoolres", tokenPoolRes)
+
+    console.log("SUM", dice1 + dice2)
+    if (req.body.guess === dice1 + dice2) {
+      const mintTokenRes = await firefly.mintTokens({
+        amount: "1",
+        pool: process.env.TOKEN_POOL,
+        to: player,
+      }, options)
+      
+      res.status(202).send({
+        amount: mintTokenRes.amount,
+      });
+    } else {
+      res.status(202).send({
+        amount: 0,
+      })
+    }
   } catch (e: any) {
     res.status(500).send({
       error: e.message,
