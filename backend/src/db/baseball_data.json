@@ -1,0 +1,400 @@
+{
+    "teams": [
+        {
+            "id": 1,
+            "img": "109.svg",
+            "name": "Arizona Diamondbacks"
+        },
+        { "id": 2, "img": "144.svg", "name": "Atlanta Braves" },
+        {
+            "id": 3,
+            "img": "110.svg",
+            "name": "Baltimore Orioles"
+        },
+        { "id": 4, "img": "111.svg", "name": "Boston Red Sox" },
+        { "id": 5, "img": "112.svg", "name": "Chicago Cubs" },
+        {
+            "id": 6,
+            "img": "145.svg",
+            "name": "Chicago White Sox"
+        },
+        {
+            "id": 7,
+            "img": "113.svg",
+            "name": "Cincinnati Reds"
+        },
+        {
+            "id": 8,
+            "img": "114.svg",
+            "name": "Cleveland Guardians"
+        },
+        {
+            "id": 9,
+            "img": "115.svg",
+            "name": "Colorado Rockies"
+        },
+        { "id": 10, "img": "116.svg", "name": "Detroit Tigers" },
+        { "id": 11, "img": "117.svg", "name": "Houston Astros" },
+        {
+            "id": 12,
+            "img": "118.svg",
+            "name": "Kansas City Royals"
+        },
+        {
+            "id": 13,
+            "img": "108.svg",
+            "name": "Los Angeles Angels"
+        },
+        {
+            "id": 14,
+            "img": "119.svg",
+            "name": "Los Angeles Dodgers"
+        },
+        { "id": 15, "img": "146.svg", "name": "Miami Marlins" },
+        {
+            "id": 16,
+            "img": "158.svg",
+            "name": "Milwaukee Brewers"
+        },
+        {
+            "id": 17,
+            "img": "142.svg",
+            "name": "Minnesota Twins"
+        },
+        { "id": 18, "img": "121.svg", "name": "New York Mets" },
+        {
+            "id": 19,
+            "img": "147.svg",
+            "name": "New York Yankees"
+        },
+        {
+            "id": 20,
+            "img": "133.svg",
+            "name": "Oakland Athletics"
+        },
+        {
+            "id": 21,
+            "img": "143.svg",
+            "name": "Philadelphia Phillies"
+        },
+        {
+            "id": 22,
+            "img": "134.svg",
+            "name": "Pittsburgh Pirates"
+        },
+        {
+            "id": 23,
+            "img": "135.svg",
+            "name": "San Diego Padres"
+        },
+        {
+            "id": 24,
+            "img": "137.svg",
+            "name": "San Francisco Giants"
+        },
+        {
+            "id": 25,
+            "img": "136.svg",
+            "name": "Seattle Mariners"
+        },
+        {
+            "id": 26,
+            "img": "138.svg",
+            "name": "St. Louis Cardinals"
+        },
+        { "id": 27, "img": "139.svg", "name": "Tampa Bay Rays" },
+        { "id": 28, "img": "140.svg", "name": "Texas Rangers" },
+        {
+            "id": 29,
+            "img": "141.svg",
+            "name": "Toronto Blue Jays"
+        },
+        {
+            "id": 30,
+            "img": "120.svg",
+            "name": "Washington Nationals"
+        }
+    ],
+    "schedule": [
+        {
+            "id": 1,
+            "awayTeam": 4,
+            "homeTeam": 8,
+            "date": "2024-04-23",
+            "time": "CLE 4, BOS 1"
+        },
+        {
+            "id": 2,
+            "awayTeam": 21,
+            "homeTeam": 7,
+            "date": "2024-04-23",
+            "time": "CIN 8, PHI 1"
+        },
+        {
+            "id": 3,
+            "awayTeam": 16,
+            "homeTeam": 22,
+            "date": "2024-04-23",
+            "time": "PIT 2, MIL 1"
+        },
+        {
+            "id": 4,
+            "awayTeam": 13,
+            "homeTeam": 30,
+            "date": "2024-04-23",
+            "time": "LAD 4, WSH 1"
+        },
+        {
+            "id": 5,
+            "awayTeam": 10,
+            "homeTeam": 27,
+            "date": "2024-04-23",
+            "time": "DET 4, TB 2"
+        },
+        {
+            "id": 6,
+            "awayTeam": 20,
+            "homeTeam": 19,
+            "date": "2024-04-23",
+            "time": "NYY 4, OAK 3"
+        },
+        {
+            "id": 7,
+            "awayTeam": 15,
+            "homeTeam": 2,
+            "date": "2024-04-23",
+            "time": "ATL 5, MIA 0"
+        },
+        {
+            "id": 8,
+            "awayTeam": 11,
+            "homeTeam": 5,
+            "date": "2024-04-23",
+            "time": "CHC 7, HOU 2"
+        },
+        {
+            "id": 9,
+            "awayTeam": 29,
+            "homeTeam": 12,
+            "date": "2024-04-23",
+            "time": "KC 3, TOR 2"
+        },
+        {
+            "id": 10,
+            "awayTeam": 6,
+            "homeTeam": 17,
+            "date": "2024-04-23",
+            "time": "MIN 6, CWS 5"
+        },
+        {
+            "id": 11,
+            "awayTeam": 1,
+            "homeTeam": 26,
+            "date": "2024-04-23",
+            "time": "AZ 14, STL 1"
+        },
+        {
+            "id": 12,
+            "awayTeam": 25,
+            "homeTeam": 28,
+            "date": "2024-04-23",
+            "time": "SEA 4, TEX 0"
+        },
+        {
+            "id": 13,
+            "awayTeam": 23,
+            "homeTeam": 9,
+            "date": "2024-04-23",
+            "time": "LIVE"
+        },
+        {
+            "id": 14,
+            "awayTeam": 3,
+            "homeTeam": 13,
+            "date": "2024-04-23",
+            "time": "LIVE"
+        },
+        {
+            "id": 15,
+            "awayTeam": 18,
+            "homeTeam": 24,
+            "date": "2024-04-23",
+            "time": "LIVE"
+        },
+        {
+            "id": 16,
+            "awayTeam": 1,
+            "homeTeam": 26,
+            "date": "2024-04-24",
+            "time": "1:15 PM ET"
+        },
+        {
+            "id": 17,
+            "awayTeam": 18,
+            "homeTeam": 24,
+            "date": "2024-04-24",
+            "time": "3:45 PM ET"
+        },
+        {
+            "id": 18,
+            "awayTeam": 3,
+            "homeTeam": 13,
+            "date": "2024-04-24",
+            "time": "4:07 PM ET"
+        },
+        {
+            "id": 19,
+            "awayTeam": 4,
+            "homeTeam": 8,
+            "date": "2024-04-24",
+            "time": "6:10 PM ET"
+        },
+        {
+            "id": 20,
+            "awayTeam": 21,
+            "homeTeam": 7,
+            "date": "2024-04-24",
+            "time": "6:40 PM ET"
+        },
+        {
+            "id": 21,
+            "awayTeam": 16,
+            "homeTeam": 22,
+            "date": "2024-04-24",
+            "time": "6:40 PM ET"
+        },
+        {
+            "id": 22,
+            "awayTeam": 13,
+            "homeTeam": 30,
+            "date": "2024-04-24",
+            "time": "6:45 PM ET"
+        },
+        {
+            "id": 23,
+            "awayTeam": 10,
+            "homeTeam": 27,
+            "date": "2024-04-24",
+            "time": "6:50 PM ET"
+        },
+        {
+            "id": 24,
+            "awayTeam": 20,
+            "homeTeam": 19,
+            "date": "2024-04-24",
+            "time": "7:05 PM ET"
+        },
+        {
+            "id": 25,
+            "awayTeam": 15,
+            "homeTeam": 2,
+            "date": "2024-04-24",
+            "time": "7:20 PM ET"
+        },
+        {
+            "id": 26,
+            "awayTeam": 11,
+            "homeTeam": 5,
+            "date": "2024-04-24",
+            "time": "7:40 PM ET"
+        },
+        {
+            "id": 27,
+            "awayTeam": 29,
+            "homeTeam": 12,
+            "date": "2024-04-24",
+            "time": "7:40 PM ET"
+        },
+        {
+            "id": 28,
+            "awayTeam": 6,
+            "homeTeam": 17,
+            "date": "2024-04-24",
+            "time": "7:40 PM ET"
+        },
+        {
+            "id": 29,
+            "awayTeam": 25,
+            "homeTeam": 28,
+            "date": "2024-04-24",
+            "time": "8:05 PM ET"
+        },
+        {
+            "id": 30,
+            "awayTeam": 23,
+            "homeTeam": 9,
+            "date": "2024-04-24",
+            "time": "8:40 PM ET"
+        },
+        {
+            "id": 31,
+            "awayTeam": 16,
+            "homeTeam": 22,
+            "date": "2024-04-25",
+            "time": "12:35 PM ET"
+        },
+        {
+            "id": 32,
+            "awayTeam": 4,
+            "homeTeam": 8,
+            "date": "2024-04-25",
+            "time": "1:10 PM ET"
+        },
+        {
+            "id": 33,
+            "awayTeam": 21,
+            "homeTeam": 7,
+            "date": "2024-04-25",
+            "time": "1:10 PM ET"
+        },
+        {
+            "id": 34,
+            "awayTeam": 6,
+            "homeTeam": 17,
+            "date": "2024-04-25",
+            "time": "1:10 PM ET"
+        },
+        {
+            "id": 35,
+            "awayTeam": 29,
+            "homeTeam": 12,
+            "date": "2024-04-25",
+            "time": "2:10 PM ET"
+        },
+        {
+            "id": 36,
+            "awayTeam": 11,
+            "homeTeam": 5,
+            "date": "2024-04-25",
+            "time": "2:20 PM ET"
+        },
+        {
+            "id": 37,
+            "awayTeam": 25,
+            "homeTeam": 28,
+            "date": "2024-04-25",
+            "time": "2:35 PM ET"
+        },
+        {
+            "id": 38,
+            "awayTeam": 23,
+            "homeTeam": 9,
+            "date": "2024-04-25",
+            "time": "3:10 PM ET"
+        },
+        {
+            "id": 39,
+            "awayTeam": 13,
+            "homeTeam": 30,
+            "date": "2024-04-25",
+            "time": "4:05 PM ET"
+        },
+        {
+            "id": 40,
+            "awayTeam": 20,
+            "homeTeam": 19,
+            "date": "2024-04-25",
+            "time": "7:05 PM ET"
+        }
+    ]
+}

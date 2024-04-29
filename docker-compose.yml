@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+    postgres:
+        image: postgres:latest
+        container_name: postgres_db
+        ports:
+            - '5432:5432'
+        environment:
+            POSTGRES_DB: skramsportsdb
+            POSTGRES_USER: skram
+            POSTGRES_PASSWORD: Baseball-Diamond3-Hotdog
+        volumes:
+            - ./init.sql:/docker-entrypoint-initdb.d/init.sql

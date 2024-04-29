@@ -1,5 +1,41 @@
 # Developer Challenge
 
+## Instructions for Using Submittal
+
+The project is setup for use with a multi tenant Firefly deployment. You will need at least 2 nodes to use the project successfully. Node 0 is considered the admin and is where Smart Contracts should be deployed from. Node 1 -> Node N are betters and will have a different UI.
+
+PostgreSQL is containerized and can be run with the command `docker-compose up` in the project folder.
+
+The FE and BE have scripts for running locally. There are environment variables in the scripts that should be modified before running. KEY is the address of the node at that port. CONTRACTNODE is the address of Node 0 that deployed the Smart Contract.
+
+example operation:
+
+```bash
+    cd kaleido-develper-challenge
+    docker-compose up
+    cd backend
+    npm i
+    npm run start_node0
+```
+
+open another terminal:
+
+```bash
+    cd kaleido-developer-challenge/frontend
+    npm i
+    npm run start_node0
+```
+
+This will give you the UI for the admin user. Repeat the same steps replacing `start_node0` with `start_node1` to get the better user.
+
+Games must be added to the contract by the admin before a better can place a bet.
+Once a game has started it can no longer have bets placed on it.
+Once a game is finished and scores are updated, all betters will receive their winnings if applicable.
+
+There is a Postman Collection included for accessing other data that is not yet implemented in the UI such as Accounts, Transactions, Bets, Account_Balances and Tokens.
+
+## Original Instructions
+
 Build a DApp on using FireFly.
 
 Fork this repo, choose a use case you think would be interesting to build as a decentralized application (DApp), then get creative and have fun.

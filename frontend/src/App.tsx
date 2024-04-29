@@ -1,87 +1,37 @@
-import { FormEvent, useState } from "react";
-import "./App.css";
+import './App.css';
+import Layout from './components/Layout';
+import GamesTable from './components/GamesTable';
+import { useState, useEffect } from 'react';
 
 function App() {
-  const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState(null);
-  const [desiredValue, setDesiredValue] = useState("test");
-  const [value, setValue] = useState("");
+    const [user, setUser] = useState({});
 
-  async function setContractValue() {
-    setLoading(true);
-    setErrorMsg(null);
-    try {
-      const res = await fetch(`/api/value`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          x: desiredValue,
-        }),
-      });
-      const { error } = await res.json();
-      if (!res.ok) {
-        setErrorMsg(error);
-      }
-    } catch (err: any) {
-      setErrorMsg(err.stack);
-    }
-    setLoading(false);
-  }
+    useEffect(() => {
+        async function login() {
+            try {
+                const res = await fetch('/api/login');
+                if (!res.ok) {
+                    throw new Error('Failed to login');
+                }
+                const loginData = await res.json();
+                setUser(loginData);
+            } catch (error) {
+                console.error('Error logging in: ', error);
+            }
+        }
 
-  async function getContractValue() {
-    setLoading(true);
-    setErrorMsg(null);
-    try {
-      const res = await fetch(`/api/value`);
-      const { x, error } = await res.json();
-      if (!res.ok) {
-        setErrorMsg(error);
-      } else {
-        setValue(x);
-      }
-    } catch (err: any) {
-      setErrorMsg(err.stack);
-    }
-    setLoading(false);
-  }
+        login();
+    }, []);
 
-  function handleChange(event: FormEvent<HTMLInputElement>) {
-    setDesiredValue(event.currentTarget.value);
-  }
-
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img
-          src={"/kaleido_logo.svg"}
-          className="App-logo"
-          alt="logo"
-          aria-busy={loading}
-        />
-        <p>
-          <input className="App-input" onChange={handleChange} />
-          <button
-            type="button"
-            className="App-button"
-            onClick={setContractValue}
-          >
-            Set Value
-          </button>
-        </p>
-        <p>
-          <button
-            type="button"
-            className="App-button"
-            onClick={getContractValue}
-          >
-            Get Value
-          </button>
-          {value !== "" ? <p>Retrieved value: {value}</p> : <p>&nbsp;</p>}
-        </p>
-        {errorMsg && <pre className="App-error">Error: {errorMsg}</pre>}
-      </header>
-    </div>
-  );
+    return (
+        <div className="App">
+            <Layout>
+                <div className={'h-full w-10/12 m-2.5 bg-lime-900'}>
+                    <GamesTable user={user} />
+                </div>
+            </Layout>
+        </div>
+    );
 }
 
 export default App;
