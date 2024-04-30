@@ -62,8 +62,6 @@ const App = () => {
       const res = mess?.blockchainEvent?.output;
       const playerFound = players.find((p) => p.name === res?.from);
       if (name === "GuessMade") {
-        setDice1(res?.dice1);
-        setDice2(res?.dice2);
         setGuessSent(true);
         setLoading(false);
         setCurrentBetBalance(res?.currentBetBalance);
