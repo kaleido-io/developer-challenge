@@ -21,12 +21,10 @@ const App = () => {
   const [guessSent, setGuessSent] = useState(false);
   const [dice1, setDice1] = useState(0);
   const [dice2, setDice2] = useState(0);
-  const [playerID, setPlayerID] = useState("");
-  const [balance, setBalance] = useState(0);
   const [bet, setBet] = useState(0);
   const [currentBetBalance, setCurrentBetBalance] = useState(0);
   const [players] = useState(
-    Array<{ name: string; totalPlayerBet: number; balance: number }>
+    Array<{ name: string; totalPlayerBet: number; playerBalance: number }>
   );
 
   const WS_URL = "ws://localhost:5000/ws";
@@ -64,32 +62,40 @@ const App = () => {
       if (name === "GuessMade") {
         // console.log('guess sent', parseInt(res.dice1), parse, parseInt(res.dice1) + parseInt(res.dice))
         // setResults(parseInt(res.dice1) + parseInt(res.dice2))
-        setGuess(res?.guess);
+        // setGuess(res?.guess);
         setDice1(res?.dice1);
         setDice2(res?.dice2);
         setGuessSent(true);
         setLoading(false);
-        setCurrentBetBalance(res?.betBalance);
+        setCurrentBetBalance(res?.currentBetBalance);
         if (playerFound) {
-          playerFound.totalPlayerBet =
-            +playerFound.totalPlayerBet + +res?.playerBet;
-          playerFound.balance = res?.balance;
+          console.log(
+            "playerfound",
+            playerFound.totalPlayerBet,
+            res?.playerBet
+          );
+          if (playerFound.totalPlayerBet !== 0) {
+            playerFound.totalPlayerBet =
+              +playerFound.totalPlayerBet + +res?.playerBet;
+          } else {
+            playerFound.totalPlayerBet = +res?.playerBet;
+          }
+          playerFound.playerBalance = res?.playerBalance;
         } else {
           players.push({
             name: res?.from,
             totalPlayerBet: res?.playerBet,
-            balance: res?.balance,
+            playerBalance: res?.playerBalance,
           });
         }
       } else {
         // transferring funds so player info already exists
-        console.log("ELSE", playerFound);
         if (playerFound) {
           playerFound.totalPlayerBet = 0;
-          playerFound.balance = +res?.balance;
+          playerFound.playerBalance = +res?.playerBalance;
         }
         for (let i = 0; i < players.length; i++) {
-          // reset the bet amount
+          // reset the bet amount for each player
           players[i].totalPlayerBet = 0;
         }
         setGuess(0);
@@ -100,71 +106,26 @@ const App = () => {
       }
     }
     if (mess?.type === "token_transfer_confirmed") {
-      setBalance(mess?.tokenTransfer?.amount);
       setCurrentBetBalance(currentBetBalance);
-      setGuess(guess);
+      // setGuess(guess);
     }
   }, [lastJsonMessage, currentBetBalance, players]);
-
-  // const getPlayer = async () => {
-  //   try {
-  //     const res = await fetch("/api/getPlayer", {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify({
-  //         player: playerID,
-  //       }),
-  //     });
-
-  //     // const getBalance = async() => {
-  //     //   setLoading(true);
-  //     //   setErrorMsg(null);
-  //     //   try {
-  //     //     const res = await fetch(`/api/balance`);
-  //     //     const { b, error } = await res.json();
-  //     //     if (!res.ok) {
-  //     //       setErrorMsg(error);
-  //     //     } else {
-  //     //       setValue(b);
-  //     //     }
-  //     //   } catch (err: any) {
-  //     //     setErrorMsg(err.stack);
-  //     //   }
-  //     //   setLoading(false);
-  //     // }
-
-  //     const r = await res.json();
-  //     console.log("R", r);
-  //   } catch (err: any) {
-  //     setErrorMsg(err.stack);
-  //   }
-  // };
 
   const getTokens = async () => {
     setLoading(true);
     setErrorMsg(null);
     try {
-      console.log("playerid", playerID);
-      const res = await fetch("api/getTokens", {
+      await fetch("api/getTokens", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          player: playerID,
           currentBetBalance: currentBetBalance,
         }),
       });
-      const r = await res.json();
-      // const { error } = await res.json();
-      // if (!res.ok) {
-      //   setErrorMsg(error);
-      // }
-
-      // setBalance(r[0])
-      // }
     } catch (err: any) {
       setErrorMsg(err.stack);
+      setLoading(false);
     }
-    // setLoading(false);
   };
 
   const sendGuess = async () => {
@@ -212,12 +173,7 @@ const App = () => {
   return (
     <div className="App">
       <header className="App-header">
-        <img
-          src={"/dices.svg"}
-          className="App-logo"
-          alt="logo"
-          // aria-busy={loading}
-        />
+        <img src={"/dices.svg"} className="App-logo" alt="logo" />
         {!loading && players.length ? (
           <TableContainer className="tableContainer" component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="a dense table">
@@ -233,7 +189,7 @@ const App = () => {
                   <TableRow key={p?.name}>
                     <TableCell>{p?.name}</TableCell>
                     <TableCell>{p?.totalPlayerBet?.toString()}</TableCell>
-                    <TableCell>{p?.balance?.toString()}</TableCell>
+                    <TableCell>{p?.playerBalance?.toString()}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -278,9 +234,6 @@ const App = () => {
                   Get Tokens
                 </Button>
               ) : null}
-              {/* <Button variant="contained" onClick={getPlayer}>
-                Get Player
-              </Button> */}
             </p>
             <div>Current Bet Pool: {currentBetBalance}</div>
           </>
