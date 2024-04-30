@@ -25,8 +25,6 @@ const App = () => {
   const [errorMsg, setErrorMsg] = useState(null);
   const [guess, setGuess] = useState(0);
   const [guessSent, setGuessSent] = useState(false);
-  const [dice1, setDice1] = useState(0);
-  const [dice2, setDice2] = useState(0);
   const [bet, setBet] = useState(0);
   const [currentBetBalance, setCurrentBetBalance] = useState(0);
   const [players] = useState(Array<playerObj>);
@@ -64,9 +62,6 @@ const App = () => {
       const res = mess?.blockchainEvent?.output;
       const playerFound = players.find((p) => p.name === res?.from);
       if (name === "GuessMade") {
-        // console.log('guess sent', parseInt(res.dice1), parse, parseInt(res.dice1) + parseInt(res.dice))
-        // setResults(parseInt(res.dice1) + parseInt(res.dice2))
-        // setGuess(res?.guess);
         setDice1(res?.dice1);
         setDice2(res?.dice2);
         setGuessSent(true);
@@ -108,51 +103,8 @@ const App = () => {
         setBet(0);
         setLoading(false);
       }
-      // else if (name === "Transfer") {
-      //   players.push({
-      //     name: res?.to,
-      //     playerBalance: res?.value / 10 ** 18,
-      //   });
-      // }
     }
-    // else if (mess?.type === "token_transfer_confirmed") {
-    //   const playerFound = players.find(
-    //     (p) => p.name === mess?.tokenTransfer?.key
-    //   );
-
-    //   console.log("HI", mess?.tokenTransfer?.amount, playerFound);
-    //   if (playerFound) {
-    //     // playerFound.totalPlayerBet = 0;
-    //     players.push({
-    //       name: mess.tokenTransfer?.key,
-    //       totalPlayerBet: 0,
-    //       playerBalance: mess?.tokenTransfer?.amount / 10 ** 18,
-    //     });
-    //     // playerFound.playerBalance = mess?.tokenTransfer?.amount / 10 ** 18;
-    //     // updatePlayerBalance(playerFound);
-    //   }
-    //   // setCurrentBetBalance(currentBetBalance);
-    // }
   }, [lastJsonMessage]);
-
-  const updatePlayerBalance = async (player: playerObj) => {
-    setLoading(true);
-    setErrorMsg(null);
-    try {
-      await fetch("api/updatePlayerBalance", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          player: player.name,
-          balance: player.playerBalance,
-        }),
-      });
-      setLoading(false);
-    } catch (err: any) {
-      setErrorMsg(err.stack);
-      setLoading(false);
-    }
-  };
 
   const getTokens = async () => {
     setLoading(true);
@@ -244,10 +196,8 @@ const App = () => {
         ) : (
           <>
             <div className="directions">
-              Every player will start out with a balance of 10. Once you run out
-              of money, you can't play.
-              <br /> Guess the sum of the dice! If you guess right, you win the
-              money in the pool!
+              Guess the sum of the dice! If you guess right, you win the money
+              in the pool!
             </div>
             <p>
               <TextField

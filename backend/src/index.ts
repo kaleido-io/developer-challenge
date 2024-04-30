@@ -18,41 +18,6 @@ let apiName: string;
 
 app.use(bodyparser.json());
 
-// app.post("/api/register", async (req, res) => {
-//   try {
-//     const fireflyRes = await firefly.invokeContractAPI(apiName, "registerPlayer", {
-//       input: {
-//         player: req.body.player,
-//       },
-//     });
-//     res.status(202).send({
-//       id: fireflyRes.id,
-//     });
-//   } catch (e: any) {
-//     res.status(500).send({
-//       error: e.message,
-//     });
-//   }
-// })
-
-app.post("/api/updatePlayerBalance", async (req, res) => {
-  try {   
-    const fireflyRes = await firefly.invokeContractAPI(apiName, "updatePlayerBalance", {
-      input: {
-        player: req.body.player,
-        balance: req.body.balance,
-      },
-    });
-    res.status(202).send({
-      id: fireflyRes.id,
-    });
-  } catch (e: any) {
-    res.status(500).send({
-      error: e.message,
-    });
-  }
-})
-
 app.post("/api/getTokens", async (req, res) => {
   try {   
     const fireflyRes = await firefly.invokeContractAPI(apiName, "transferMoneyToWinner", {
@@ -70,65 +35,8 @@ app.post("/api/getTokens", async (req, res) => {
   }
 });
 
-app.post("/api/mintTokens", async (req, res) => {
-  try {
-    const playersBalances = await firefly.getTokenBalances()
-
-    const playerFound = playersBalances.find((p) => p?.key === req.body.player)
-
-    if (playerFound?.balance === "0") {
-      const freeMoney = 10 
-
-      await firefly.mintTokens({
-        amount: (freeMoney * 10**18).toString(),
-        pool: process.env.TOKEN_POOL,
-        to: playerFound?.key,
-      })
-    }
-    // for (let i = 0; i < playersBalances.length; i++) {
-      // if (playersBalances[]?.balance === "0") {
-      //   const freeMoney = 10 
-      //   await firefly.mintTokens({
-      //     amount: (freeMoney * 10**18).toString(),
-      //     pool: process.env.TOKEN_POOL,
-      //     to: playersBalances[i]?.key,
-      //   })
-      //   await firefly.invokeContractAPI(apiName, "updatePlayerBalance", {
-      //     input: {
-      //       player: playersBalances[i]?.key,
-      //       balance: freeMoney,
-      //     },
-      //   });
-      // }
-    // }
-  } catch (e: any) {
-    res.status(500).send({
-      error: e.message,
-    });
-  }
-})
-
 app.post("/api/sendGuess", async (req, res) => {
   try {
-    // const playersBalances = await firefly.getTokenBalances()
-
-    // for (let i = 0; i < playersBalances.length; i++) {
-    //   if (playersBalances[i]?.balance === "0") {
-    //     const freeMoney = 10 
-    //     await firefly.mintTokens({
-    //       amount: (freeMoney * 10**18).toString(),
-    //       pool: process.env.TOKEN_POOL,
-    //       to: playersBalances[i]?.key,
-    //     })
-    //     await firefly.invokeContractAPI(apiName, "updatePlayerBalance", {
-    //       input: {
-    //         player: playersBalances[i]?.key,
-    //         balance: freeMoney,
-    //       },
-    //     });
-    //   }
-    // }
-
     const fireflyRes = await firefly.invokeContractAPI(apiName, "sendGuess", {
       input: {
         guess: req.body.guess,
