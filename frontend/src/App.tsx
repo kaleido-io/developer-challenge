@@ -25,6 +25,8 @@ const App = () => {
   const [errorMsg, setErrorMsg] = useState(null);
   const [guess, setGuess] = useState(0);
   const [guessSent, setGuessSent] = useState(false);
+  const [dice1, setDice1] = useState(0);
+  const [dice2, setDice2] = useState(0);
   const [bet, setBet] = useState(0);
   const [currentBetBalance, setCurrentBetBalance] = useState(0);
   const [players] = useState(Array<playerObj>);
@@ -64,6 +66,8 @@ const App = () => {
       if (name === "GuessMade") {
         setGuessSent(true);
         setLoading(false);
+        setDice1(res?.dice1);
+        setDice2(res?.dice2);
         setCurrentBetBalance(res?.currentBetBalance);
         if (playerFound) {
           console.log(
@@ -155,7 +159,7 @@ const App = () => {
 
   const checkIfWinner = () => {
     if (guessSent) {
-      if (true) {
+      if (dice1 + dice2 === guess) {
         return "You are the winner, please click 'Get Tokens'";
       } else {
         return "You did not win. Please play again!";
