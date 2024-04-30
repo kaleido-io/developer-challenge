@@ -66,15 +66,10 @@ const App = () => {
       if (name === "GuessMade") {
         setGuessSent(true);
         setLoading(false);
-        setDice1(res?.dice1);
-        setDice2(res?.dice2);
+        setDice1(parseInt(res?.dice1));
+        setDice2(parseInt(res?.dice2));
         setCurrentBetBalance(res?.currentBetBalance);
         if (playerFound) {
-          console.log(
-            "playerfound",
-            playerFound.totalPlayerBet,
-            res?.playerBet
-          );
           if (playerFound.totalPlayerBet !== 0) {
             playerFound.totalPlayerBet =
               +playerFound.totalPlayerBet + +res?.playerBet;
@@ -226,7 +221,7 @@ const App = () => {
                 Play Game
               </Button>
               <div className="checkIfWinner">{checkIfWinner()}</div>
-              {true ? (
+              {dice1 + dice2 === guess && guessSent ? (
                 <Button variant="contained" onClick={getTokens}>
                   Get Tokens
                 </Button>
