@@ -14,8 +14,48 @@ contract DiceGuess {
 
     uint currentBetBalance;
 
+    // function registerPlayer(address player) public {
+    //     players[msg.sender] = Player(0, 0, 0);
+    // }
+
+    // constructor() public {
+    //     // Mint 100 tokens to msg.sender
+    //     // Similar to how
+    //     // 1 dollar = 100 cents
+    //     // 1 token = 1 * (10 ** decimals)
+    //     _mint(msg.sender, 1 * 10 ** 8);
+    // }
+
+    // function mint(address to, uint256 tokenID) public payable {
+    //     require(to != address(0));
+    //     _tokenOwner[tokenID] = to;
+    //     _ownedTokensCount[to] = _ownedTokensCount[to].add(1);
+    //     emit Transfer(address(0), to, tokenID);
+    // }
+
+    function updatePlayerBalance(address player, uint balance) public {
+        players[player].playerBalance = balance;
+        emit GuessMade(
+            msg.sender,
+            0,
+            0,
+            players[msg.sender].playerBalance,
+            0,
+            0,
+            currentBetBalance
+        );
+    }
+
     uint randNonce = 0;
     function sendGuess(uint guess, uint betAmount) public {
+        // require(
+        //     betAmount <= players[msg.sender].playerBalance,
+        //     "Bet amount must be less than the balance you have."
+        // );
+        // require(
+        //     players[msg.sender].playerBalance > 0,
+        //     "You have run out of funds to play with."
+        // );
         if (players[msg.sender].playerBalance > 0) {
             players[msg.sender].playerBalance -= betAmount;
         } else {

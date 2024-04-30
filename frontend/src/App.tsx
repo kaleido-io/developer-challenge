@@ -1,4 +1,4 @@
-import { FormEvent, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import {
   Button,
@@ -15,6 +15,12 @@ import {
 import useWebSocket, { ReadyState } from "react-use-websocket";
 
 const App = () => {
+  type playerObj = {
+    name: string;
+    totalPlayerBet: number;
+    playerBalance: number;
+  };
+
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
   const [guess, setGuess] = useState(0);
@@ -23,9 +29,7 @@ const App = () => {
   const [dice2, setDice2] = useState(0);
   const [bet, setBet] = useState(0);
   const [currentBetBalance, setCurrentBetBalance] = useState(0);
-  const [players] = useState(
-    Array<{ name: string; totalPlayerBet: number; playerBalance: number }>
-  );
+  const [players] = useState(Array<playerObj>);
 
   const WS_URL = "ws://localhost:5000/ws";
   const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
@@ -88,7 +92,7 @@ const App = () => {
             playerBalance: res?.playerBalance,
           });
         }
-      } else {
+      } else if (name === "BalanceTransferred") {
         // transferring funds so player info already exists
         if (playerFound) {
           playerFound.totalPlayerBet = 0;
@@ -104,12 +108,51 @@ const App = () => {
         setBet(0);
         setLoading(false);
       }
+      // else if (name === "Transfer") {
+      //   players.push({
+      //     name: res?.to,
+      //     playerBalance: res?.value / 10 ** 18,
+      //   });
+      // }
     }
-    if (mess?.type === "token_transfer_confirmed") {
-      setCurrentBetBalance(currentBetBalance);
-      // setGuess(guess);
+    // else if (mess?.type === "token_transfer_confirmed") {
+    //   const playerFound = players.find(
+    //     (p) => p.name === mess?.tokenTransfer?.key
+    //   );
+
+    //   console.log("HI", mess?.tokenTransfer?.amount, playerFound);
+    //   if (playerFound) {
+    //     // playerFound.totalPlayerBet = 0;
+    //     players.push({
+    //       name: mess.tokenTransfer?.key,
+    //       totalPlayerBet: 0,
+    //       playerBalance: mess?.tokenTransfer?.amount / 10 ** 18,
+    //     });
+    //     // playerFound.playerBalance = mess?.tokenTransfer?.amount / 10 ** 18;
+    //     // updatePlayerBalance(playerFound);
+    //   }
+    //   // setCurrentBetBalance(currentBetBalance);
+    // }
+  }, [lastJsonMessage]);
+
+  const updatePlayerBalance = async (player: playerObj) => {
+    setLoading(true);
+    setErrorMsg(null);
+    try {
+      await fetch("api/updatePlayerBalance", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          player: player.name,
+          balance: player.playerBalance,
+        }),
+      });
+      setLoading(false);
+    } catch (err: any) {
+      setErrorMsg(err.stack);
+      setLoading(false);
     }
-  }, [lastJsonMessage, currentBetBalance, players]);
+  };
 
   const getTokens = async () => {
     setLoading(true);
@@ -162,8 +205,8 @@ const App = () => {
 
   const checkIfWinner = () => {
     if (guessSent) {
-      if (dice1 + dice2 === guess) {
-        return "You are the winner, please click `Get Tokens`";
+      if (true) {
+        return "You are the winner, please click 'Get Tokens'";
       } else {
         return "You did not win. Please play again!";
       }
@@ -201,8 +244,10 @@ const App = () => {
         ) : (
           <>
             <div className="directions">
-              Guess the sum of the dice! If you guess right, you win the money
-              in the pool!
+              Every player will start out with a balance of 10. Once you run out
+              of money, you can't play.
+              <br /> Guess the sum of the dice! If you guess right, you win the
+              money in the pool!
             </div>
             <p>
               <TextField
