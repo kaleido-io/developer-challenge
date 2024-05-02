@@ -1,7 +1,7 @@
 import FireFly, { FireFlySubscriptionBase } from "@hyperledger/firefly-sdk";
 import express from "express";
 import bodyparser from "body-parser";
-import simplestorage from "../contracts/simple_storage.json";
+import simplestorage from "../../solidity/artifacts/contracts/simple_storage.sol/SimpleStorage.json";
 import { v4 as uuidv4 } from "uuid";
 
 const PORT = 4001;
@@ -41,9 +41,8 @@ app.post("/api/value", async (req, res) => {
 async function init() {
   const deployRes = await firefly.deployContract(
     {
-      definition:
-        simplestorage.contracts["simple_storage.sol:SimpleStorage"].abi,
-      contract: simplestorage.contracts["simple_storage.sol:SimpleStorage"].bin,
+      definition: simplestorage.abi,
+      contract: simplestorage.bytecode,
       input: ["0"],
     },
     { confirm: true }
@@ -56,7 +55,7 @@ async function init() {
     version: "1.0",
     description: "Auto-deployed simple-storage contract",
     input: {
-      abi: simplestorage.contracts["simple_storage.sol:SimpleStorage"].abi,
+      abi: simplestorage.abi,
     },
   });
 
