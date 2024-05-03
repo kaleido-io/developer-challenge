@@ -59,7 +59,7 @@ Here are some dev technologies (not in the starter repo) that we love at Kaleido
 
 Remember we'd like a thin thread through your DApp, so choose technologies you think you can be productive in.
 
-Want to throw away most of the original `create-react-app` + `express` based repo?
+Want to throw away most of the original `vite` + `express` based repo?
 No problem. Go for it.
 
 ## Setting up your FireFly on your machine
@@ -73,7 +73,7 @@ When you're done, you will have FireFly and all its microservices, including you
 This repo has two directories in it:
 
 - `backend`: A very simple TypeScript Node.js app that uses the FireFly SDK to interact with a custom smart contract
-- `frontend`: A TypeScript React UI bootstrapped with [create-react-app](https://github.com/facebook/create-react-app) that calls the API in the backend.
+- `frontend`: A TypeScript React UI bootstrapped with [vite](https://vitejs.dev/guide/) that calls the API in the backend.
 
 To run these, `cd` into each directory and run:
 
