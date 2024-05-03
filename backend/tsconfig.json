@@ -12,5 +12,5 @@
     "resolveJsonModule": true,
     "sourceMap": true
   },
-  "exclude": ["node_modules", "contracts", "build"]
+  "exclude": ["node_modules", "contracts", "build", "eslint.config.mjs"]
 }
