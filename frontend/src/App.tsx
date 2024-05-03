@@ -49,15 +49,16 @@ function App() {
   async function mintToken() {
     setLoading(true);
     setErrorMsg(null);
+    const randomTokenId = Math.floor(Math.random() * 1000);
     try {
       const res = await fetch(`/api/mintToken`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          tokenId,
+          tokenId: randomTokenId,
         }),
       });
-      const { error } = await res.json();
+      const { tokenId, error } = await res.json();
       if (!res.ok) {
         setErrorMsg(error);
       } else {

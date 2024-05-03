@@ -10,7 +10,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract Token is ERC721, Ownable {
     constructor() ERC721("Token", "TKN") {}
 
-    function safeMint(address to, uint256 tokenId) public onlyOwner {
-        _safeMint(to, tokenId);
+    function safeMint(uint256 tokenId) public onlyOwner {
+        _safeMint(msg.sender, tokenId);
     }
 }

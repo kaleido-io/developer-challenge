@@ -1,6 +1,6 @@
-# Sample Hardhat Project
+# Solidity Contracts: Kaleido Developer Challenge
 
-This folder demonstrates contracts and tests for two contracts:
+This folder demonstrates how to compile, test, and deploy two sample solidity contracts:
 
 - A basic storage contract: [simple_storage.sol](./contracts/simple_storage.sol)
 - A basic ERC721 token contract: [token.sol](./contracts/token.sol)
@@ -21,4 +21,10 @@ npm run compile
 
 ```bash
 npm run test
+```
+
+## Deploy Smart Contracts to FireFly
+
+```bash
+npx hardhat run scripts/deploy.ts --network firefly
 ```
