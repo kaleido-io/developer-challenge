@@ -16,10 +16,10 @@ const firefly = new FireFly({
 });
 
 const ffiAndApiVersion = 2;
-let ssFfiName: string = `simpleStorageFFI-${ffiAndApiVersion}`;
-let ssApiName: string = `simpleStorageApi-${ffiAndApiVersion}`;
-let tokenFfiName: string = `tokenFFI-${ffiAndApiVersion}`;
-let tokenApiName: string = `tokenApi-${ffiAndApiVersion}`;
+const ssFfiName: string = `simpleStorageFFI-${ffiAndApiVersion}`;
+const ssApiName: string = `simpleStorageApi-${ffiAndApiVersion}`;
+const tokenFfiName: string = `tokenFFI-${ffiAndApiVersion}`;
+const tokenApiName: string = `tokenApi-${ffiAndApiVersion}`;
 
 app.use(bodyparser.json());
 
@@ -37,6 +37,7 @@ app.post("/api/value", async (req, res) => {
     res.status(202).send({
       id: fireflyRes.id,
     });
+    /* eslint-disable  @typescript-eslint/no-explicit-any */
   } catch (e: any) {
     res.status(500).send({
       error: e.message,
@@ -58,6 +59,7 @@ app.post("/api/mintToken", async (req, res) => {
     res.status(202).send({
       tokenId: fireflyRes.input.input.tokenId,
     });
+    /* eslint-disable  @typescript-eslint/no-explicit-any */
   } catch (e: any) {
     res.status(500).send({
       error: e.message,
