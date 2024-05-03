@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
+pragma solidity ^0.8.17;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 // View the OpenZeppelin docs to determine if tokens fit in your use case, and which standard to use: https://docs.openzeppelin.com/contracts/2.x/tokens
 
 contract Token is ERC721, Ownable {
-    constructor() ERC721("Token", "TKN") Ownable(msg.sender)  {}
+    constructor() ERC721("Token", "TKN") {}
 
     function safeMint(address to, uint256 tokenId) public onlyOwner {
         _safeMint(to, tokenId);

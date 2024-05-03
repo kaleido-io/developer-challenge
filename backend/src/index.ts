@@ -1,29 +1,33 @@
-import FireFly, { FireFlySubscriptionBase } from "@hyperledger/firefly-sdk";
-import express from "express";
+import FireFly from "@hyperledger/firefly-sdk";
 import bodyparser from "body-parser";
-import simplestorage from "../../solidity/artifacts/contracts/simple_storage.sol/SimpleStorage.json";
+import express from "express";
 import { v4 as uuidv4 } from "uuid";
+import simplestorage from "../../solidity/artifacts/contracts/simple_storage.sol/SimpleStorage.json";
+import token from "../../solidity/artifacts/contracts/token.sol/Token.json";
 
 const PORT = 4001;
 const HOST = "http://localhost:5000";
 const NAMESPACE = "default";
+const SIMPLE_STORAGE_ADDRESS = "0xF32Eb15791854276994018dAF8f15cAe683BF06D";
+const TOKEN_ADDRESS = "0x31E61f804DA2E164152eA90fFb7A3eea67Ff70c6";
 const app = express();
 const firefly = new FireFly({
   host: HOST,
   namespace: NAMESPACE,
 });
 
-let apiName: string;
+let ssApiName: string;
+let tokenApiName: string;
 
 app.use(bodyparser.json());
 
 app.get("/api/value", async (req, res) => {
-  res.send(await firefly.queryContractAPI(apiName, "get", {}));
+  res.send(await firefly.queryContractAPI(ssApiName, "get", {}));
 });
 
 app.post("/api/value", async (req, res) => {
   try {
-    const fireflyRes = await firefly.invokeContractAPI(apiName, "set", {
+    const fireflyRes = await firefly.invokeContractAPI(ssApiName, "set", {
       input: {
         x: req.body.x,
       },
@@ -38,50 +42,113 @@ app.post("/api/value", async (req, res) => {
   }
 });
 
-async function init() {
-  const deployRes = await firefly.deployContract(
-    {
-      definition: simplestorage.abi,
-      contract: simplestorage.bytecode,
-      input: ["0"],
-    },
-    { confirm: true }
-  );
-  const contractAddress = deployRes.output.contractLocation.address;
+app.post("/api/mintToken", async (req, res) => {
+  try {
+    const fireflyRes = await firefly.invokeContractAPI(
+      tokenApiName,
+      "safeMint",
+      {
+        input: {
+          tokenId: req.body.tokenId,
+        },
+      },
+      { confirm: true }
+    );
+    console.log(fireflyRes);
+    res.status(200).send({
+      id: fireflyRes.id,
+    });
+  } catch (e: any) {
+    res.status(500).send({
+      error: e.message,
+    });
+  }
+});
 
-  const generatedFFI = await firefly.generateContractInterface({
+async function init() {
+  // Simple storage
+
+  console.log("1");
+  const ssGeneratedFFI = await firefly.generateContractInterface({
     name: uuidv4(),
     namespace: NAMESPACE,
     version: "1.0",
-    description: "Auto-deployed simple-storage contract",
+    description: "Deployed simple-storage contract",
     input: {
       abi: simplestorage.abi,
     },
   });
 
-  const contractInterface = await firefly.createContractInterface(
-    generatedFFI,
+  console.log("2");
+  const ssContractInterface = await firefly.createContractInterface(
+    ssGeneratedFFI,
     { confirm: true }
   );
 
-  const contractAPI = await firefly.createContractAPI(
+  console.log("3");
+  const ssContractAPI = await firefly.createContractAPI(
     {
       interface: {
-        id: contractInterface.id,
+        id: ssContractInterface.id,
       },
       location: {
-        address: contractAddress,
+        address: SIMPLE_STORAGE_ADDRESS,
       },
       name: uuidv4(),
     },
     { confirm: true }
   );
 
-  apiName = contractAPI.name;
+  console.log("4");
+  ssApiName = ssContractAPI.name;
 
-  const listener = await firefly.createContractAPIListener(apiName, "Changed", {
-    topic: "changed",
+  // Token
+  const tokenGeneratedFFI = await firefly.generateContractInterface({
+    name: uuidv4(),
+    namespace: NAMESPACE,
+    version: "1.0",
+    description: "Deployed token contract",
+    input: {
+      abi: token.abi,
+    },
   });
+
+  const tokenContractInterface = await firefly.createContractInterface(
+    tokenGeneratedFFI,
+    { confirm: true }
+  );
+
+  const tokenContractAPI = await firefly.createContractAPI(
+    {
+      interface: {
+        id: tokenContractInterface.id,
+      },
+      location: {
+        address: TOKEN_ADDRESS,
+      },
+      name: uuidv4(),
+    },
+    { confirm: true }
+  );
+
+  tokenApiName = tokenContractAPI.name;
+
+  // Listeners
+  const ssListener = await firefly.createContractAPIListener(
+    ssApiName,
+    "Changed",
+    {
+      topic: "changed",
+    }
+  );
+
+  const tokenListener = await firefly.createContractAPIListener(
+    tokenApiName,
+    "Transfer",
+    {
+      topic: "transfer",
+    }
+  );
 
   firefly.listen(
     {
