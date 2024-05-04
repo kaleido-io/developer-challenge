@@ -1,6 +1,8 @@
 # Solidity Contracts: Kaleido Developer Challenge
 
-This folder demonstrates how to compile, test, and deploy two sample solidity contracts:
+This folder demonstrates how to compile, test, and deploy two sample solidity contracts with Hardhat. View the Hardhat [docs here](https://hardhat.org/hardhat-runner/docs/guides/compile-contracts)
+
+## Sample contracts
 
 - A basic storage contract: [simple_storage.sol](./contracts/simple_storage.sol)
 - A basic ERC721 token contract: [token.sol](./contracts/token.sol)
