@@ -59,30 +59,24 @@ Here are some dev technologies (not in the starter repo) that we love at Kaleido
 
 Remember we'd like a thin thread through your DApp, so choose technologies you think you can be productive in.
 
-Want to throw away most of the original `create-react-app` + `express` based repo?
+Want to throw away most of the original `vite` + `express` based repo?
 No problem. Go for it.
 
 ## Setting up your FireFly on your machine
 
-Run through our [Getting Started guide](https://hyperledger.github.io/firefly/gettingstarted/).
+Run through our [Getting Started guide](https://hyperledger.github.io/firefly/latest/gettingstarted/).
 
 When you're done, you will have FireFly and all its microservices, including your very own private blockchain, running on your machine.
 
 ## Getting this repo up and running
 
-This repo has two directories in it:
+This repo has three directories in it:
 
-- `backend`: A very simple TypeScript Node.js app that uses the FireFly SDK to interact with a custom smart contract
-- `frontend`: A TypeScript React UI bootstrapped with [create-react-app](https://github.com/facebook/create-react-app) that calls the API in the backend.
+- `solidity`: Two example solidity contracts that can be compiled, tested, and deployed with Hardhat. [Go to the Readme](./solidity/)
+- `backend`: A very simple TypeScript Node.js app that uses the FireFly SDK to interact with a custom smart contract. [Go to the Readme](./backen/)
+- `frontend`: A TypeScript React UI bootstrapped with [vite](https://vitejs.dev/guide/) that calls the API in the backend. [Go to the Readme](./frontend/)
 
-To run these, `cd` into each directory and run:
-
-```
-npm install
-npm start
-```
-
-When the backend starts it will set up a contract using the FireFly SDK automatically. The buttons on the Web UI will call the backend API endpoints to set and get a value from the blockchain.
+You will need to first deploy the example smart contracts with Hardhat to FireFly. Once the backend/frontend are started, the buttons on the Web UI will call the backend API endpoints to interact with the contracts through FireFly.
 
 ![Backend](backend.png)
 ![Frontend](frontend.png)
@@ -90,3 +84,5 @@ When the backend starts it will set up a contract using the FireFly SDK automati
 ## Your journey begins here
 
 Now it's your turn to build something! You can use this backend and frontend as a starting point for your app, or you can start from scratch if you want.
+
+You will find the [FireFly documentation](https://hyperledger.github.io/firefly/latest/) useful as you build this project.

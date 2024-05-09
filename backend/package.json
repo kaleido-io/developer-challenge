@@ -1,11 +1,12 @@
 {
-  "name": "kaleido-dapp-backend",
+  "name": "kaleido-developer-challenge-backend",
   "version": "0.2.0",
   "description": "Backend for the kaleido-dapp",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
     "prestart": "npm run build",
     "start": "node build/index.js"
   },
@@ -31,11 +32,15 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
+    "@eslint/js": "^9.1.1",
     "@types/body-parser": "^1.19.5",
     "@types/express": "^4.17.21",
     "@types/node": "^20.11.5",
     "@types/uuid": "^9.0.7",
     "@types/ws": "^8.5.10",
-    "typescript": "^5.3.3"
+    "eslint": "^8.57.0",
+    "globals": "^15.1.0",
+    "typescript": "^5.3.3",
+    "typescript-eslint": "^7.8.0"
   }
 }
