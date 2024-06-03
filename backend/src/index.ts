@@ -1,71 +1,40 @@
 import FireFly from "@hyperledger/firefly-sdk";
 import bodyparser from "body-parser";
-import express from "express";
+import express, {Router} from "express";
 import simplestorage from "../../solidity/artifacts/contracts/simple_storage.sol/SimpleStorage.json";
 import token from "../../solidity/artifacts/contracts/token.sol/Token.json";
+import routes from './routes';
+import cors from 'cors';
+import setupSwagger from "./swagger";
 
 const PORT = 4001;
 const HOST = "http://localhost:5000";
 const NAMESPACE = "default";
-const SIMPLE_STORAGE_ADDRESS = "ContractAddressHere";
-const TOKEN_ADDRESS = "ContractAddressHere";
+const SIMPLE_STORAGE_ADDRESS = "0xf7b7B677007f86D8d3afeD6384F5D18fa9F1F729";
+const TOKEN_ADDRESS = "0x86482b61472282Fdc159e33BF856D325a035EfD6";
 const app = express();
+
 const firefly = new FireFly({
   host: HOST,
   namespace: NAMESPACE,
 });
 
 const ffiAndApiVersion = 2;
-const ssFfiName: string = `simpleStorageFFI-${ffiAndApiVersion}`;
-const ssApiName: string = `simpleStorageApi-${ffiAndApiVersion}`;
-const tokenFfiName: string = `tokenFFI-${ffiAndApiVersion}`;
-const tokenApiName: string = `tokenApi-${ffiAndApiVersion}`;
+const ssFfiName: string = `simpleStorageTestFFI-${ffiAndApiVersion}`;
+const ssApiName: string = `simpleStorageTestApi-${ffiAndApiVersion}`;
+const tokenFfiName: string = `tokenTestFFI-${ffiAndApiVersion}`;
+const tokenApiName: string = `tokenTestApi-${ffiAndApiVersion}`;
 
 app.use(bodyparser.json());
 
-app.get("/api/value", async (req, res) => {
-  res.send(await firefly.queryContractAPI(ssApiName, "get", {}));
-});
+// just for dev purposes to keep things moving
+app.use(cors());
 
-app.post("/api/value", async (req, res) => {
-  try {
-    const fireflyRes = await firefly.invokeContractAPI(ssApiName, "set", {
-      input: {
-        x: req.body.x,
-      },
-    });
-    res.status(202).send({
-      id: fireflyRes.id,
-    });
-    /* eslint-disable  @typescript-eslint/no-explicit-any */
-  } catch (e: any) {
-    res.status(500).send({
-      error: e.message,
-    });
-  }
-});
+app.use('/', routes);
 
-app.post("/api/mintToken", async (req, res) => {
-  try {
-    const fireflyRes = await firefly.invokeContractAPI(
-      tokenApiName,
-      "safeMint",
-      {
-        input: {
-          tokenId: Number(req.body.tokenId),
-        },
-      }
-    );
-    res.status(202).send({
-      tokenId: fireflyRes.input.input.tokenId,
-    });
-    /* eslint-disable  @typescript-eslint/no-explicit-any */
-  } catch (e: any) {
-    res.status(500).send({
-      error: e.message,
-    });
-  }
-});
+
+
+setupSwagger(app);
 
 async function init() {
   // Simple storage

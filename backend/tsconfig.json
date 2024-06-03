@@ -12,5 +12,6 @@
     "resolveJsonModule": true,
     "sourceMap": true
   },
-  "exclude": ["node_modules", "contracts", "build", "eslint.config.mjs"]
+  "exclude": [
+    "knexfile", "migrations", "node_modules", "contracts", "build", "eslint.config.mjs"]
 }
