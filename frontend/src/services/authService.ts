@@ -1,3 +1,4 @@
+// TODO: make configurable
 const API_URL = 'http://localhost:4001';
 
 export const register = async (username: string, password: string) => {

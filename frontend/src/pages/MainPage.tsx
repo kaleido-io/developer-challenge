@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getProfile } from '../services/authService';
+import CreatePoll from "../components/CreatePoll";
+import PollList from "../components/PollList";
 
 const MainPage = () => {
   const [profile, setProfile] = useState<any>(null);
@@ -51,8 +53,10 @@ const MainPage = () => {
         <div>
           <p>Username: {profile.username}</p>
           <p>Created At: {new Date(profile.created_at).toLocaleDateString()}</p>
+          <CreatePoll />
         </div>
       )}
+      <PollList />
     </div>
   );
 };

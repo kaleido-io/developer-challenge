@@ -6,13 +6,17 @@ import token from "../../solidity/artifacts/contracts/token.sol/Token.json";
 import routes from './routes';
 import cors from 'cors';
 import setupSwagger from "./swagger";
+import { createServer } from 'http';
+import {initializeWebSocket} from "./websocket";
 
 const PORT = 4001;
 const HOST = "http://localhost:5000";
 const NAMESPACE = "default";
 const SIMPLE_STORAGE_ADDRESS = "0xf7b7B677007f86D8d3afeD6384F5D18fa9F1F729";
 const TOKEN_ADDRESS = "0x86482b61472282Fdc159e33BF856D325a035EfD6";
+
 const app = express();
+const server = createServer(app);
 
 const firefly = new FireFly({
   host: HOST,
@@ -35,6 +39,10 @@ app.use('/', routes);
 
 
 setupSwagger(app);
+initializeWebSocket(server);
+server.listen(4002, () => {
+  console.log('Websocket server running on port 4002');
+});
 
 async function init() {
   // Simple storage
