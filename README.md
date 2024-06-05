@@ -67,7 +67,7 @@ No problem. Go for it.
 1. Install the [FireFly CLI here](https://github.com/hyperledger/firefly-cli?tab=readme-ov-file#install-the-cli)
 2. Create a FireFly stack by running:
    ```bash
-   ff init devChallenge --block-period 2 # --block-period 2 is required for this project
+   ff init devChallenge --block-period 2 # Please set this. We expect you to use 2 second block period for this project (as real world blockchains are not instantaneous)
    ```
 3. Start the FireFly stack by running:
    ```bash
