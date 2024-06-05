@@ -75,6 +75,8 @@ No problem. Go for it.
    ```
 4. When you're done, you will have FireFly and all its microservices, including your very own private blockchain, running on your machine.
 
+> If you are on Windows or Linux, please **make sure you read the** the hints and tips on [this page](https://hyperledger.github.io/firefly/latest/gettingstarted/firefly_cli/)
+
 If you run into issues, use the following resources to help:
 
 1. [FireFly Getting Started Guide](https://hyperledger.github.io/firefly/latest/gettingstarted/firefly_cli/)
