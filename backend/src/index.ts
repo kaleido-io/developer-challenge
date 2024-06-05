@@ -9,6 +9,7 @@ const HOST = "http://localhost:5000";
 const NAMESPACE = "default";
 const SIMPLE_STORAGE_ADDRESS = "ContractAddressHere";
 const TOKEN_ADDRESS = "ContractAddressHere";
+const SIGNING_KEY = "SigningKeyHere";
 const app = express();
 const firefly = new FireFly({
   host: HOST,
@@ -24,7 +25,11 @@ const tokenApiName: string = `tokenApi-${ffiAndApiVersion}`;
 app.use(bodyparser.json());
 
 app.get("/api/value", async (req, res) => {
-  res.send(await firefly.queryContractAPI(ssApiName, "get", {}));
+  res.send(
+    await firefly.queryContractAPI(ssApiName, "get", {
+      key: SIGNING_KEY,
+    })
+  );
 });
 
 app.post("/api/value", async (req, res) => {
@@ -33,6 +38,7 @@ app.post("/api/value", async (req, res) => {
       input: {
         x: req.body.x,
       },
+      key: SIGNING_KEY,
     });
     res.status(202).send({
       id: fireflyRes.id,
@@ -54,6 +60,7 @@ app.post("/api/mintToken", async (req, res) => {
         input: {
           tokenId: Number(req.body.tokenId),
         },
+        key: SIGNING_KEY,
       }
     );
     res.status(202).send({

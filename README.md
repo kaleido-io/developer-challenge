@@ -64,9 +64,22 @@ No problem. Go for it.
 
 ## Setting up your FireFly on your machine
 
-Run through our [Getting Started guide](https://hyperledger.github.io/firefly/latest/gettingstarted/).
+1. Install the [FireFly CLI here](https://github.com/hyperledger/firefly-cli?tab=readme-ov-file#install-the-cli)
+2. Create a FireFly stack by running:
+   ```bash
+   ff init devChallenge --block-period 2 # --block-period 2 is required for this project
+   ```
+3. Start the FireFly stack by running:
+   ```bash
+   ff start devChallenge
+   ```
+4. When you're done, you will have FireFly and all its microservices, including your very own private blockchain, running on your machine.
 
-When you're done, you will have FireFly and all its microservices, including your very own private blockchain, running on your machine.
+If you run into issues, use the following resources to help:
+
+1. [FireFly Getting Started Guide](https://hyperledger.github.io/firefly/latest/gettingstarted/firefly_cli/)
+2. [FireFly CLI README](https://github.com/hyperledger/firefly-cli)
+3. Ask the team in Whatsapp!
 
 ## Getting this repo up and running
 
