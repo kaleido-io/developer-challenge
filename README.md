@@ -71,7 +71,7 @@ No problem. Go for it.
    ```
 3. Start the FireFly stack by running:
    ```bash
-   ff start devChallenge
+   ff start dev
    ```
 4. When you're done, you will have FireFly and all its microservices, including your very own private blockchain, running on your machine.
 
