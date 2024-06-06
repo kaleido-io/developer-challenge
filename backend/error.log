@@ -1,0 +1,7 @@
+2024-06-05 22:16:05 [31merror[39m: json: cannot unmarshal array into Go struct field ContractCallRequest.input of type map[string]interface {}
+2024-06-05 22:16:05 [31merror[39m: json: cannot unmarshal array into Go struct field ContractCallRequest.input of type map[string]interface {}
+2024-06-05 22:16:05 [31merror[39m: json: cannot unmarshal array into Go struct field ContractCallRequest.input of type map[string]interface {}
+2024-06-05 22:16:05 [31merror[39m: json: cannot unmarshal array into Go struct field ContractCallRequest.input of type map[string]interface {}
+2024-06-05 22:24:30 [31merror[39m: json: cannot unmarshal array into Go struct field ContractCallRequest.input of type map[string]interface {}
+2024-06-05 22:47:26 [31merror[39m: FF10304: Missing required input argument '_question'
+2024-06-05 22:58:18 [31merror[39m: FF10111: Error from ethereum connector: FF23021: EVM reverted: Invalid option.

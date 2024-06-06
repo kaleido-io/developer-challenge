@@ -6,6 +6,9 @@ contract SimpleStorage {
     // Storage. Persists in between transactions
     uint256 _x;
 
+    // Event declaration
+    event Changed(address indexed from, uint256 x);
+
     // Allows the unsigned integer stored to be changed
     function set(uint256 x) public {
         _x = x;
@@ -16,6 +19,4 @@ contract SimpleStorage {
     function get() public view returns (uint256 x) {
         return (_x);
     }
-
-    event Changed(address indexed from, uint256 x);
 }

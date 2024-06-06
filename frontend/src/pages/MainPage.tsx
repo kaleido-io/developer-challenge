@@ -31,7 +31,7 @@ const MainPage = () => {
   return (
     <div className="container mx-auto">
       <nav className="flex justify-between items-center py-4">
-        <h1 className="text-2xl font-bold">Voting App</h1>
+        <h1 className="text-2xl font-bold">Poller</h1>
         <div>
           {profile ? (
             <div>
