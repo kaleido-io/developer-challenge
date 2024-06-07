@@ -35,7 +35,7 @@ const CreatePoll = () => {
     if (response.error) {
       setMessage(response.error);
     } else {
-      setMessage('Poll created successfully!');
+      setMessage('Poll created successfully! Refresh page to see it!');
       setTitle('');
       setQuestion('');
       setOptions(['', '']);

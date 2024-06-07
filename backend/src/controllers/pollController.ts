@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import {createPoll, getPolls, captureVote} from '../models/poll';
+import {createPoll, getPolls, captureVote, hasUserVotedInPoll} from '../models/poll';
 import {broadcastVoteUpdate} from "../websocket";
 import db from "../db";
 import firefly, {POLL_STORAGE_ADDRESS, psApiName} from "../firefly";
@@ -74,13 +74,20 @@ export const voteController = async (req: AuthenticatedRequest, res: Response) =
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
-    const userHash = generateHash(user.name, user.id)
-
-    const newVote = await captureVote({ option_id });
 
     // Fetch the pollId using the optionId
     const option = await db('options').where('id', option_id).first();
     const pollId = option.poll_id;
+
+    const hasVoted = await hasUserVotedInPoll(userId, pollId)
+    if(hasVoted) {
+      return res.status(400).json({ error: 'User already voted' });
+    }
+
+    const userHash = generateHash(user.name, user.id)
+
+    const newVote = await captureVote({ option_id, user_id: userId });
+
 
     const resp = await firefly.invokeContractAPI(
       psApiName,

@@ -7,6 +7,7 @@ exports.up = function(knex) {
         .createTable('votes', function(table) {
             table.increments('id').primary();  // Auto-incrementing ID
             table.integer('option_id').unsigned().notNullable().references('id').inTable('options').onDelete('CASCADE');
+            table.integer('user_id').unsigned().references('id').inTable('users').onUpdate('CASCADE').onDelete('SET NULL');
             table.timestamps(true, true);
     });
 };
