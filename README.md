@@ -1,88 +1,60 @@
-# Developer Challenge
+## Poller: Decentralized polling
 
-Build a DApp on using FireFly.
+Poller is a simple app that allows users to create and vote in polls. It leverages the blockchain to
+act as a decentralized, transparent, and immutable 'source of truth' for poll and vote data.
 
-Fork this repo, choose a use case you think would be interesting to build as a decentralized application (DApp), then get creative and have fun.
+Follow the instructions below to run project.
 
-... and please **ask questions** - we don't want you to be stuck, and appreciate collaboration through the project.
+_*NOTE: It is assumed that you are running FireFly locally.*_
 
-## What is a DApp?
+### 1) Set up Postgres
+The project contains a docker-compose script to spin up a dockerized Postgres instance. Just run
+`docker-compose up --build` to get it up and running. The correct user with (way too much power) will be
+set up. The app database will also be created.
 
-- [Ethereum Foundation](https://ethereum.org/en/developers/docs/dapps/)
-  - Background of how DApps have evolved in the wild, and why
-- [DApps Build on Ethereum](https://ethereum.org/en/dapps/)
-  - All that's been built in the wonderful world of public Ethereum
-- [FireFly docs](https://docs.kaleido.io/kaleido-platform/full-stack/dapps/)
-  - DApps in an Enterprise context
+_(I was planning to dockerize the whole project with a docker-compose to spin it all up together, but it was
+taking too long)_
 
-## What does done look like?
+### 2) Compile and deploy Solidity contract
+Navigate to `./solidity` and run the commands below
 
-We would like your project to demonstrate your concept end-to-end, but it doesn't need to be a complete application.
+##### Install Dependencies
 
-It must:
+```bash
+npm i
+```
 
-- Have a Web based frontend user experience which talks to your app's backend
-- Have a backend-for-the-frontend (BFF), that uses FireFly's API
-  - Note: An SDK including API wrappers and a WebSocket event listener is provided for Node.js and includes type definitions for TypeScript. You are not required to use it, but we strongly recommend it as it will save you a lot of time.
-- Use Hyperledger FireFly
-- Have on-chain Smart Contract logic, written in Solidity
-- Contain a README that gives a quick overview of the use case, and tells us how to run it
+#### Compile Smart Contracts
 
-How much time you spend on each tier is down to you - depending on your interests and the skills you want to show.
+```bash
+npm run compile
+```
 
-> We've given you a basic, but functional, starting point for each layer of the stack.
-> ... and yes, we know the UI is a bit naff ;-)
+#### Deploy Smart Contracts to FireFly
 
-## Some ideas
+```bash
+npx hardhat run initdb/deploy.ts --network firefly
+```
 
-These are just ideas to give inspiration
+### 3) Set up and run backend
+The backend is a fairly straightforward web server implemented in NodeJS, using the Express web library.
+The language used is TypeScript. It uses Postgres for its storage.
 
-Choose something/anything you think is interesting, and gives you license to focus on the bit of the stack you care about.
+To run, navigate to `./backend` and execute the following:
 
-It's your choice whether you focus more on how things work under the covers, or how things feel in the UI/UX.
+```bash
+npm install
+npm start
+```
 
-- A blockchain backed ratings system for Movies
-- A racing simulation (you can even see one here in our [Racecourse sample](https://github.com/kaleido-io/racecourse))
-- A funky avatar generator, where each avatar is backed by a unique token
-- A conference ticketing system with camera & QR code integration
-- A digital collectable swag bag, earned by posting to social media
+### 4) Set up and run frontend
+The frontend is implemented with the React framework in TypeScript.
 
-## Want more dev stack?
+To run, navigate to `./frontend` and execute the following
 
-Here are some dev technologies (not in the starter repo) that we love at Kaleido:
+```bash
+npm install
+npm start
+```
 
-- TailwindCSS or Material UI (or insert your favorite component library here) - at Kaleido we love re-use
-- GraphQL (Apollo) for front-end/back-end comms
-- WebSockets for live updating and notifications
-- PostgreSQL for relational data
-- MongoDB NoSQL database for configuration and local state
-
-Remember we'd like a thin thread through your DApp, so choose technologies you think you can be productive in.
-
-Want to throw away most of the original `vite` + `express` based repo?
-No problem. Go for it.
-
-## Setting up your FireFly on your machine
-
-Run through our [Getting Started guide](https://hyperledger.github.io/firefly/latest/gettingstarted/).
-
-When you're done, you will have FireFly and all its microservices, including your very own private blockchain, running on your machine.
-
-## Getting this repo up and running
-
-This repo has three directories in it:
-
-- `solidity`: Two example solidity contracts that can be compiled, tested, and deployed with Hardhat. [Go to the Readme](./solidity/)
-- `backend`: A very simple TypeScript Node.js app that uses the FireFly SDK to interact with a custom smart contract. [Go to the Readme](./backen/)
-- `frontend`: A TypeScript React UI bootstrapped with [vite](https://vitejs.dev/guide/) that calls the API in the backend. [Go to the Readme](./frontend/)
-
-You will need to first deploy the example smart contracts with Hardhat to FireFly. Once the backend/frontend are started, the buttons on the Web UI will call the backend API endpoints to interact with the contracts through FireFly.
-
-![Backend](backend.png)
-![Frontend](frontend.png)
-
-## Your journey begins here
-
-Now it's your turn to build something! You can use this backend and frontend as a starting point for your app, or you can start from scratch if you want.
-
-You will find the [FireFly documentation](https://hyperledger.github.io/firefly/latest/) useful as you build this project.
+Finally, navigate to [http://localhost:4000](http://localhost:4000) to use app.
