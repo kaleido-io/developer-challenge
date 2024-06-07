@@ -5,7 +5,7 @@ import cors from 'cors';
 import setupSwagger from "./swagger";
 import { createServer } from 'http';
 import {initializeWebSocket} from "./websocket";
-import {broadcastBlockchainEvent, initFireFly} from "./firefly";
+import {listenForBlockchainEvent, initFireFly} from "./firefly";
 import morgan from "morgan";
 import logger from "./logger";
 
@@ -36,9 +36,9 @@ server.listen(4002, () => {
 
 async function init() {
 
-  await broadcastBlockchainEvent()
 
   await initFireFly();
+  await listenForBlockchainEvent()
 
   // Start listening
   app.listen(PORT, () =>

@@ -12,15 +12,16 @@ contract PollStorage {
         uint id;
         string question;
         Option[] options;
+        mapping(bytes32 => bool) voters;
     }
 
     mapping(uint => Poll) public polls;
     uint public pollCount;
 
-    event PollCreated(uint pollId, string question);
-    event VoteRecorded(uint pollId, uint optionId);
+    event PollCreated(uint pollId, string question, bytes32 creatorHash, address creatorAddress);
+    event VoteRecorded(uint pollId, uint optionId, bytes32 voterHash, address voterAddress);
 
-    function createPoll(string memory _question, string[] memory _options) public {
+    function createPoll(string memory _question, string[] memory _options, bytes32 _creatorHash) public {
         pollCount++;
         Poll storage poll = polls[pollCount];
         poll.id = pollCount;
@@ -28,15 +29,16 @@ contract PollStorage {
         for (uint i = 0; i < _options.length; i++) {
             poll.options.push(Option(i, _options[i], 0));
         }
-        emit PollCreated(pollCount, _question);
+        emit PollCreated(pollCount, _question, _creatorHash, msg.sender);
     }
 
-    function vote(uint _pollId, uint _optionId) public {
+    function vote(uint _pollId, uint _optionId, bytes32 _voterHash) public {
         Poll storage poll = polls[_pollId];
 
         poll.options[_optionId].voteCount++;
+        poll.voters[_voterHash] = true; // Mark the voter hash as used
 
-        emit VoteRecorded(_pollId, _optionId);
+        emit VoteRecorded(_pollId, _optionId, _voterHash, msg.sender);
     }
 
     function getPoll(uint _pollId) public view returns (string memory, Option[] memory) {

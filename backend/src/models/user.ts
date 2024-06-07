@@ -16,7 +16,6 @@ const createUser = async (username: string, password: string): Promise<User> => 
 
 const getUserByUsername = async (username: string): Promise<User | undefined> => {
   return db('users').where({username}).first();
-
 };
 
 const getUserById = async (id: number): Promise<User | undefined> => {
