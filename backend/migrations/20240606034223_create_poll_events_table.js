@@ -5,29 +5,29 @@
 exports.up = function(knex) {
     return knex.schema.createTable('pollEvents', function(table) {
         table.increments('id').primary();
-        table.string('pollId').notNullable();
+        table.string('poll_id').notNullable();
         table.string('question').notNullable();
-        table.string('creatorHash').notNullable();
-        table.string('creatorAddress').notNullable();
-        table.string('transactionHash').notNullable();
-        table.integer('blockNumber').notNullable();
-        table.integer('logIndex').notNullable();
+        table.string('creator_hash').notNullable();
+        table.string('creator_address').notNullable();
+        table.string('transaction_hash').notNullable();
+        table.integer('block_number').notNullable();
+        table.integer('log_index').notNullable();
         table.timestamp('timestamp').notNullable();
-        table.timestamp('createdAt').defaultTo(knex.fn.now());
+        table.timestamp('created_at').defaultTo(knex.fn.now());
     })
     .then(function() {
         return knex.schema.createTable('voteEvents', function(table) {
             table.increments('id').primary();
-            table.integer('pollId').notNullable();
-            table.integer('voteId').notNullable();
-            table.string('optionId').notNullable();
-            table.string('voterHash').notNullable();
-            table.string('voterAddress').notNullable();
-            table.string('transactionHash').notNullable();
-            table.integer('blockNumber').notNullable();
-            table.integer('logIndex').notNullable();
+            table.integer('poll_id').notNullable();
+            table.integer('vote_id').notNullable();
+            table.string('option_id').notNullable();
+            table.string('voter_hash').notNullable();
+            table.string('voter_address').notNullable();
+            table.string('transaction_hash').notNullable();
+            table.integer('block_number').notNullable();
+            table.integer('log_index').notNullable();
             table.timestamp('timestamp').notNullable();
-            table.timestamp('createdAt').defaultTo(knex.fn.now());
+            table.timestamp('created_at').defaultTo(knex.fn.now());
         });
     });
 };

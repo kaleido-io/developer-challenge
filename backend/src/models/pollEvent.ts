@@ -2,50 +2,50 @@ import db from "../db";
 import logger from "../logger";
 
 export interface PollCreatedEvent {
-  pollId: number;
+  poll_id: number;
   question: string;
-  creatorHash: string;
-  creatorAddress: string;
-  transactionHash: string;
-  blockNumber: number;
-  logIndex: number;
+  creator_hash: string;
+  creator_address: string;
+  transaction_hash: string;
+  block_number: number;
+  log_index: number;
   timestamp: Date;
 }
 
 export interface VoteRecordedEvent {
-  pollId: number;
-  voteId: number;
-  optionId: number;
-  voterHash: string;
-  voterAddress: string;
-  transactionHash: string;
-  blockNumber: number;
-  logIndex: number;
+  poll_id: number;
+  vote_id: number;
+  option_id: number;
+  voter_hash: string;
+  voter_address: string;
+  transaction_hash: string;
+  block_number: number;
+  log_index: number;
   timestamp: Date;
 }
 
 export const createPollCreatedEvent = async (event: PollCreatedEvent) => {
   const {
-    pollId,
+    poll_id,
     question,
-    creatorHash,
-    creatorAddress,
-    transactionHash,
-    blockNumber,
-    logIndex,
+    creator_hash,
+    creator_address,
+    transaction_hash,
+    block_number,
+    log_index,
     timestamp
   } = event
   try {
     await db('pollEvents').insert({
-      pollId,
+      poll_id,
       question,
-      creatorHash,
-      creatorAddress,
-      transactionHash,
-      blockNumber,
-      logIndex,
+      creator_hash,
+      creator_address,
+      transaction_hash,
+      block_number,
+      log_index,
       timestamp: new Date(timestamp),
-      createdAt: new Date(),
+      created_at: new Date(),
     });
 
     logger.info('PollCreated event inserted into pollEvents table');
@@ -58,25 +58,25 @@ export const createPollCreatedEvent = async (event: PollCreatedEvent) => {
 export const createVoteRecordedEvent = async (event: VoteRecordedEvent) => {
   try {
     const {
-      pollId,
-      optionId,
-      voterHash,
-      voterAddress,
-      transactionHash,
-      blockNumber,
-      logIndex,
+      poll_id,
+      option_id,
+      voter_hash,
+      voter_address,
+      transaction_hash,
+      block_number,
+      log_index,
       timestamp
     } = event
     await db('voteEvents').insert({
-      pollId: pollId,
-      optionId: optionId,
-      voterHash: voterHash,
-      voterAddress: voterAddress,
-      transactionHash: transactionHash,
-      blockNumber: blockNumber,
-      logIndex: logIndex,
+      poll_id,
+      option_id,
+      voter_hash,
+      voter_address,
+      transaction_hash,
+      block_number,
+      log_index,
       timestamp: new Date(timestamp),
-      createdAt: new Date(),
+      created_at: new Date(),
     });
 
     logger.info('VoteRecorded event inserted into voteEvents table');

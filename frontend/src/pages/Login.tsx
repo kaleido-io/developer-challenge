@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import { login } from '../services/authService';
 
 const Login = () => {
@@ -22,7 +22,12 @@ const Login = () => {
 
   return (
     <div className="container mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Login</h1>
+      <nav className="flex justify-between items-center py-4">
+        <h1 className="text-2xl font-bold mb-4">Login</h1>
+        <div>
+              <Link to="/register" className="px-4 py-2 bg-green-500 text-white rounded">Register</Link>
+        </div>
+      </nav>
       <form onSubmit={handleLogin}>
         <div className="mb-4">
           <label className="block text-gray-700">Username</label>

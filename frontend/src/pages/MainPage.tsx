@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import { getProfile } from '../services/authService';
 import CreatePoll from "../components/CreatePoll";
 import PollList from "../components/PollList";
@@ -23,9 +23,16 @@ const MainPage = () => {
     fetchProfile();
   }, []);
 
+  const navigate = useNavigate();
+
+  const navigateToEvents = () => {
+    navigate('/events');
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('token');
     setProfile(null);
+    navigate('/login');
   };
 
   return (
@@ -51,11 +58,17 @@ const MainPage = () => {
       {message && <p className="mt-4">{message}</p>}
       {profile && (
         <div>
-          <p>Username: {profile.username}</p>
-          <p>Created At: {new Date(profile.created_at).toLocaleDateString()}</p>
           <CreatePoll />
         </div>
       )}
+      {localStorage.getItem('token')
+        ? <button
+          onClick={navigateToEvents}
+          className="mt-14 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          View Blockchain Events
+        </button>
+        : <div></div>}
       <PollList />
     </div>
   );

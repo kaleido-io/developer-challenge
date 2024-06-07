@@ -113,7 +113,7 @@ router.post('/create', authenticate, createPollController);
  *       500:
  *         description: Error fetching polls
  */
-router.get('/', getPollsController);
+router.get('/', authenticate, getPollsController);
 
 /**
  * @swagger

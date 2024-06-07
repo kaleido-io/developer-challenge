@@ -159,26 +159,26 @@ export const listenForBlockchainEvent = async () => {
     async (socket, event) => {
       if (event.operation?.input.input._title && event.operation.input.input._question) {
         const pollEvent: PollCreatedEvent = {
-          pollId: event.operation.input.input._pollId,
+          poll_id: event.operation.input.input._pollId,
           question: event.operation.input.input._question,
-          creatorHash: event.operation.input.input._creatorHash,
-          creatorAddress: event.operation.input.input._creatorAddress,
-          transactionHash: event.tx,
-          blockNumber: event.sequence,
-          logIndex: 0, // Assuming logIndex is 0 if not provided
+          creator_hash: event.operation.input.input._creatorHash,
+          creator_address: event.operation.input.input._creatorAddress,
+          transaction_hash: event.tx,
+          block_number: event.sequence,
+          log_index: 0, // Assuming logIndex is 0 if not provided
           timestamp: new Date(event.created),
         };
         await handlePollCreatedEvent(pollEvent);
       } else if (event.operation?.input.input._optionId && event.operation.input.input._voterHash) {
         const voteEvent: VoteRecordedEvent = {
-          pollId: event.operation.input.input._pollId,
-          voteId: event.operation.input.input._voteId,
-          optionId: event.operation.input.input._optionId,
-          voterHash: event.operation.input.input._voterHash,
-          voterAddress: event.operation.input.input._voterAddress,
-          transactionHash: event.tx,
-          blockNumber: event.sequence,
-          logIndex: 0, // Assuming logIndex is 0 if not provided
+          poll_id: event.operation.input.input._pollId,
+          vote_id: event.operation.input.input._voteId,
+          option_id: event.operation.input.input._optionId,
+          voter_hash: event.operation.input.input._voterHash,
+          voter_address: event.operation.input.input._voterAddress,
+          transaction_hash: event.tx,
+          block_number: event.sequence,
+          log_index: 0, // Assuming logIndex is 0 if not provided
           timestamp: new Date(event.created),
         };
         await handleVoteRecordedEvent(voteEvent);

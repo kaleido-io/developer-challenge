@@ -15,7 +15,15 @@ export const createPoll = async (title: string, question: string, options: strin
 };
 
 export const getPolls = async () => {
-  const response = await fetch(`${API_URL}/polls`);
+  const token = localStorage.getItem('token');
+
+  const response = await fetch(`${API_URL}/polls`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  });
   return response.json();
 };
 
