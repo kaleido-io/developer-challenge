@@ -3,28 +3,27 @@ import bodyparser from "body-parser";
 import express from "express";
 import simplestorage from "../../solidity/artifacts/contracts/simple_storage.sol/SimpleStorage.json";
 import token from "../../solidity/artifacts/contracts/token.sol/Token.json";
+import config from "../config.json";
 
-const PORT = 4001;
-const HOST = "http://localhost:5000";
-const NAMESPACE = "default";
-const SIMPLE_STORAGE_ADDRESS = "ContractAddressHere";
-const TOKEN_ADDRESS = "ContractAddressHere";
 const app = express();
 const firefly = new FireFly({
-  host: HOST,
-  namespace: NAMESPACE,
+  host: config.HOST,
+  namespace: config.NAMESPACE,
 });
 
-const ffiAndApiVersion = 2;
-const ssFfiName: string = `simpleStorageFFI-${ffiAndApiVersion}`;
-const ssApiName: string = `simpleStorageApi-${ffiAndApiVersion}`;
-const tokenFfiName: string = `tokenFFI-${ffiAndApiVersion}`;
-const tokenApiName: string = `tokenApi-${ffiAndApiVersion}`;
+const ssFfiName: string = `simpleStorageFFI-${config.VERSION}`;
+const ssApiName: string = `simpleStorageApi-${config.VERSION}`;
+const tokenFfiName: string = `tokenFFI-${config.VERSION}`;
+const tokenApiName: string = `tokenApi-${config.VERSION}`;
 
 app.use(bodyparser.json());
 
 app.get("/api/value", async (req, res) => {
-  res.send(await firefly.queryContractAPI(ssApiName, "get", {}));
+  res.send(
+    await firefly.queryContractAPI(ssApiName, "get", {
+      key: config.SIGNING_KEY,
+    })
+  );
 });
 
 app.post("/api/value", async (req, res) => {
@@ -33,6 +32,7 @@ app.post("/api/value", async (req, res) => {
       input: {
         x: req.body.x,
       },
+      key: config.SIGNING_KEY,
     });
     res.status(202).send({
       id: fireflyRes.id,
@@ -54,6 +54,7 @@ app.post("/api/mintToken", async (req, res) => {
         input: {
           tokenId: Number(req.body.tokenId),
         },
+        key: config.SIGNING_KEY,
       }
     );
     res.status(202).send({
@@ -72,7 +73,7 @@ async function init() {
   await firefly
     .generateContractInterface({
       name: ssFfiName,
-      namespace: NAMESPACE,
+      namespace: config.NAMESPACE,
       version: "1.0",
       description: "Deployed simple-storage contract",
       input: {
@@ -93,7 +94,7 @@ async function init() {
             id: ssContractInterface.id,
           },
           location: {
-            address: SIMPLE_STORAGE_ADDRESS,
+            address: config.SIMPLE_STORAGE_ADDRESS,
           },
           name: ssApiName,
         },
@@ -114,7 +115,7 @@ async function init() {
   await firefly
     .generateContractInterface({
       name: tokenFfiName,
-      namespace: NAMESPACE,
+      namespace: config.NAMESPACE,
       version: "1.0",
       description: "Deployed token contract",
       input: {
@@ -135,7 +136,7 @@ async function init() {
             id: tokenContractInterface.id,
           },
           location: {
-            address: TOKEN_ADDRESS,
+            address: config.TOKEN_ADDRESS,
           },
           name: tokenApiName,
         },
@@ -208,8 +209,8 @@ async function init() {
   );
 
   // Start listening
-  app.listen(PORT, () =>
-    console.log(`Kaleido DApp backend listening on port ${PORT}!`)
+  app.listen(config.PORT, () =>
+    console.log(`Kaleido DApp backend listening on port ${config.PORT}!`)
   );
 }
 
