@@ -67,11 +67,11 @@ No problem. Go for it.
 1. Install the [FireFly CLI here](https://github.com/hyperledger/firefly-cli?tab=readme-ov-file#install-the-cli)
 2. Create a FireFly stack by running:
    ```bash
-   ff init devChallenge --block-period 2 # Please set this. We expect you to use 2 second block period for this project (as real world blockchains are not instantaneous)
+   ff init --block-period 2 dev_challenge 1 # Please set this. We expect you to use 2 second block period for this project (as real world blockchains are not instantaneous)
    ```
 3. Start the FireFly stack by running:
    ```bash
-   ff start dev
+   ff start dev_challenge
    ```
 4. When you're done, you will have FireFly and all its microservices, including your very own private blockchain, running on your machine.
 
@@ -88,7 +88,7 @@ If you run into issues, use the following resources to help:
 This repo has three directories in it:
 
 - `solidity`: Two example solidity contracts that can be compiled, tested, and deployed with Hardhat. [Go to the Readme](./solidity/)
-- `backend`: A very simple TypeScript Node.js app that uses the FireFly SDK to interact with a custom smart contract. [Go to the Readme](./backen/)
+- `backend`: A very simple TypeScript Node.js app that uses the FireFly SDK to interact with a custom smart contract. [Go to the Readme](./backend/)
 - `frontend`: A TypeScript React UI bootstrapped with [vite](https://vitejs.dev/guide/) that calls the API in the backend. [Go to the Readme](./frontend/)
 
 You will need to first deploy the example smart contracts with Hardhat to FireFly. Once the backend/frontend are started, the buttons on the Web UI will call the backend API endpoints to interact with the contracts through FireFly.

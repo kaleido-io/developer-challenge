@@ -1,0 +1,9 @@
+{
+    "PORT": 4001,
+    "HOST": "http://localhost:5000",
+    "NAMESPACE": "default",
+    "SIGNING_KEY": "0xAAAA",
+    "VERSION": "1.0",
+    "SIMPLE_STORAGE_ADDRESS": "0xBBBB",
+    "TOKEN_ADDRESS": "0xCCCC"
+}

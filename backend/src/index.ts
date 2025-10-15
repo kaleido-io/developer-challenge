@@ -1,4 +1,4 @@
-import FireFly from "@hyperledger/firefly-sdk";
+import FireFly, { FireFlyEventDelivery } from "@hyperledger/firefly-sdk";
 import bodyparser from "body-parser";
 import express from "express";
 import simplestorage from "../../solidity/artifacts/contracts/simple_storage.sol/SimpleStorage.json";
@@ -102,8 +102,7 @@ async function init() {
       );
     })
     .catch((e) => {
-      const err = JSON.parse(JSON.stringify(e.originalError));
-
+      const err = e.originalError ? JSON.parse(JSON.stringify(e.originalError)) : e;
       if (err.status === 409) {
         console.log("'simpleStorageFFI' already exists in FireFly. Ignoring.");
       } else {
@@ -197,7 +196,8 @@ async function init() {
         events: "blockchain_event_received",
       },
     },
-    async (socket, event) => {
+    async (socket, _event) => {
+      const event = _event as FireFlyEventDelivery;
       console.log(
         `${event.blockchainEvent?.info.signature}: ${JSON.stringify(
           event.blockchainEvent?.output,
